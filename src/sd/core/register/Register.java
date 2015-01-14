@@ -13,7 +13,7 @@ import sd.core.player.PlayerInterface;
 public class Register  extends UnicastRemoteObject implements RegisterInterface{
 
 	private static final long serialVersionUID = 1L;
-	private final long timeLimit = 30000L;
+	private final long timeLimit = 3000000000L;
 	private List<String> gamersIp;
 	private Thread ludoChronometer;
 	private long counter;
@@ -24,6 +24,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	
 	public long register(String clientIp) throws RemoteException {
 		System.out.println("SERVER ---- client ip:" + clientIp);
+		System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
@@ -31,7 +32,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 		/* add the partecipant ip to the list */
 		this.gamersIp.add(clientIp);
 		/* partecipant limit reached, start the game */
-		if (this.gamersIp.size() == 6) {
+		if (this.gamersIp.size() == 3) {
 			/*stop timer */
 			this.endTimer();
 			this.startGame();
@@ -70,12 +71,12 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	private void startGame() {
 		System.out.println("SERVER ---- counter:" + counter);
 		for (int i = 0 ; i < this.gamersIp.size() ; i++){
+			System.out.println("SERVER ---- ciclo per informare i player:" + i);
 			try {
 				PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
 				//PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://localhost/RMIGameClient");
 				gamer.start(this.gamersIp);
-			} catch (MalformedURLException | RemoteException
-					| NotBoundException e) {
+			} catch (MalformedURLException | RemoteException | NotBoundException e) {
 				e.printStackTrace();
 			}
 			
