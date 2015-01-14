@@ -1,4 +1,4 @@
-package sd.core.client;
+package sd.core.player;
 
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
@@ -10,15 +10,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import sd.core.server.ServerInterface;
+import sd.core.register.RegisterInterface;
 
-public class LudoClient extends UnicastRemoteObject implements ClientInterface {
+public class Player extends UnicastRemoteObject implements PlayerInterface {
 	
 	private static final long serialVersionUID = 1L;
 	private List<String> gamersIp;
 	private boolean isPlaying;
 	
-	public LudoClient() throws RemoteException {
+	public Player() throws RemoteException {
 		this.isPlaying =  false;
 		this.gamersIp = new ArrayList<String>();
 	}
@@ -35,10 +35,10 @@ public class LudoClient extends UnicastRemoteObject implements ClientInterface {
 	
 	public static void main(String[] args) {
 		try {
-			ClientInterface client = (ClientInterface) new LudoClient();
+			PlayerInterface client = (PlayerInterface) new Player();
 			Naming.rebind("//localhost/RMIGameClient", client);
 			//ServerInterface server = (ServerInterface) Naming.lookup("rmi://" + serverIp + "/RMILudoServer");
-			ServerInterface server = (ServerInterface) Naming.lookup("rmi://localhost/RMILudoServer");
+			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://localhost/RMILudoServer");
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			long timeToStart = server.register(ipAddress);

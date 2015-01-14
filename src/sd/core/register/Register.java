@@ -1,4 +1,4 @@
-package sd.core.server;
+package sd.core.register;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -8,9 +8,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import sd.core.client.ClientInterface;
+import sd.core.player.PlayerInterface;
 
-public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
+public class Register  extends UnicastRemoteObject implements RegisterInterface{
 
 	private static final long serialVersionUID = 1L;
 	private final long timeLimit = 30000L;
@@ -18,7 +18,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 	private Thread ludoChronometer;
 	private long counter;
 	
-	protected LudoServer() throws RemoteException {
+	protected Register() throws RemoteException {
 		this.initVariable();
 	}
 	
@@ -72,7 +72,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 		for (int i = 0 ; i < this.gamersIp.size() ; i++){
 			try {
 				//ClientInterface gamer = (ClientInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
-				ClientInterface gamer = (ClientInterface) Naming.lookup("rmi://localhost/RMIGameClient");
+				PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://localhost/RMIGameClient");
 				gamer.start(this.gamersIp);
 			} catch (MalformedURLException | RemoteException
 					| NotBoundException e) {
@@ -84,7 +84,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 	
 	public static void main(String[] args) {
 		try {
-			ServerInterface server = new LudoServer();
+			RegisterInterface server = new Register();
 			Naming.rebind("//localhost/RMILudoServer", server);
 		} catch (RemoteException | MalformedURLException e) {
 			e.printStackTrace();
