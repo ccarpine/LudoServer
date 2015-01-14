@@ -19,7 +19,6 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 	
 	protected LudoServer() throws RemoteException {
 		this.initVariable();
-		
 	}
 	
 	@Override
@@ -36,8 +35,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 			this.endTimer();
 			this.startGame();
 			/* reset variables */
-			this.initVariable();
-			
+			this.initVariable();	
 		}
 		return 0;
 	}
@@ -58,6 +56,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 		this.ludoChronometer.start();
 			
 	}
+	
 	private void endTimer(){
 		this.ludoChronometer.interrupt();
 	}
