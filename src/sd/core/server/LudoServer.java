@@ -13,17 +13,17 @@ import sd.core.client.ClientInterface;
 public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 
 	private static final long serialVersionUID = 1L;
+	private final long timeLimit = 30000L;
 	private List<String> gamersIp;
 	private Thread ludoChronometer;
-	private static final long timeLimit = 300000L;
 	private long counter;
 	
 	protected LudoServer() throws RemoteException {
 		this.initVariable();
 	}
 	
-	@Override
 	public long register(String clientIp) throws RemoteException {
+		System.out.println("SERVER ---- client ip:" + clientIp);
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
@@ -39,7 +39,7 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 			this.initVariable();
 			return 0;
 		}
-		return this.counter;
+		return (this.timeLimit-this.counter);
 	}
 	
 	private void startTimer(){
@@ -68,9 +68,11 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 	}
 	
 	private void startGame() {
+		System.out.println("SERVER ---- counter:" + counter);
 		for (int i = 0 ; i < this.gamersIp.size() ; i++){
 			try {
-				ClientInterface gamer = (ClientInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
+				//ClientInterface gamer = (ClientInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
+				ClientInterface gamer = (ClientInterface) Naming.lookup("rmi://localhost/RMIGameClient");
 				gamer.start(this.gamersIp);
 			} catch (MalformedURLException | RemoteException
 					| NotBoundException e) {
