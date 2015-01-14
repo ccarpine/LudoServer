@@ -36,13 +36,15 @@ public class Player extends UnicastRemoteObject implements PlayerInterface {
 	public static void main(String[] args) {
 		try {
 			PlayerInterface client = (PlayerInterface) new Player();
-			Naming.rebind("//localhost/RMIGameClient", client);
-			//ServerInterface server = (ServerInterface) Naming.lookup("rmi://" + serverIp + "/RMILudoServer");
-			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://localhost/RMILudoServer");
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			Naming.rebind("//"+ipAddress+"/RMIGameClient", client);
+			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" + args[0] + "/RMILudoServer");
+			//RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://localhost/RMILudoServer");
+			
 			long timeToStart = server.register(ipAddress);
 			System.out.println("CLIENT ---- time to start:" + timeToStart);
+			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 		} catch (NotBoundException | UnknownHostException |RemoteException | MalformedURLException e) {
 			e.printStackTrace();
