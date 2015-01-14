@@ -16,13 +16,14 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 	private List<String> gamersIp;
 	private Thread ludoChronometer;
 	private static final long timeLimit = 300000L;
+	private long counter;
 	
 	protected LudoServer() throws RemoteException {
 		this.initVariable();
 	}
 	
 	@Override
-	public int register(String clientIp) throws RemoteException {
+	public long register(String clientIp) throws RemoteException {
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
@@ -35,16 +36,17 @@ public class LudoServer  extends UnicastRemoteObject implements ServerInterface{
 			this.endTimer();
 			this.startGame();
 			/* reset variables */
-			this.initVariable();	
+			this.initVariable();
+			return 0;
 		}
-		return 0;
+		return this.counter;
 	}
 	
 	private void startTimer(){
 		this.ludoChronometer = new Thread(new Runnable( ) {
 			@Override
 			public void run() {
-				long counter=0;
+				counter = 0;
 				long startedAt=System.currentTimeMillis();
 				while (counter < timeLimit) {
 					counter = System.currentTimeMillis() - startedAt;
