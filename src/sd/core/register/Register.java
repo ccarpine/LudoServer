@@ -1,6 +1,8 @@
 package sd.core.register;
 
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -86,8 +88,9 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	public static void main(String[] args) {
 		try {
 			RegisterInterface server = new Register();
-			Naming.rebind("//localhost/RMILudoServer", server);
-		} catch (RemoteException | MalformedURLException e) {
+			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			Naming.rebind("//"+ipAddress+"/RMILudoServer", server);
+		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
 			e.printStackTrace();
 		}
 	}
