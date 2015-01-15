@@ -28,7 +28,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 
-			hall.dispose();
+			//hall.dispose();
 			// for (int i=0; i < gamersIp.size(); i++) {
 			// System.out.println("la partita ha inizio");
 			// }
