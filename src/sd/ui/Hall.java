@@ -42,12 +42,8 @@ public class Hall extends JFrame {
 				}
 				break;
 			}
-		
 		this.setResizable(false);
 		this.setSize(600, 500);
-
-		
-
 		this.setLocationRelativeTo(null);
 		BGPanel panel = new BGPanel("images/startWallpaper.jpg");
 		panel.setLayout(null);
@@ -105,8 +101,7 @@ public class Hall extends JFrame {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(this);
 			/* get the ip */
-			String ipAddress = Inet4Address.getLocalHost()
-					.getHostAddress();
+			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			
 			System.out.println("rmi://" + serverIP + "/RMILudoServer");
 			
@@ -114,7 +109,6 @@ public class Hall extends JFrame {
 			RegisterInterface server = (RegisterInterface) Naming
 					.lookup("rmi://" + serverIP + "/RMILudoServer");
 			
-
 			long timeToStart = server.register(ipAddress);
 			System.out.println("CLIENT ---- time to start:"
 					+ timeToStart);

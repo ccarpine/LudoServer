@@ -4,7 +4,6 @@ import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	
 	private void startGame() {
 		System.out.println("SERVER ---- counter:" + counter);
-		for (int i = 0 ; i < this.gamersIp.size() ; i++){
+		for (int i=0; i<this.gamersIp.size(); i++){
 			System.out.println("SERVER ---- ciclo per informare i player:" + i);
 			try {
 				UserPlayerInterface gamer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");

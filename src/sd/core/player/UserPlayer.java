@@ -13,13 +13,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 		UserPlayerInterface {
 
 	private static final long serialVersionUID = 1L;
-	private Hall hall;
+	private static Hall hall;
 	private MainGame mainGame;
 	private boolean isPlaying;
 
 	public UserPlayer(Hall hall) throws RemoteException {
 		this.isPlaying = false;
-		this.hall = hall;
+		//this.hall = hall;
 	}
 
 	public void start(List<String> gamersIp) {
@@ -29,7 +29,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 
-			this.hall.dispose();
+			hall.dispose();
 			// for (int i=0; i < gamersIp.size(); i++) {
 			// System.out.println("la partita ha inizio");
 			// }
@@ -41,7 +41,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	public static void main(String[] args) {
-		new Hall(args[0]);
+		hall = new Hall(args[0]);
 
 	}
 }
