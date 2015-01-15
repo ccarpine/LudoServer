@@ -25,6 +25,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	}
 	
 	public long register(String clientIp) throws RemoteException {
+		System.out.println("register!");
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
