@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface PlayerInterface extends Remote {
+public interface UserPlayerInterface extends Remote {
 	void start(List<String> gamersIp) throws RemoteException;
 
 }

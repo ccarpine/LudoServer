@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import sd.core.player.PlayerInterface;
+import sd.core.player.UserPlayerInterface;
 
 public class Register  extends UnicastRemoteObject implements RegisterInterface{
 
@@ -75,7 +75,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 		for (int i = 0 ; i < this.gamersIp.size() ; i++){
 			System.out.println("SERVER ---- ciclo per informare i player:" + i);
 			try {
-				PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
+				UserPlayerInterface gamer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
 				//PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://localhost/RMIGameClient");
 				gamer.start(this.gamersIp);
 			} catch (MalformedURLException | RemoteException | NotBoundException e) {
