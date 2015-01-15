@@ -59,24 +59,25 @@ public class Hall extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				startConnection(serverIP);
-				System.out.println("RICHIESTA INVIATA!");
-
-				waitingLabel.setVisible(true);
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						while (true) {
-							try {
-								Thread.sleep(500);
-								waitingLabel.setVisible(!waitingLabel
-										.isVisible());
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+				if (startConnection(serverIP)) {
+					System.out.println("RICHIESTA INVIATA!");
+	
+					waitingLabel.setVisible(true);
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							while (true) {
+								try {
+									Thread.sleep(500);
+									waitingLabel.setVisible(!waitingLabel
+											.isVisible());
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							}
 						}
-					}
-				}).start();
+					}).start();
+				}
 			}
 		});
 		panel.add(goOnMatch);
@@ -100,7 +101,7 @@ public class Hall extends JFrame {
 
 	}
 	
-	private void startConnection(String serverIP) {
+	private boolean startConnection(String serverIP) {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(this);
 			/* get the ip */
@@ -119,9 +120,11 @@ public class Hall extends JFrame {
 					+ timeToStart);
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
+			return true;
 		} catch (NotBoundException | UnknownHostException
 				| RemoteException | MalformedURLException exc) {
 			exc.printStackTrace();
+			return false;
 		}
 	}
 
