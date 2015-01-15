@@ -30,7 +30,7 @@ public class Hall extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Ludo Game");
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
 			if ("Nimbus".equals(info.getName())) {
 				try {
