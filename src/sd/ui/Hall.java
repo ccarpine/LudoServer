@@ -106,9 +106,13 @@ public class Hall extends JFrame {
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost()
 					.getHostAddress();
+			
+			System.out.println("rmi://" + serverIP + "/RMILudoServer");
+			
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
 			RegisterInterface server = (RegisterInterface) Naming
 					.lookup("rmi://" + serverIP + "/RMILudoServer");
+			
 
 			long timeToStart = server.register(ipAddress);
 			System.out.println("CLIENT ---- time to start:"
