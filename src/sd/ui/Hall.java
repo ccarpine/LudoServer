@@ -3,6 +3,12 @@ package sd.ui;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Inet4Address;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,12 +17,16 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import sd.core.player.UserPlayer;
+import sd.core.player.UserPlayerInterface;
+import sd.core.register.RegisterInterface;
+
 public class Hall extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private JLabel waitingLabel;
 
-	public Hall() {
+	public Hall(final String serverIP) {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Ludo Game");
 		this.setVisible(true);
@@ -44,6 +54,23 @@ public class Hall extends JFrame {
         goOnMatch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
+					/* get the ip */
+					String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+					Naming.rebind("//"+ipAddress+"/RMIGameClient", client);
+					RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" + serverIP + "/RMILudoServer");
+					
+					
+					long timeToStart = server.register(ipAddress);
+					System.out.println("CLIENT ---- time to start:" + timeToStart);
+					System.out.println("CLIENT ---- Ip address:" + ipAddress);
+					System.out.println("CLIENT ---- Ip address:" + ipAddress);
+				} catch (NotBoundException | UnknownHostException |RemoteException | MalformedURLException exc) {
+					exc.printStackTrace();
+				}
+				
 				waitingLabel.setVisible(true);
 				new Thread(new Runnable() {
 					@Override
@@ -79,8 +106,5 @@ public class Hall extends JFrame {
 		
 	}
 	
-	public static void main(String[] args) {
-		new Hall();
-	}
 
 }
