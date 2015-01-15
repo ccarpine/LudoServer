@@ -25,16 +25,21 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 	}
 	
 	public long register(String clientIp) throws RemoteException {
-		System.out.println("SERVER ---- client ip:" + clientIp);
-		System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
 		} 
 		/* add the partecipant ip to the list */
 		this.gamersIp.add(clientIp);
+		
+		System.out.println("SERVER ---- client ip:" + clientIp);
+		System.out.println("------------------------");
+		System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
+		System.out.println("------------------------");
+		
 		/* partecipant limit reached, start the game */
 		if (this.gamersIp.size() == 3) {
+			System.out.println("SI PARTE!");
 			/*stop timer */
 			this.endTimer();
 			this.startGame();
@@ -78,7 +83,7 @@ public class Register  extends UnicastRemoteObject implements RegisterInterface{
 				UserPlayerInterface gamer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.gamersIp.get(i)+"/RMIGameClient");
 				//PlayerInterface gamer = (PlayerInterface) Naming.lookup("rmi://localhost/RMIGameClient");
 				gamer.start(this.gamersIp);
-			} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			} catch (/*MalformedURLException | RemoteException | NotBoundException | */Exception e) {
 				e.printStackTrace();
 			}
 			

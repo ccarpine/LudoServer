@@ -13,16 +13,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 		UserPlayerInterface {
 
 	private static final long serialVersionUID = 1L;
-	private static Hall hall;
+	private Hall hall;
 	private MainGame mainGame;
 	private boolean isPlaying;
 
-	public UserPlayer() throws RemoteException {
+	public UserPlayer(Hall hall) throws RemoteException {
 		this.isPlaying = false;
+		this.hall = hall;
 	}
 
 	public void start(List<String> gamersIp) {
-
+		
+		System.out.println("UserPlayer starts " + isPlaying);
+	
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 
@@ -38,7 +41,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	public static void main(String[] args) {
-		hall = new Hall("127.0.0.1");
+		new Hall(args[0]);
 
 	}
 }
