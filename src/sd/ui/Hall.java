@@ -99,7 +99,7 @@ public class Hall extends JFrame {
 	
 	private boolean startConnection(String serverIP) {
 		try {
-			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(this);
+			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			

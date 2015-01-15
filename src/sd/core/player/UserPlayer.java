@@ -17,9 +17,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private MainGame mainGame;
 	private boolean isPlaying;
 
-	public UserPlayer(Hall hall) throws RemoteException {
+	public UserPlayer() throws RemoteException {
 		this.isPlaying = false;
-		//this.hall = hall;
 	}
 
 	public void start(List<String> gamersIp) {
@@ -42,6 +41,5 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	public static void main(String[] args) {
 		hall = new Hall(args[0]);
-
 	}
 }
