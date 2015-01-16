@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-import sd.core.MainGame;
+import sd.core.CoreGame;
 import sd.ui.Hall;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
@@ -14,7 +14,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private static Hall hall;
-	private MainGame mainGame;
+	private CoreGame mainGame;
 	private boolean isPlaying;
 
 	public UserPlayer() throws RemoteException {
@@ -34,7 +34,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// System.out.println("la partita ha inizio");
 			// }
 
-			mainGame = new MainGame(gamersIp);
+			mainGame = new CoreGame(gamersIp);
 
 		}
 

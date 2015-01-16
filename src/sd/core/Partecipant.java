@@ -5,15 +5,16 @@ import sd.util.Constants;
 public class Partecipant {
 
 	private int pawnsInBench;
-	private String myIp;
-	private String myColor;
-	
+	private String ip;
+	private String color;
+	private int colorPosition;
 
-	public Partecipant(String ip, String color) {
+	public Partecipant(String ip, String color, int colorPosition) {
 
-		this.myIp = ip;
-		this.myColor = color;
+		this.ip = ip;
+		this.color = color;
 		this.pawnsInBench = Constants.BENCH_DIMENSION;
+		this.colorPosition = colorPosition;
 
 	}
 
@@ -31,13 +32,16 @@ public class Partecipant {
 			this.pawnsInBench--;
 	}
 
-	public String getMyIp() {
-		return myIp;
+	public String getIp() {
+		return ip;
 	}
 
-	public String getMyColor() {
-		return myColor;
+	public String getColor() {
+		return color;
 	}
 
+	public int getColorPosition() {
+		return colorPosition;
+	}	
 
 }
