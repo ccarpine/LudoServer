@@ -22,7 +22,7 @@ public class Cell {
 	public List<String> getPawns() {
 		return this.pawns;
 	}
-	
+
 	public String getColor() {
 		return color;
 	}
@@ -37,76 +37,61 @@ public class Cell {
 
 	/* insert a pawn into a cell if is possible */
 	public int addPawn(String colorPawn) {
-		
+
 		int result = this.tryAddPawn(colorPawn);
-		
+
 		switch (result) {
-		
-			case Constants.SUCCESS:
-				this.pawns.add(colorPawn);
-				break;
-				
-			case Constants.EATEN:
-				this.pawns.set(0, colorPawn);
-				break;
-				
-			default:
-				break;
-				
+
+		case Constants.SUCCESS:
+			this.pawns.add(colorPawn);
+			break;
+
+		case Constants.EATEN:
+			this.pawns.set(0, colorPawn);
+			break;
+
+		default:
+			break;
+
 		}
-		
+
 		return result;
-		
+
 	}
-	
+
 	// rules to check if it is possible to add pawn
 	public int tryAddPawn(String colorPawn) {
-		
+
 		// rules if it is a goal of another
-		if (!this.color.equals(colorPawn) && !this.color.equals(Constants.BLANK)) {
-			
+		if (!this.color.equals(colorPawn) && !this.color.equals(Constants.BLANK))
 			return Constants.FAIL;
-			
-		}
-		
+
 		// rules if it is your goal
 		else if (this.color.equals(colorPawn)) {
-			
-			if (this.pawns.size() == 0) {
-				
+
+			if (this.pawns.size() == 0)
 				return Constants.SUCCESS;
-				
-			} else {
-				
+			else
 				return Constants.FAIL;
-				
-			}
-			
+
 		}
 
 		// rules if it is a black cell
-		else if (this.pawns.size() == 0) {
-			
+		else if (this.pawns.size() == 0)
 			return Constants.SUCCESS;
-		}
 
 		// rules if it is a busy cell occupied by myself
-		else if (this.pawns.size() == 1 && this.pawns.get(0).equals(colorPawn)) {
-				
+		else if (this.pawns.size() == 1 && this.pawns.get(0).equals(colorPawn))
 			return Constants.SUCCESS;
-		}
-
+		
 		// rules if there is a wall
 		else if (this.pawns.size() == 2)
-			
 			return Constants.WALL;
 
 		// rules if it is a busy cell occupied by another
-		else {
-			
+		else
 			return Constants.EATEN;
-		
-		}
+
 	}
 
 	/* rules if is possible to walk ahead */
@@ -118,7 +103,7 @@ public class Cell {
 
 		else if (this.pawns.get(0).equals(colorPawn))
 			return Constants.SUCCESS;
-		
+
 		// rules if a wall is present not belonging to myself
 		else
 			return Constants.WALL;
