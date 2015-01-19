@@ -27,7 +27,8 @@ public class GameBoard {
 		return this.cells[row][col];
 	}
 
-	// returns the list of possible moves according to the value of the die for a specific partecipant
+	// returns the list of possible moves according to the value of the die for
+	// a specific partecipant
 	public List<Move> suggestMoves(Partecipant partecipant, int die) {
 		List<Move> moves = new ArrayList<Move>();
 		List<Cell> cellsOccupiedByPartecipant = this
@@ -55,7 +56,8 @@ public class GameBoard {
 
 		}
 
-		// rules for any other value of the die: if 6 the partecipant can move on of 12 or 6 cells
+		// rules for any other value of the die: if 6 the partecipant can move
+		// on of 12 or 6 cells
 		if (cellsOccupiedByPartecipant.size() != 0) {
 
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
@@ -160,16 +162,18 @@ public class GameBoard {
 		}
 
 	}
-	
+
 	// check if the partecipant wins
 	public boolean isVictory(Partecipant partecipant) {
-		
-		for (int i=Constants.COLUMNS-Constants.BENCH_DIMENSION; i<Constants.COLUMNS; i++) {
-			if (this.cells[(partecipant.getColorPosition()+1) % Constants.ROWS][i].getPawns().size() == 0)
+
+		for (int i = Constants.COLUMNS - Constants.BENCH_DIMENSION; i < Constants.COLUMNS; i++) {
+			if (this.cells[(partecipant.getColorPosition() + 1)
+					% Constants.ROWS][i].getPawns().size() == 0)
 				return false;
 		}
+
 		return true;
-		
+
 	}
 
 }

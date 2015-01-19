@@ -1,11 +1,18 @@
 package sd.core.player;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import sd.core.CoreGame;
+import sd.core.GameBoard;
+import sd.core.Move;
+import sd.core.Partecipant;
 import sd.ui.Hall;
+import sd.util.Constants;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
  * che avviene tutto nella classe MainGame */
@@ -14,7 +21,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private static Hall hall;
-	private CoreGame mainGame;
+	private CoreGame coreGame;
 	private boolean isPlaying;
 
 	public UserPlayer() throws RemoteException {
@@ -22,19 +29,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	public void start(List<String> gamersIp) {
-		
+
 		System.out.println("UserPlayer starts " + isPlaying);
-	
+
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			hall.setVisible(false);
 
-			//hall.dispose();
+			// hall.dispose();
 			// for (int i=0; i < gamersIp.size(); i++) {
 			// System.out.println("la partita ha inizio");
 			// }
 
-			mainGame = new CoreGame(gamersIp);
+			coreGame = new CoreGame(gamersIp);
+			/* init GUI here */
 
 		}
 
@@ -43,4 +51,77 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public static void main(String[] args) {
 		hall = new Hall(args[0]);
 	}
+
+	@Override
+	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard)
+			throws RemoteException {
+
+		int result = this.coreGame.updateStatus(partecipants, gameBoard);
+		/* update GUI here */
+
+		switch (result) {
+		case Constants.UPDATE_NEXT:
+			try {
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+						.lookup("rmi://"
+								+ this.coreGame.getNextPartecipant(
+										this.coreGame.getMyPartecipant()
+												.getIp()).getIp()
+								+ "/RMIGameClient");
+				nextPlayer.updateStatus(partecipants, gameBoard);
+			} catch (MalformedURLException | NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+
+		case Constants.PLAY_NEXT:
+			try {
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+						.lookup("rmi://"
+								+ this.coreGame.getNextPartecipant(
+										this.coreGame.getMyPartecipant()
+												.getIp()).getIp()
+								+ "/RMIGameClient");
+				nextPlayer.initTurn();
+			} catch (MalformedURLException | NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+
+		default:
+			// result could be END_GAME
+			break;
+
+		}
+
+	}
+
+	@Override
+	public void initTurn() throws RemoteException {
+		List<Move> possibleMoves = this.coreGame.initTurn();
+		/* update GUI here showing possible moves passing the list above */
+
+	}
+
+	public void applyMove(Move chosenMove) {
+
+		this.coreGame.handleTurn(chosenMove);
+		/* update GUI here */
+
+		try {
+			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+					.lookup("rmi://"
+							+ this.coreGame.getNextPartecipant(
+									this.coreGame.getMyPartecipant().getIp())
+									.getIp() + "/RMIGameClient");
+			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
+		} catch (MalformedURLException | NotBoundException | RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

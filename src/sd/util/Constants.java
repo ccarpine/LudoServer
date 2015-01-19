@@ -11,5 +11,8 @@ public class Constants {
 	public static final int COLUMNS = 12;
 	public static final String[] COLOR = {"RED", "GREEN", "VIOLET", "YELLOW", "BLACK", "BLUE"};
 	public static final String BLANK = "WHITE";
+	public static final int UPDATE_NEXT = 0;
+ 	public static final int PLAY_NEXT = 1;
+	public static final int END_GAME = 2;
 
 }

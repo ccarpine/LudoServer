@@ -1,5 +1,8 @@
 package sd.core;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+
 import sd.util.Constants;
 
 public class Partecipant {
@@ -8,6 +11,7 @@ public class Partecipant {
 	private String ip;
 	private String color;
 	private int colorPosition;
+	
 
 	public Partecipant(String ip, String color, int colorPosition) {
 
@@ -42,6 +46,14 @@ public class Partecipant {
 
 	public int getColorPosition() {
 		return colorPosition;
-	}	
+	}
+	
+	public boolean isMine() {
+		try {
+			return this.ip.equals(Inet4Address.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			return false;
+		}
+	}
 
 }
