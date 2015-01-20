@@ -71,17 +71,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	@Override
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard) throws RemoteException {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-		if (gameBoard!=null){
-			System.out.println("gameboard" + gameBoard);
-		}
-		if (partecipants!=null){
-			System.out.println("Update size partecipant:" + partecipants.size());
-		}
-		if (this.coreGame!=null){
-			System.out.println("il core e' vuoto");
-		}
-		System.out.flush();
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
 		String message = null;
@@ -138,6 +134,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	@Override
 	public void initTurn() throws RemoteException {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
 		/* init GUI here */
