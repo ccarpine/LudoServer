@@ -1,24 +1,15 @@
 package sd.ui;
 
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Inet4Address;
 import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import sd.core.player.UserPlayer;
-import sd.core.player.UserPlayerInterface;
 import sd.core.register.RegisterInterface;
 
 public class IntroPanel extends BGPanel {
@@ -26,7 +17,7 @@ public class IntroPanel extends BGPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel waitingLabel;
 
-	public IntroPanel(String serverIP) {
+	public IntroPanel(final String serverIP) {
 		super("images/startWallpaper.jpg");
 		this.setLayout(null);
 		JButton goOnMatch = new javax.swing.JButton();
