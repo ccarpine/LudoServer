@@ -111,13 +111,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard){
-			
 			UserPlayerInterface nextPlayer;
 			try {
 				nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
 				nextPlayer.updateStatus(partecipants, gameBoard);
 			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -127,11 +125,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-			System.out.println("2 INIT TURN RECEIVED -->" );
+		System.out.println("2 INIT TURN RECEIVED -->" );
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
 		/* init GUI here */
@@ -145,13 +142,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 		this.coreGame.handleTurn(chosenMove);
 		/* update GUI here */
-
+		System.out.println("MAKE MOVE");
 		try {
 			System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(
 					this.coreGame.getMyPartecipant()
 					.getIp()).getIp() );
-			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
-					.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
+			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
 			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
 		} catch (MalformedURLException | NotBoundException | RemoteException e) {
 			e.printStackTrace();
