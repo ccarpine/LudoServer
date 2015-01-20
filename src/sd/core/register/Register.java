@@ -74,7 +74,6 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			}
 
 		}
-		System.exit(0);
 	}
 
 	public static void main(String[] args) {
