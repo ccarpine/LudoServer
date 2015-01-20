@@ -1,8 +1,12 @@
 package sd.core;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import sd.util.Constants;
 
@@ -120,6 +124,15 @@ public class CoreGame {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentpartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
+		/* init GUI here */
+		String message = null;
+		try {
+			message = Inet4Address.getLocalHost().getHostAddress() + ": Tirato il dado: "+ resultDie;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showConfirmDialog(null, message);
+		/* END update GUI here */
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 
 	}
@@ -146,4 +159,8 @@ public class CoreGame {
 		return this.gameBoard;
 	}
 
+	
+	public boolean amItheCurrentPartecipant( ){
+		return this.ipCurrentpartecipant.equals(this.getMyPartecipant().getIp());
+	}
 }

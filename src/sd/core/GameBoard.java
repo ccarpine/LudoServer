@@ -141,6 +141,9 @@ public class GameBoard {
 	// applies the choosen move by the partecipant and return the color of eaten
 	// pawn if present
 	public String makeMove(Move move, Partecipant partecipant) {
+		if (move == null) {
+			return null;
+		}
 		Cell startingCell = move.getStart();
 		Cell destinationCell = move.getDestination();
 

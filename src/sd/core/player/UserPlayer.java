@@ -9,11 +9,12 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import sd.core.CoreGame;
 import sd.core.GameBoard;
 import sd.core.Move;
 import sd.core.Partecipant;
-import sd.core.register.RegisterInterface;
 import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
 import sd.util.Constants;
@@ -42,17 +43,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 		if (!this.isPlaying) {
 			this.isPlaying = true;
-			//shall.setVisible(false);
-
-			// hall.dispose();
-			// for (int i=0; i < gamersIp.size(); i++) {
-			// System.out.println("la partita ha inizio");
-			// }
-
+			
 			coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
+			String message = null;
+			try {
+				message = Inet4Address.getLocalHost().getHostAddress() + ": START partita";
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			JOptionPane.showConfirmDialog(null, message);
+			/* END update GUI here */
 			
-
+			/* check if I'm the first player */ 
+			if (coreGame.amItheCurrentPartecipant()) {
+				try {
+					/* start my turn */
+					this.initTurn();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 	}
@@ -63,7 +74,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
-
+		String message = null;
+		try {
+			message = Inet4Address.getLocalHost().getHostAddress() + ": UPDATE status";
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showConfirmDialog(null, message);
+		/* END update GUI here */
+		
+		
+		
+		
+		System.out.println("Update status");
 		switch (result) {
 		case Constants.UPDATE_NEXT:
 			try {
@@ -107,6 +130,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void initTurn() throws RemoteException {
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
+		/* init GUI here */
+		String message = null;
+		try {
+			message = Inet4Address.getLocalHost().getHostAddress() + ": INIT TURN ";
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showConfirmDialog(null, message);
+		/* END update GUI here */
+		/* TODO togliere questa apply move, va chiamata da interfaccia */
+		this.applyMove(null);
 
 	}
 
