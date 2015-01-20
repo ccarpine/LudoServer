@@ -24,7 +24,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		UserPlayerInterface {
 
 	private static final long serialVersionUID = 1L;
-	private static MainFrame mainFrame;
+	private MainFrame mainFrame;
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
