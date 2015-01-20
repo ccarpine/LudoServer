@@ -18,11 +18,13 @@ public class CoreGame implements Serializable{
 	private GameBoard gameBoard;
 	private String ipCurrentPartecipant;
 	private String winner;
+	private boolean isDoubleTurn;
 
 	public CoreGame(List<String> ipGamers) {
 
 		this.winner = null;
 		this.partecipants = new ArrayList<Partecipant>();
+		this.isDoubleTurn = false;
 
 		// generate the partecipants giving them a color according to their
 		// registration order
@@ -41,7 +43,7 @@ public class CoreGame implements Serializable{
 	public List<Partecipant> getPartecipants() {
 		return this.partecipants;
 	}
-
+	
 	// returns the die launch result
 	private int getDie() {
 		return 1 + new Random().nextInt(6);
@@ -55,7 +57,8 @@ public class CoreGame implements Serializable{
 		if (myIP.equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
 				return Constants.END_GAME;
-			}
+			} else if(this.isDoubleTurn)
+				return Constants.PLAY_AGAIN;
 			else
 				return Constants.PLAY_NEXT;
 		}
@@ -114,6 +117,12 @@ public class CoreGame implements Serializable{
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
+		System.out.println("result die: "+ resultDie);
+		if (resultDie == 6 && !this.isDoubleTurn) {
+			this.isDoubleTurn = true;
+		} else {
+			this.isDoubleTurn = false;
+		}
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 	}
 

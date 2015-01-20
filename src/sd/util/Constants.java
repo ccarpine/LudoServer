@@ -13,6 +13,8 @@ public class Constants {
 	public static final String BLANK = "WHITE";
 	public static final int UPDATE_NEXT = 0;
  	public static final int PLAY_NEXT = 1;
-	public static final int END_GAME = 2;
+	public static final int PLAY_AGAIN = 2;
+ 	public static final int END_GAME = 3;
+	
 
 }

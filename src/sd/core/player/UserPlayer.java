@@ -71,7 +71,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	@Override
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -92,6 +92,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.playNext();
 			break;
 
+		case Constants.PLAY_AGAIN:
+			this.initTurn();
+			break;
+			
 		default:
 			// result could be END_GAME
 			break;
