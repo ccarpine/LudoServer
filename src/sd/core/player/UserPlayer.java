@@ -102,18 +102,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	private void playNext() {
-			UserPlayerInterface nextPlayer;
 			try {
-				nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+				nextPlayer.initTurn();
 			} catch (RemoteException |MalformedURLException |NotBoundException e) {
 				e.printStackTrace();
 			} 
 	}
 	
 	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard){
-			UserPlayerInterface nextPlayer;
 			try {
-				nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
 				nextPlayer.updateStatus(partecipants, gameBoard);
 			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
 				e1.printStackTrace();
@@ -139,20 +138,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	public void applyMove(Move chosenMove) {
-
 		this.coreGame.handleTurn(chosenMove);
 		/* update GUI here */
 		System.out.println("MAKE MOVE");
-		try {
-			System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(
-					this.coreGame.getMyPartecipant()
-					.getIp()).getIp() );
-			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
-			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
-		} catch (MalformedURLException | NotBoundException | RemoteException e) {
-			e.printStackTrace();
-		}
-
+		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
+		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
 	}
 	
 	public static void main(String[] args) {
