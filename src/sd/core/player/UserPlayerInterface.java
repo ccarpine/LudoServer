@@ -13,7 +13,7 @@ public interface UserPlayerInterface extends Remote {
 	void start(List<String> gamersIp) throws RemoteException;
 	
 	//it updates the game status
-	void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard) throws RemoteException;
+	void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException;
 	
 	//allows partcipant to start a turn
 	void initTurn() throws RemoteException;

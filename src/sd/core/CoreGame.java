@@ -46,9 +46,14 @@ public class CoreGame implements Serializable{
 	private int getDie() {
 		return 1 + new Random().nextInt(6);
 	}
-
-	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard) {
+	
+	public String getIpCurrentPartecipant(){
+		return this.ipCurrentPartecipant;
+	}
+	
+	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {
 		
+		this.ipCurrentPartecipant = ipCurrentPartecipant;
 		// check if my ip is equals to the last that has just played
 		String myIP = this.getMyPartecipant().getIp();
 		if (myIP.equals(this.ipCurrentPartecipant)) {
