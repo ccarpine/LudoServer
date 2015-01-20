@@ -9,7 +9,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 
 import sd.core.CoreGame;
 import sd.core.GameBoard;
@@ -166,6 +165,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here */
 
 		try {
+			System.out.println("call UpdateStatus di NEXT PLAYER"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
 			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 					.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
 			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
