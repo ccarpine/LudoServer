@@ -3,13 +3,16 @@ package sd.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
 import sd.core.register.RegisterInterface;
 
 public class IntroPanel extends BGPanel {
@@ -70,11 +73,11 @@ public class IntroPanel extends BGPanel {
 	private boolean startConnection(String serverIP) {
 		try {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
-			long timeToStart = server.register(serverIP);
+			long timeToStart = server.register(Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("rmi://" + serverIP + "/RMILudoServer");
 			System.out.println("Time to starti" + timeToStart);
 			return true;
-		} catch ( RemoteException | MalformedURLException | NotBoundException e) {
+		} catch ( RemoteException | MalformedURLException | NotBoundException | UnknownHostException e) {
 			e.printStackTrace();
 			return false;
 		}
