@@ -47,10 +47,6 @@ public class CoreGame implements Serializable{
 		return 1 + new Random().nextInt(6);
 	}
 	
-	public String getIpCurrentPartecipant(){
-		return this.ipCurrentPartecipant;
-	}
-	
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {
 		
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
@@ -116,6 +112,7 @@ public class CoreGame implements Serializable{
 	/* prepares the turn by setting the current player and returning his list of possible moves */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
+		//this.ipCurrentPartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 	}

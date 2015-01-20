@@ -141,7 +141,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here */
 		System.out.println("MAKE MOVE");
 		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
-		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getIpCurrentPartecipant());
+		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
 	}
 	
 	public static void main(String[] args) {
