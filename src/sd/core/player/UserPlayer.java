@@ -89,10 +89,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 		System.out.println(message);
 		/* END update GUI here */
 		
-		System.out.println("Update status RESULT: "+ result);
+		//System.out.println("Update status RESULT: "+ result);
 		switch (result) {
 		case Constants.UPDATE_NEXT:
 			try {
+				System.out.println("UPDATE NEXT di:"+ this.coreGame.getNextPartecipant(
+						this.coreGame.getMyPartecipant()
+								.getIp()).getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
@@ -107,7 +110,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 			break;
 
 		case Constants.PLAY_NEXT:
+			
 			try {
+				System.out.println("PLAY NEXT di:"+ this.coreGame.getNextPartecipant(
+						this.coreGame.getMyPartecipant()
+								.getIp()).getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
