@@ -112,7 +112,7 @@ public class CoreGame implements Serializable{
 	/* prepares the turn by setting the current player and returning his list of possible moves */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
-		//this.ipCurrentPartecipant = tempPartecipant.getIp();
+		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 	}

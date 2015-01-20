@@ -102,7 +102,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private void playNext() {
 			try {
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+				String nextPartecipantId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextPartecipantId + "/RMIGameClient");
 				nextPlayer.initTurn();
 			} catch (RemoteException |MalformedURLException |NotBoundException e) {
 				e.printStackTrace();
@@ -111,8 +112,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	
 	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant){
 			try {
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
-				nextPlayer.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
+				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
+				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+				nextInTurn.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
 				e1.printStackTrace();
 			}
@@ -141,7 +143,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here */
 		System.out.println("MAKE MOVE");
 		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
-		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
+		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
 	}
 	
 	public static void main(String[] args) {
