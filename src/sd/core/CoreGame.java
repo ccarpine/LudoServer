@@ -99,8 +99,7 @@ public class CoreGame implements Serializable{
 		for (int i = 0; i < this.partecipants.size(); i++) {
 
 			if (ip.equals(this.partecipants.get(i).getIp())) {
-				partecipant = this.partecipants.get(i
-						% this.partecipants.size());
+				partecipant = this.partecipants.get( (i +1) % this.partecipants.size());
 				break;
 			}
 
