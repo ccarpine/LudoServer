@@ -45,13 +45,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 			
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
-			String message = null;
+			
 			try {
-				message = Inet4Address.getLocalHost().getHostAddress() + ": START partita  " + System.currentTimeMillis();
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
+				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress() );
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			System.out.println(message);
 			/* END update GUI here */
 			
 				/* check if I'm the first player */ 
@@ -79,22 +79,25 @@ public class UserPlayer extends UnicastRemoteObject implements
 		
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
-		String message = null;
 		try {
-			message = Inet4Address.getLocalHost().getHostAddress() + ": UPDATE status" + System.currentTimeMillis();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			System.out.println("3 RECEIVED -->" +Inet4Address.getLocalHost().getHostAddress() );
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		System.out.println(message);
 		/* END update GUI here */
 		
 		//System.out.println("Update status RESULT: "+ result);
 		switch (result) {
 		case Constants.UPDATE_NEXT:
 			try {
-				System.out.println("UPDATE NEXT di:"+ this.coreGame.getNextPartecipant(
-						this.coreGame.getMyPartecipant()
-								.getIp()).getIp());
+				try {
+					System.out.println("4 SEND -->" +Inet4Address.getLocalHost().getHostAddress() );
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
@@ -111,9 +114,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 		case Constants.PLAY_NEXT:
 			
 			try {
-				System.out.println("PLAY NEXT di:"+ this.coreGame.getNextPartecipant(
-						this.coreGame.getMyPartecipant()
-								.getIp()).getIp());
+				try {
+					System.out.println("5 SEND -->" +Inet4Address.getLocalHost().getHostAddress() );
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
@@ -143,16 +149,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		try {
+			System.out.println("2 RECEIVED -->" +Inet4Address.getLocalHost().getHostAddress() );
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
 		/* init GUI here */
-		String message = null;
-		try {
-			message = Inet4Address.getLocalHost().getHostAddress() + ": INIT TURN " + System.currentTimeMillis();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		System.out.println(message);
 		/* END update GUI here */
 		/* TODO togliere questa apply move, va chiamata da interfaccia */
 		this.applyMove(null);

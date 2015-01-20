@@ -16,7 +16,7 @@ public class CoreGame implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<Partecipant> partecipants;
 	private GameBoard gameBoard;
-	private String ipCurrentpartecipant;
+	private String ipCurrentPartecipant;
 	private String winner;
 
 	public CoreGame(List<String> ipGamers) {
@@ -33,7 +33,7 @@ public class CoreGame implements Serializable{
 		}
 
 		// sets the partecipant that begins the game, the first of the list
-		this.ipCurrentpartecipant = ipGamers.get(0);
+		this.ipCurrentPartecipant = ipGamers.get(0);
 		this.gameBoard = new GameBoard();
 
 	}
@@ -55,25 +55,16 @@ public class CoreGame implements Serializable{
 		String myIP = this.getMyPartecipant().getIp();
 
 		// check if my ip is equals to the last that has just played
-		if (myIP.equals(this.ipCurrentpartecipant)) {
-
+		if (myIP.equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
-
 				return Constants.END_GAME;
-
 			}
-
 			else
 				return Constants.PLAY_NEXT;
-
 		}
-
 		else {
-
 			return Constants.UPDATE_NEXT;
-
 		}
-
 	}
 
 	public Partecipant getMyPartecipant() {
@@ -122,13 +113,9 @@ public class CoreGame implements Serializable{
 	/* prepares the turn by setting the current player and returning his list of possible moves */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
-		this.ipCurrentpartecipant = tempPartecipant.getIp();
+		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
-		/* init GUI here */
-		
-		/* END update GUI here */
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
-
 	}
 
 	public void handleTurn(Move chosenMove) {
@@ -152,6 +139,6 @@ public class CoreGame implements Serializable{
 
 	
 	public boolean amItheCurrentPartecipant( ){
-		return this.ipCurrentpartecipant.equals(this.getMyPartecipant().getIp());
+		return this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp());
 	}
 }

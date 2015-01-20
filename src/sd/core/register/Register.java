@@ -54,10 +54,10 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	private void startGame() {
-		System.out.println("SERVER ---- counter:" + counter);
+		//System.out.println("SERVER ---- counter:" + counter);
 		List<UserPlayerInterface> UsersPlayer = new ArrayList<UserPlayerInterface>();
 		for (int i = 0; i < this.gamersIp.size(); i++) {
-			System.out.println("SERVER ---- crea lookup:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
+			//	System.out.println("SERVER ---- crea lookup:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
 			try {
 				UsersPlayer.add((UserPlayerInterface) Naming.lookup("rmi://" + this.gamersIp.get(i) + "/RMIGameClient"));
 			} catch (/* MalformedURLException | RemoteException | NotBoundException | */ Exception e) {
@@ -66,7 +66,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 		}
 		for (int i = this.gamersIp.size()-1; i >= 0; i--) {
-			System.out.println("SERVER ---- chiama la start:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
+			//System.out.println("SERVER ---- chiama la start:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
 			try {
 				UsersPlayer.get(i).start(this.gamersIp);
 			} catch (/* MalformedURLException | RemoteException | NotBoundException | */ Exception e) {
@@ -88,7 +88,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	private synchronized long registerSynch(String clientIp) {
-		System.out.println("register!");
+		//System.out.println("register!");
 		if (this.gamersIp.size() == 0) {
 			/* start timer */
 			this.startTimer();
