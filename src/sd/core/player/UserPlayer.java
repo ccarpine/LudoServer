@@ -79,50 +79,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 		
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
-		
-			System.out.println("3 UPDATE RECEIVED -->");
+		System.out.println("3 UPDATE RECEIVED -->");
 		/* END update GUI here */
 		
-		//System.out.println("Update status RESULT: "+ result);
 		switch (result) {
 		case Constants.UPDATE_NEXT:
-			try {
-				
-					System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(
-							this.coreGame.getMyPartecipant()
-							.getIp()).getIp() );
-				
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
-						.lookup("rmi://"
-								+ this.coreGame.getNextPartecipant(
-										this.coreGame.getMyPartecipant()
-												.getIp()).getIp()
-								+ "/RMIGameClient");
-				nextPlayer.updateStatus(partecipants, gameBoard);
-			} catch (MalformedURLException | NotBoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
+			this.updateNext(partecipants, gameBoard);
 			break;
 
 		case Constants.PLAY_NEXT:
-			
-			try {
-				
-					System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(
-							this.coreGame.getMyPartecipant()
-							.getIp()).getIp() + "/RMIGameClient" );
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
-						.lookup("rmi://"
-								+ this.coreGame.getNextPartecipant(
-										this.coreGame.getMyPartecipant()
-												.getIp()).getIp()
-								+ "/RMIGameClient");
-				nextPlayer.initTurn();
-			} catch (MalformedURLException | NotBoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
+			this.playNext();
 			break;
 
 		default:
@@ -133,6 +101,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	}
 
+	private void playNext() {
+			UserPlayerInterface nextPlayer;
+			try {
+				nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+			} catch (RemoteException |MalformedURLException |NotBoundException e) {
+				e.printStackTrace();
+			} 
+	}
+	
+	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard){
+			
+			UserPlayerInterface nextPlayer;
+			try {
+				nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp()+ "/RMIGameClient");
+				nextPlayer.updateStatus(partecipants, gameBoard);
+			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+	}
 	@Override
 	public void initTurn() throws RemoteException {
 		try {
