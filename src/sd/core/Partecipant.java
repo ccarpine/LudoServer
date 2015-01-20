@@ -1,12 +1,14 @@
 package sd.core;
 
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 import sd.util.Constants;
 
-public class Partecipant {
+public class Partecipant implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int pawnsInBench;
 	private String ip;
 	private String color;

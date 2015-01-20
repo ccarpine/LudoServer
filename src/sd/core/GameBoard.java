@@ -1,12 +1,14 @@
 package sd.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import sd.util.Constants;
 
-public class GameBoard {
+public class GameBoard implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Cell[][] cells;
 
 	public GameBoard() {

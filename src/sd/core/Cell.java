@@ -1,12 +1,14 @@
 package sd.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import sd.util.Constants;
 
-public class Cell {
+public class Cell implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private List<String> pawns;
 	private String color;
 	private int row;

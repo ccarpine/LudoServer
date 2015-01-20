@@ -1,5 +1,6 @@
 package sd.core;
 
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -10,8 +11,9 @@ import javax.swing.JOptionPane;
 
 import sd.util.Constants;
 
-public class CoreGame {
+public class CoreGame implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private List<Partecipant> partecipants;
 	private GameBoard gameBoard;
 	private String ipCurrentpartecipant;
