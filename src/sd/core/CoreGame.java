@@ -125,13 +125,7 @@ public class CoreGame implements Serializable{
 		this.ipCurrentpartecipant = tempPartecipant.getIp();
 		int resultDie = this.getDie();
 		/* init GUI here */
-		String message = null;
-		try {
-			message = Inet4Address.getLocalHost().getHostAddress() + ": Tirato il dado: "+ resultDie + " " + System.currentTimeMillis();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		System.out.println(message);
+		
 		/* END update GUI here */
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 

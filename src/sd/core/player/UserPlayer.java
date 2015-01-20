@@ -89,10 +89,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		System.out.println(message);
 		/* END update GUI here */
 		
-		
-		
-		
-		System.out.println("Update status");
+		System.out.println("Update status RESULT: "+ result);
 		switch (result) {
 		case Constants.UPDATE_NEXT:
 			try {
@@ -163,14 +160,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 		try {
 			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
-					.lookup("rmi://"
-							+ this.coreGame.getNextPartecipant(
-									this.coreGame.getMyPartecipant().getIp())
-									.getIp() + "/RMIGameClient");
-			
+					.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
 			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
 		} catch (MalformedURLException | NotBoundException | RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
