@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import sd.core.Partecipant;
 import sd.core.player.UserPlayerInterface;
 
 public class Register extends UnicastRemoteObject implements RegisterInterface {
@@ -54,17 +55,22 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	private void startGame() {
 		System.out.println("SERVER ---- counter:" + counter);
+		List<UserPlayerInterface> UsersPlayer = new ArrayList<UserPlayerInterface>();
 		for (int i = 0; i < this.gamersIp.size(); i++) {
 			System.out.println("SERVER ---- ciclo per informare i player: pos:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
 			try {
-				UserPlayerInterface gamer = (UserPlayerInterface) Naming.lookup("rmi://" + this.gamersIp.get(i) + "/RMIGameClient");
-				// PlayerInterface gamer = (PlayerInterface)
-				// Naming.lookup("rmi://localhost/RMIGameClient");
-				gamer.start(this.gamersIp);
-			} catch (/*
-					 * MalformedURLException | RemoteException |
-					 * NotBoundException |
-					 */Exception e) {
+				UsersPlayer.add((UserPlayerInterface) Naming.lookup("rmi://" + this.gamersIp.get(i) + "/RMIGameClient"));
+				//gamer.start(this.gamersIp);
+			} catch (/* MalformedURLException | RemoteException | NotBoundException | */ Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		for (int i = 0; i < this.gamersIp.size(); i++) {
+			System.out.println("SERVER ---- ciclo per informare i player: pos:" + i +" indirizzo IP:"+ this.gamersIp.get(i));
+			try {
+				UsersPlayer.get(i).start(this.gamersIp);
+			} catch (/* MalformedURLException | RemoteException | NotBoundException | */ Exception e) {
 				e.printStackTrace();
 			}
 
