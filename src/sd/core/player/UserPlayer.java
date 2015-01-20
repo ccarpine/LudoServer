@@ -69,12 +69,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard)
-			throws RemoteException {
+	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard) throws RemoteException {
+		if (gameBoard==null){
+			System.out.println("gameboard" + gameBoard);
+		}
+		if (partecipants.size()==0){
+			System.out.println("Update size partecipant:" + partecipants.size());
+		}
 		
-		System.out.println("Update size partecipant:" + partecipants.size());
-		System.out.println("gameboard" + gameBoard);
-
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
 		String message = null;
