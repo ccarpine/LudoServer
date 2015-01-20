@@ -75,7 +75,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	public static void main(String[] args) {
 		try {
-			RegisterInterface server = new Register();
+			RegisterInterface server = (RegisterInterface) new Register();
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
 		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
