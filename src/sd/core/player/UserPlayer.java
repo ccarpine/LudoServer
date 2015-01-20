@@ -52,16 +52,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
-			//JOptionPane.showConfirmDialog(null, message);
+			int result = JOptionPane.showConfirmDialog(null, message);
+			if (result == 1) {
+				
+			} else {
 			/* END update GUI here */
 			
-			/* check if I'm the first player */ 
-			if (coreGame.amItheCurrentPartecipant()) {
-				try {
-					/* start my turn */
-					this.initTurn();
-				} catch (RemoteException e) {
-					e.printStackTrace();
+				/* check if I'm the first player */ 
+				if (coreGame.amItheCurrentPartecipant()) {
+					try {
+						/* start my turn */
+						this.initTurn();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
