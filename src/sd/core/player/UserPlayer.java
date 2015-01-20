@@ -79,25 +79,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 		
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
-		try {
-			System.out.println("3 RECEIVED -->" +Inet4Address.getLocalHost().getHostAddress() );
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
+			System.out.println("3 UPDATE RECEIVED -->");
 		/* END update GUI here */
 		
 		//System.out.println("Update status RESULT: "+ result);
 		switch (result) {
 		case Constants.UPDATE_NEXT:
 			try {
-				try {
-					System.out.println("4 SEND -->" +Inet4Address.getLocalHost().getHostAddress() );
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				
+					System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(
+							this.coreGame.getMyPartecipant()
+							.getIp()).getIp() );
+				
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
@@ -114,12 +108,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 		case Constants.PLAY_NEXT:
 			
 			try {
-				try {
-					System.out.println("5 SEND -->" +Inet4Address.getLocalHost().getHostAddress() );
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
+					System.out.println("5 INIT TURN SEND -->" +this.coreGame.getNextPartecipant(
+							this.coreGame.getMyPartecipant()
+							.getIp()).getIp() + "/RMIGameClient" );
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 						.lookup("rmi://"
 								+ this.coreGame.getNextPartecipant(
@@ -149,12 +141,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		try {
-			System.out.println("2 RECEIVED -->" +Inet4Address.getLocalHost().getHostAddress() );
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
+			System.out.println("2 INIT TURN RECEIVED -->" );
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
 		/* init GUI here */
