@@ -1,17 +1,17 @@
 all:  
-	javac -d . -cp ../src ../src/sd/core/register/*.java
-	javac -d . -cp ../src ../src/sd/core/player/*.java
-	javac -d . -cp ../src ../src/sd/ui/*.java
-	javac -d . -cp ../src ../src/sd/util/*.java
-	javac -d . -cp ../src ../src/sd/core/*.java
-	cp -r ../src/sd/ui/images ./sd/ui/
+	javac -d ./bin -cp src ./src/sd/core/register/*.java
+	javac -d ./bin -cp src ./src/sd/core/player/*.java
+	javac -d ./bin -cp src ./src/sd/ui/*.java
+	javac -d ./bin -cp src ./src/sd/util/*.java
+	javac -d ./bin -cp src ./src/sd/core/*.java
+	cp -r src/sd/ui/images ./bin/sd/ui/
 
 clean:
-	rm -rf sd
+	rm -rf ./bin/sd
 	
 	
 player:
-	java sd.core.player.UserPlayer 192.168.1.64
+	cd bin/;java sd.core.player.UserPlayer 192.168.1.64
 
 register:
-	java sd.core.register.Register
+	cd bin/;java sd.core.register.Register

@@ -65,7 +65,7 @@ public class IntroPanel extends BGPanel {
 		this.waitingLabel.setBounds(330, 420, 300, 50);
 		this.waitingLabel.setVisible(false);
 		this.add(waitingLabel);
-		this.updateUI();
+		//this.updateUI();
 
 	}
 	

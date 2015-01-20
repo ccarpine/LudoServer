@@ -30,7 +30,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	
 	public UserPlayer(String ServerIp) throws RemoteException {
 		this.isPlaying = false;
+		System.out.println("costruisco lo user player");
 		this.mainFrame = new MainFrame();
+		System.out.println("main frame creato");
 		this.mainFrame.addPanel(new IntroPanel(ServerIp));
 	}
 

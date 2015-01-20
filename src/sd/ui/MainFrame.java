@@ -13,11 +13,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private JPanel panel;
 	
 	public MainFrame() {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Ludo Game");
-		this.setVisible(true);
+		System.out.println("ptima");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
 			if ("Nimbus".equals(info.getName())) {
@@ -28,15 +29,21 @@ public class MainFrame extends JFrame {
 				}
 				break;
 			}
-		this.setResizable(false);
+		//this.setResizable(false);
+		System.out.println("due");
 		this.setSize(600, 500);
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
+		this.panel= new JPanel();
+		System.out.println("tre");
+		this.add(this.panel);
 	}
 	
 	public void addPanel(JPanel panel) {
-		this.removeAll();
-		this.add(panel);
+		this.panel.removeAll();
+		this.panel = panel;
+		this.panel.updateUI();
+		this.setVisible(true);
 	}
 	
 }
