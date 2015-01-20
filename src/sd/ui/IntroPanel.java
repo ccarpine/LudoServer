@@ -79,15 +79,13 @@ public class IntroPanel extends BGPanel {
 	}
 	
 	private boolean startConnection(String serverIP) {
-		System.out.println("rmi://" + serverIP + "/RMILudoServer");
 		try {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
-			/* get the ip */
-			String ipAddress;
-			ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			long timeToStart = server.register(serverIP);
+			System.out.println("rmi://" + serverIP + "/RMILudoServer");
+			System.out.println("Time to starti" + timeToStart);
 			return true;
-		} catch (UnknownHostException | RemoteException | MalformedURLException | NotBoundException e) {
+		} catch ( RemoteException | MalformedURLException | NotBoundException e) {
 			e.printStackTrace();
 			return false;
 		}
