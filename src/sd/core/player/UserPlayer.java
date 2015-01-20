@@ -48,14 +48,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 			/* init GUI here */
 			String message = null;
 			try {
-				message = Inet4Address.getLocalHost().getHostAddress() + ": START partita";
+				message = Inet4Address.getLocalHost().getHostAddress() + ": START partita  " + System.currentTimeMillis();
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
-			int result = JOptionPane.showConfirmDialog(null, message);
-			if (result == 1) {
-				
-			} else {
+			System.out.println(message);
 			/* END update GUI here */
 			
 				/* check if I'm the first player */ 
@@ -67,7 +64,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						e.printStackTrace();
 					}
 				}
-			}
+			
 		}
 
 	}
@@ -89,11 +86,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here */
 		String message = null;
 		try {
-			message = Inet4Address.getLocalHost().getHostAddress() + ": UPDATE status";
+			message = Inet4Address.getLocalHost().getHostAddress() + ": UPDATE status" + System.currentTimeMillis();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		JOptionPane.showConfirmDialog(null, message);
+		System.out.println(message);
 		/* END update GUI here */
 		
 		
@@ -146,11 +143,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* init GUI here */
 		String message = null;
 		try {
-			message = Inet4Address.getLocalHost().getHostAddress() + ": INIT TURN ";
+			message = Inet4Address.getLocalHost().getHostAddress() + ": INIT TURN " + System.currentTimeMillis();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		JOptionPane.showConfirmDialog(null, message);
+		System.out.println(message);
 		/* END update GUI here */
 		/* TODO togliere questa apply move, va chiamata da interfaccia */
 		this.applyMove(null);
