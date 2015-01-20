@@ -74,8 +74,8 @@ public class IntroPanel extends BGPanel {
 		try {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
 			long timeToStart = server.register(Inet4Address.getLocalHost().getHostAddress());
-			System.out.println("rmi://" + serverIP + "/RMILudoServer");
-			System.out.println("Time to starti" + timeToStart);
+			System.out.println("0 REGISTER --> ");
+			//System.out.println("Time to starti" + timeToStart);
 			return true;
 		} catch ( RemoteException | MalformedURLException | NotBoundException | UnknownHostException e) {
 			e.printStackTrace();
