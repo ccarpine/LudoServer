@@ -52,7 +52,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
-			JOptionPane.showConfirmDialog(null, message);
+			//JOptionPane.showConfirmDialog(null, message);
 			/* END update GUI here */
 			
 			/* check if I'm the first player */ 
