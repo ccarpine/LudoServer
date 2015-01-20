@@ -88,7 +88,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		case Constants.UPDATE_NEXT:
 			try {
 				
-					System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(
+					System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(
 							this.coreGame.getMyPartecipant()
 							.getIp()).getIp() );
 				
@@ -109,7 +109,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			
 			try {
 				
-					System.out.println("5 INIT TURN SEND -->" +this.coreGame.getNextPartecipant(
+					System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(
 							this.coreGame.getMyPartecipant()
 							.getIp()).getIp() + "/RMIGameClient" );
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
@@ -158,7 +158,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here */
 
 		try {
-			System.out.println("call UpdateStatus di NEXT PLAYER"+ this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
+			System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(
+					this.coreGame.getMyPartecipant()
+					.getIp()).getIp() );
 			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 					.lookup("rmi://" + this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient");
 			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
