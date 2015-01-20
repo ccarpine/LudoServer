@@ -44,7 +44,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			
-			coreGame = new CoreGame(gamersIp);
+			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
 			String message = null;
 			try {
@@ -77,7 +77,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (partecipants==null){
 			System.out.println("Update size partecipant:" + partecipants.size());
 		}
-		
+		if (this.coreGame==null){
+			System.out.println("il core e' vuoto");
+		}
+		System.out.flush();
 		int result = this.coreGame.updateStatus(partecipants, gameBoard);
 		/* update GUI here */
 		String message = null;
