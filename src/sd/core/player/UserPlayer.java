@@ -164,6 +164,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							+ this.coreGame.getNextPartecipant(
 									this.coreGame.getMyPartecipant().getIp())
 									.getIp() + "/RMIGameClient");
+			
 			nextPlayer.updateStatus(this.coreGame.getPartecipants(), this.coreGame.getGameBoard());
 		} catch (MalformedURLException | NotBoundException | RemoteException e) {
 			// TODO Auto-generated catch block

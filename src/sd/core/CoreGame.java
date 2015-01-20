@@ -48,7 +48,6 @@ public class CoreGame implements Serializable{
 	}
 
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard) {
-
 		this.partecipants = partecipant;
 		this.gameBoard = gameBoard;
 
@@ -139,18 +138,15 @@ public class CoreGame implements Serializable{
 	}
 
 	public void handleTurn(Move chosenMove) {
-		String result = this.gameBoard.makeMove(chosenMove,
-				this.getMyPartecipant());
+		String result = this.gameBoard.makeMove(chosenMove,this.getMyPartecipant());
 
 		if (result != null) {
-			this.partecipants.get(this.getIDPartecipantByColor(result))
-					.addPawnsInBench();
+			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
 		}
 
 		Partecipant partecipant = this.getMyPartecipant();
 
 		if (this.gameBoard.isVictory(partecipant)) {
-
 			this.winner = partecipant.getColor();
 		}
 
