@@ -17,14 +17,13 @@ public class IntroPanel extends BGPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel waitingLabel;
 
-	public IntroPanel(final String serverIP) {
+	public IntroPanel(final String serverIP){
 		super("images/startWallpaper.jpg");
 		this.setLayout(null);
 		JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 250, 180, 60);
 		goOnMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/start.jpg")));
 		goOnMatch.addActionListener(new ActionListener() {
-		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -45,9 +44,9 @@ public class IntroPanel extends BGPanel {
 							}
 						}
 					}).start();
+					}
 				}
-			}
-		});
+			});
 		this.add(goOnMatch);
 		JButton exit = new javax.swing.JButton();
 		exit.setBounds(380, 320, 180, 60);
@@ -65,8 +64,6 @@ public class IntroPanel extends BGPanel {
 		this.waitingLabel.setBounds(330, 420, 300, 50);
 		this.waitingLabel.setVisible(false);
 		this.add(waitingLabel);
-		//this.updateUI();
-
 	}
 	
 	private boolean startConnection(String serverIP) {
@@ -74,7 +71,7 @@ public class IntroPanel extends BGPanel {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
 			long timeToStart = server.register(serverIP);
 			System.out.println("rmi://" + serverIP + "/RMILudoServer");
-			System.out.println("Time to starti" + timeToStart);
+			System.out.println("Time to start" + timeToStart);
 			return true;
 		} catch ( RemoteException | MalformedURLException | NotBoundException e) {
 			e.printStackTrace();

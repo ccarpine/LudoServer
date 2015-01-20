@@ -13,7 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel panel;
 	
 	public MainFrame() {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
@@ -29,21 +28,18 @@ public class MainFrame extends JFrame {
 				}
 				break;
 			}
-		//this.setResizable(false);
 		System.out.println("due");
 		this.setSize(600, 500);
 		this.setLocationRelativeTo(null);
-		this.setLayout(new BorderLayout());
-		this.panel= new JPanel();
 		System.out.println("tre");
-		this.add(this.panel);
+		this.setVisible(true);
 	}
 	
 	public void addPanel(JPanel panel) {
-		this.panel.removeAll();
-		this.panel = panel;
-		this.panel.updateUI();
-		this.setVisible(true);
+		this.setLayout(new BorderLayout());
+		this.add(panel, BorderLayout.CENTER);
+		this.revalidate();
+		this.repaint();
 	}
 	
 }
