@@ -18,6 +18,8 @@ public class CellButton extends JButton {
 		this.row = row;
 		this.col = col;
 		this.setBackground(color);
+		this.setOpaque(true);
+		//this.setBorderPainted(false);
 		
 		
 	}
