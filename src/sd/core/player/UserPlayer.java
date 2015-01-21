@@ -47,17 +47,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
 			this.mainFrame.setVisible(false);
-			/*this.mainFrame.getContentPane().removeAll();
+			this.mainFrame.getContentPane().removeAll();
+			System.out.println(1);
 			this.mainFrame.getContentPane().revalidate();
+			System.out.println(2);
 			this.mainFrame.getContentPane().repaint();
+			System.out.println(3);
 			this.mainFrame.setSize(1000, 900);
+			System.out.println(4);
 			this.mainFrame.setLayout(new BorderLayout());
+			System.out.println(5);
 			this.mainFrame.addPanel(new GamePanel());
-			this.mainFrame.setVisible(true);*/
-			MainFrame gameFrame = new MainFrame();
-			gameFrame.setSize(1000, 900);
-			gameFrame.setLayout(new BorderLayout());
-			gameFrame.addPanel(new GamePanel());
+			System.out.println(6);
+			this.mainFrame.setVisible(true);
+			System.out.println(7);
+			
 			
 			try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress() );
