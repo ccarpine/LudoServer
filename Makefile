@@ -1,9 +1,10 @@
 all:  
-	javac -d ./bin -cp src ./src/sd/core/register/*.java
-	javac -d ./bin -cp src ./src/sd/core/player/*.java
-	javac -d ./bin -cp src ./src/sd/ui/*.java
-	javac -d ./bin -cp src ./src/sd/util/*.java
-	javac -d ./bin -cp src ./src/sd/core/*.java
+	javac -d ./bin -sourcepath src/ -cp ./includedJARS/*.jar ./src/sd/core/register/*.java
+	javac -d ./bin -sourcepath src/ -cp ./includedJARS/*.jar ./src/sd/core/player/*.java
+	javac -d ./bin -sourcepath src/ -cp ./includedJARS/*.jar ./src/sd/ui/*.java
+	javac -d ./bin -sourcepath src/ -cp ./includedJARS/*.jar ./src/sd/util/*.java
+	javac -d ./bin -sourcepath src/ -cp ./includedJARS/*.jar ./src/sd/core/*.java
+
 	cp -r src/sd/ui/images ./bin/sd/ui/
 
 clean:
