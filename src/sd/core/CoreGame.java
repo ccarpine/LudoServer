@@ -19,12 +19,14 @@ public class CoreGame implements Serializable{
 	private String ipCurrentPartecipant;
 	private String winner;
 	private boolean isDoubleTurn;
+	private int turn;
 
 	public CoreGame(List<String> ipGamers) {
 
 		this.winner = null;
 		this.partecipants = new ArrayList<Partecipant>();
 		this.isDoubleTurn = false;
+		this.turn = 0;
 
 		// generate the partecipants giving them a color according to their
 		// registration order
@@ -33,11 +35,9 @@ public class CoreGame implements Serializable{
 					Constants.COLOR[i], i);
 			this.partecipants.add(partecipant);
 		}
-
 		// sets the partecipant that begins the game, the first of the list
 		this.ipCurrentPartecipant = ipGamers.get(0);
 		this.gameBoard = new GameBoard();
-
 	}
 
 	public List<Partecipant> getPartecipants() {
@@ -54,6 +54,7 @@ public class CoreGame implements Serializable{
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
 		// check if my ip is equals to the last that has just played
 		String myIP = this.getMyPartecipant().getIp();
+		this.turn++;
 		if (myIP.equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
 				return Constants.END_GAME;
@@ -78,25 +79,20 @@ public class CoreGame implements Serializable{
 				myPartecipant = this.partecipants.get(i);
 				break;
 			}
-
 		}
-
 		return myPartecipant;
-
 	}
 
 	// return the next player from the given IP
 	public Partecipant getNextPartecipant(String ip) {
+		
 		Partecipant partecipant = null;
 		for (int i = 0; i < this.partecipants.size(); i++) {
-
 			if (ip.equals(this.partecipants.get(i).getIp())) {
 				partecipant = this.partecipants.get( (i +1) % this.partecipants.size());
 				break;
 			}
-
 		}
-
 		return partecipant;
 	}
 
@@ -107,7 +103,6 @@ public class CoreGame implements Serializable{
 				return i;
 			}
 		}
-
 		/* it should never get here */
 		return -1;
 	}
@@ -145,7 +140,6 @@ public class CoreGame implements Serializable{
 		return this.gameBoard;
 	}
 
-	
 	public boolean amItheCurrentPartecipant( ){
 		return this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp());
 	}
