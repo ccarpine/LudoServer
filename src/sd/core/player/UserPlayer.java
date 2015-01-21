@@ -52,7 +52,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.mainFrame.getContentPane().repaint();
 			this.mainFrame.setSize(1000, 900);
 			this.mainFrame.setLayout(new BorderLayout());
-			this.mainFrame.add(new GamePanel());
+			this.mainFrame.addPanel(new GamePanel());
 			this.mainFrame.setVisible(true);
 			try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress() );
