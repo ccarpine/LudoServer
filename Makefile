@@ -12,7 +12,7 @@ clean:
 	
 	
 player:
-	cd bin/;java -cp tablelayout.jar sd.core.player.UserPlayer 192.168.1.64
+	cd bin/;java -cp ../includedJARS/tablelayout.jar:. sd.core.player.UserPlayer 192.168.1.64
 
 register:
 	cd bin/;java sd.core.register.Register
