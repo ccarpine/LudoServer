@@ -20,7 +20,7 @@ public class Constants {
 	public static final int END_GAME = 3;
 
 	/* constants for game panel */
-	public static final int GUI_ROWS = 16;
+	public static final int GUI_ROWS = 17;
 	public static final int GUI_COLS = 19;
 	
 	public static final String RIGHT = "RIGHT";
@@ -44,7 +44,7 @@ public class Constants {
 	public static final int[] START_VIOLET = {13,14};
 	
 	public static final String[] PATH_YELLOW = {UP, UP, UP_LEFT, UP_LEFT, DOWN_LEFT, DOWN_LEFT, UP_LEFT};
-	public static final int[] START_YELLOW = {15,9};
+	public static final int[] START_YELLOW = {15,8};
 	
 	public static final String[] PATH_BLACK = {UP_RIGHT, UP_RIGHT, UP, UP, UP_LEFT, UP_LEFT, UP_RIGHT};
 	public static final int[] START_BLACK = {11,2};
@@ -74,6 +74,8 @@ public class Constants {
 	
 	public static final String[] PATH_WIN_BLUE = {DOWN_RIGHT, DOWN_RIGHT, RIGHT};
 	public static final int[] START_PATH_WIN_BLUE = {5,4};
+	
+	public static final int CELL_SIZE = 40;
 	
 	
 	

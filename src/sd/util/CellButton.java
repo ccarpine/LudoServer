@@ -14,7 +14,7 @@ public class CellButton extends JButton {
 	private int row, col;
 		
 	public CellButton(int row, int col, Color color) {
-		super("ciao");
+		super("");
 		this.row = row;
 		this.col = col;
 		this.setBackground(color);

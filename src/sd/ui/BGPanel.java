@@ -16,6 +16,7 @@ public class BGPanel extends JPanel {
     	super(null);
         this.setOpaque(false);
         this.setImageFromResource(path);
+        this.setOpaque(true);
     }
 
     
