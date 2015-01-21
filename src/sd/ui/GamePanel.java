@@ -129,6 +129,98 @@ public class GamePanel extends JPanel {
 			
 		}
 		
+		/* creating RED victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_RED[0],Constants.START_PATH_WIN_RED[1], Color.RED);
+		currentPosition[0] = Constants.START_PATH_WIN_RED[0];
+		currentPosition[1] = Constants.START_PATH_WIN_RED[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_RED.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_RED[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], Color.RED);
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		/* creating GREEN victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_GREEN[0],Constants.START_PATH_WIN_GREEN[1], Color.GREEN);
+		currentPosition[0] = Constants.START_PATH_WIN_GREEN[0];
+		currentPosition[1] = Constants.START_PATH_WIN_GREEN[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_GREEN.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_GREEN[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], Color.GREEN);
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		/* creating VIOLET victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_VIOLET[0],Constants.START_PATH_WIN_VIOLET[1], new Color(153,0,153));
+		currentPosition[0] = Constants.START_PATH_WIN_VIOLET[0];
+		currentPosition[1] = Constants.START_PATH_WIN_VIOLET[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_VIOLET.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_VIOLET[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], new Color(153,0,153));
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		/* creating YELLOW victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_YELLOW[0],Constants.START_PATH_WIN_YELLOW[1], Color.YELLOW);
+		currentPosition[0] = Constants.START_PATH_WIN_YELLOW[0];
+		currentPosition[1] = Constants.START_PATH_WIN_YELLOW[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_YELLOW.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_YELLOW[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], Color.YELLOW);
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		/* creating BLACK victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_BLACK[0],Constants.START_PATH_WIN_BLACK[1], Color.BLACK);
+		currentPosition[0] = Constants.START_PATH_WIN_BLACK[0];
+		currentPosition[1] = Constants.START_PATH_WIN_BLACK[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_BLACK.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_BLACK[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], Color.BLACK);
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		/* creating BLUE victory */
+		buttonPosition = new CellButton(Constants.START_PATH_WIN_BLUE[0],Constants.START_PATH_WIN_BLUE[1], Color.BLUE);
+		currentPosition[0] = Constants.START_PATH_WIN_BLUE[0];
+		currentPosition[1] = Constants.START_PATH_WIN_BLUE[1];
+		this.add(buttonPosition,this.positionToString(currentPosition));
+		
+		for (int i = 0; i < Constants.PATH_WIN_BLUE.length; i++) {
+			int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_WIN_BLUE[i]);
+			buttonPosition = new CellButton(nextPosition[0], nextPosition[1], Color.BLUE);
+			currentPosition[0] = nextPosition[0];
+			currentPosition[1] = nextPosition[1];
+			this.add(buttonPosition, this.positionToString(nextPosition));
+			
+		}
+		
+		
+		
 
 	}
 
@@ -196,7 +288,7 @@ public class GamePanel extends JPanel {
 	public static void main(String argv[]) {
 		
 		JFrame prova = new JFrame();
-		prova.setSize(1000, 1000);
+		prova.setSize(1000, 900);
 		//prova.setLayout(new BorderLayout());
 		prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

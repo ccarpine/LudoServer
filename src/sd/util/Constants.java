@@ -55,10 +55,8 @@ public class Constants {
 	public static final String[] PATH_WIN_RED = {DOWN, DOWN, DOWN};
 	public static final int[] START_PATH_WIN_RED = {2,9};
 	
-	
 	public static final String[] PATH_WIN_GREEN = {DOWN_LEFT, DOWN_LEFT, LEFT};
 	public static final int[] START_PATH_WIN_GREEN = {5,14};
-	
 	
 	public static final String[] PATH_WIN_VIOLET = {UP_LEFT, UP_LEFT, LEFT};
 	public static final int[] START_PATH_WIN_VIOLET = {11,14};
@@ -69,13 +67,26 @@ public class Constants {
 	
 	
 	public static final String[] PATH_WIN_BLACK = {UP_RIGHT, UP_RIGHT, RIGHT};
-	public static final int[] START_PATH_WIN_BLAVK = {11,4};
+	public static final int[] START_PATH_WIN_BLACK = {11,4};
 	
 	
 	public static final String[] PATH_WIN_BLUE = {DOWN_RIGHT, DOWN_RIGHT, RIGHT};
 	public static final int[] START_PATH_WIN_BLUE = {5,4};
 	
 	public static final int CELL_SIZE = 40;
+	
+	/* constants path for benches */
+	public static final String[] PATH_BENCH = {RIGHT, DOWN, LEFT};
+	
+	/* constants for start of benches */
+	public static final int[] START_PATH_BENCH_RED = {0,17};
+	public static final int[] START_PATH_BENCH_GREEN= {8,17};
+	public static final int[] START_PATH_BENCH_VIOLET = {15,17};
+	public static final int[] START_PATH_BENCH_YELLOW = {15,0};
+	public static final int[] START_PATH_BENCH_BLACK = {8,0};
+	public static final int[] START_PATH_BENCH_BLUE = {0,0};
+	
+	
 	
 	
 	
