@@ -48,6 +48,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			/* init GUI here */
 			this.mainFrame.setVisible(false);
 			this.mainFrame.getContentPane().removeAll();
+			this.mainFrame.getContentPane().revalidate();
 			this.mainFrame.getContentPane().repaint();
 			this.mainFrame.setSize(1000, 900);
 			this.mainFrame.setLayout(new BorderLayout());
