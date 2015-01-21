@@ -62,13 +62,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.mainFrame.setVisible(true);
 			System.out.println(7);
 			
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			
 			
 			try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress() );
@@ -79,14 +72,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 			/* END update GUI here */
 			
 				/* check if I'm the first player */ 
-				if (coreGame.amItheCurrentPartecipant()) {
-					try {
-						/* start my turn */
-						this.initTurn();
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
+//				if (coreGame.amItheCurrentPartecipant()) {
+//					try {
+//						/* start my turn */
+//						this.initTurn();
+//					} catch (RemoteException e) {
+//						e.printStackTrace();
+//					}
+//				}
 			
 		}
 
