@@ -1,5 +1,6 @@
 package sd.core.player;
 
+import java.awt.BorderLayout;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -9,11 +10,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-
 import sd.core.CoreGame;
 import sd.core.GameBoard;
 import sd.core.Move;
 import sd.core.Partecipant;
+import sd.ui.GamePanel;
 import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
 import sd.util.Constants;
@@ -45,7 +46,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 			
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
-			
+			this.mainFrame.setVisible(false);
+			this.mainFrame.removeAll();
+			this.mainFrame.setSize(1000, 900);
+			this.mainFrame.setLayout(new BorderLayout());
+			this.mainFrame.add(new GamePanel());
+			this.mainFrame.setVisible(true);
 			try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress() );
 			} catch (UnknownHostException e1) {

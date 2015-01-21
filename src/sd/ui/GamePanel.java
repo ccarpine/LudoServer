@@ -164,7 +164,7 @@ public class GamePanel extends JPanel {
 
 	}
 
-	public static void main(String argv[]) {
+	/*public static void main(String argv[]) {
 
 		JFrame prova = new JFrame();
 		prova.setSize(1000, 900);
@@ -175,6 +175,6 @@ public class GamePanel extends JPanel {
 		prova.getContentPane().add(gp);
 		prova.setVisible(true);
 
-	}
+	}*/
 
 }
