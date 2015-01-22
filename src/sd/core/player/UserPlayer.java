@@ -25,6 +25,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
+	private GamePanel gamePanel;
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
@@ -46,6 +47,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
+			this.gamePanel = new GamePanel();
 			if (coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward();
@@ -75,7 +77,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	
 	private void buildGUIAndForward() {
 		this.mainFrame.setSize(800, 900);
-		this.mainFrame.addPanel(new GamePanel());
+		this.mainFrame.addPanel(gamePanel);
 		try {
 			String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
