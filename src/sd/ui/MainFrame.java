@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Ludo Game");
 		System.out.println("ptima");
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
 			if ("Nimbus".equals(info.getName())) {
 				try {
@@ -36,6 +36,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void addPanel(JPanel panel) {
+		this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
 		this.revalidate();
