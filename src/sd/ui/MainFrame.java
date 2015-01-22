@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void addPanel(JPanel panel) {
-		this.removeAll();
+		//this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
 		this.revalidate();
