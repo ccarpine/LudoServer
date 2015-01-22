@@ -16,10 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 import sd.core.CoreGame;
-import sd.core.Partecipant;
 import sd.util.Constants;
 
 public class ControlBoardPanel extends BGPanel {
@@ -41,33 +39,33 @@ public class ControlBoardPanel extends BGPanel {
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
 		
 		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
-		timeOfTurnIntro.setBounds(10, 20, 180, 25);
+		timeOfTurnIntro.setBounds(10, 20, 185, 25);
 		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		timeOfTurnIntro.setForeground(Color.WHITE);
 		this.add(timeOfTurnIntro);
 		
 		timeOfTurn = new JLabel();
-		timeOfTurn.setBounds(10, 50, 180, 25);
+		timeOfTurn.setBounds(10, 50, 185, 25);
 		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
 		this.setTimer();
 		
 		JLabel roundIntro = new JLabel("Round:");
-		roundIntro.setBounds(10, 100, 180, 25);
+		roundIntro.setBounds(10, 100, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
 		
 		round = new JLabel();
-		round.setBounds(10, 130, 180, 25);
+		round.setBounds(10, 130, 185, 25);
 		round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
 		this.setRound();
 		
 		JLabel playerConnectedIntro = new JLabel("Current player:");
-		playerConnectedIntro.setBounds(10, 160, 180, 25);
+		playerConnectedIntro.setBounds(10, 160, 185, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
@@ -79,11 +77,11 @@ public class ControlBoardPanel extends BGPanel {
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, 
 				new java.awt.Color(0, 0, 0)));
-		containerDie.setBounds(10, 280, 180, 150);
+		containerDie.setBounds(10, 280, 185, 150);
 		this.add(containerDie);
 		
 		JButton die = new JButton("Launch die");
-		die.setBounds(10, 450, 180, 25);
+		die.setBounds(10, 450, 185, 25);
 		die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -103,7 +101,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(die);
 		
 		JButton fold = new JButton("Fold");
-		fold.setBounds(10, 480, 180, 25);
+		fold.setBounds(10, 480, 185, 25);
 		fold.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -118,7 +116,6 @@ public class ControlBoardPanel extends BGPanel {
 		BufferedImage[] animationBuffer = {DieSprite.getSprite(0, 1), DieSprite.getSprite(2, 1)};
 		// These are animation states
 		AnimationSprite move = new AnimationSprite(animationBuffer, animationSpeed);
-
 		// This is the actual animation
 		AnimationSprite animation = move;
 		animation.start();
@@ -133,10 +130,13 @@ public class ControlBoardPanel extends BGPanel {
 		currentPlayer = new ArrayList<JButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
 			JButton button = new JButton();
-			button.setBounds(10+(i*23), 190, 20, 20);
+			button.setBounds(5+(i*33), 195, 30, 30);
 			button.setOpaque(true);
-			button.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/"+Constants.COLOR[i]+".png")));
-			button.setBorder(new LineBorder(Color.BLACK, 1));
+			button.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/box/"+Constants.COLOR[i]+".png")));
+			button.setBorder(null);
+			button.setFocusPainted(false);
+			button.setBorderPainted(false);
+			button.setContentAreaFilled(false);
 			currentPlayer.add(button);
 			this.add(button);
 		}
@@ -151,6 +151,7 @@ public class ControlBoardPanel extends BGPanel {
 				break;
 			}
 		}
+		// TODO no funziona
 		for (int i=0; i<currentPlayer.size(); i++) {
 			if (i != position) {
 				currentPlayer.get(i).setOpaque(false);
@@ -172,7 +173,6 @@ public class ControlBoardPanel extends BGPanel {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					countdown--;
@@ -180,7 +180,7 @@ public class ControlBoardPanel extends BGPanel {
 					int minutes = (int) ((countdown / 60) % 60);
 					timeOfTurn.setText(String.format("%02d", minutes)+":"+String.format("%02d", seconds));
 				}
-				// Chiamata al prossimo
+				// TODO Chiamata al prossimo
 			}
 		}).start();
 	}

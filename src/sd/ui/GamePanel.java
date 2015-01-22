@@ -13,9 +13,12 @@ public class GamePanel extends BGPanel {
 	private static final long serialVersionUID = 1L;
 
 	private double[][] size;
+	private CoreGame coreGame;
 
-	public GamePanel() {
+	public GamePanel(CoreGame coreGame) {
 		super("images/table.png");
+		
+		this.coreGame = coreGame;
 
 		this.size = new double[2][];
 		this.size[0] = new double[Constants.GUI_COLS];
@@ -38,7 +41,7 @@ public class GamePanel extends BGPanel {
 
 			/* creating first cell for that color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0],
-					Constants.STARTS_COLORS[i][1], Constants.COLOR[i]);
+					Constants.STARTS_COLORS[i][1], "images/box/"+Constants.COLOR[i]+".png");
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -48,7 +51,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Constants.BLANK);
+						nextPosition[1], "images/box/"+Constants.BLANK+".png");
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -58,7 +61,7 @@ public class GamePanel extends BGPanel {
 			/* creating starting cell for the win path for that color */
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0],
 					Constants.STARTS_WIN_COLORS[i][1],
-					Constants.COLOR[i]);
+					"images/victory/"+Constants.COLOR[i]+".png");
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -67,18 +70,39 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Constants.COLOR[i]);
+						nextPosition[1], "images/victory/"+Constants.COLOR[i]+".png");
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 
+			}
+			
+			// Adding pawns in bench
+			if (i < this.coreGame.getPartecipants().size()) {
+				buttonPosition = new CellButton(
+						Constants.STARTS_BENCH_COLORS[i][0],
+						Constants.STARTS_BENCH_COLORS[i][1],
+						"images/pawns/"+Constants.COLOR[i]+".png");
+				currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
+				currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
+				this.add(buttonPosition, this.positionToString(currentPosition));
+
+				for (int j = 0; j < Constants.PATH_BENCH.length; j++) {
+					int[] nextPosition = this.getPositionButton(currentPosition,
+							Constants.PATH_BENCH[j]);
+					buttonPosition = new CellButton(nextPosition[0],
+							nextPosition[1], "images/pawns/"+Constants.COLOR[i]+".png");
+					currentPosition[0] = nextPosition[0];
+					currentPosition[1] = nextPosition[1];
+					this.add(buttonPosition, this.positionToString(nextPosition));
+				}
 			}
 
 			/* creating benches */
 			buttonPosition = new CellButton(
 					Constants.STARTS_BENCH_COLORS[i][0],
 					Constants.STARTS_BENCH_COLORS[i][1],
-					Constants.COLOR[i]);
+					"images/box/"+Constants.COLOR[i]+".png");
 			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -87,12 +111,13 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATH_BENCH[j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Constants.COLOR[i]);
+						nextPosition[1], "images/box/"+Constants.COLOR[i]+".png");
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
-
 			}
+			
+			
 
 		}
 
@@ -161,14 +186,20 @@ public class GamePanel extends BGPanel {
 
 	public static void main(String argv[]) {
 
-		MainFrame mainFrame = new MainFrame();
-		mainFrame.setSize(770, 532);
-		GamePanel gamePanel = new GamePanel();
-		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
-		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
 		List<String> ip = new ArrayList<>();
 		ip.add("192.168.0.1");
-		ControlBoardPanel controlBoardPanel = new ControlBoardPanel(new CoreGame(ip));
+		ip.add("192.168.0.2");
+		ip.add("192.168.0.3");
+		ip.add("192.168.0.4");
+		CoreGame coreGame = new CoreGame(ip);
+		
+		MainFrame mainFrame = new MainFrame();
+		mainFrame.setSize(775, 532);
+		GamePanel gamePanel = new GamePanel(coreGame);
+		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
+		
+		ControlBoardPanel controlBoardPanel = new ControlBoardPanel(coreGame);
 		mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 
 	}
