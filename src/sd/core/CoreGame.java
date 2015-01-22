@@ -15,7 +15,8 @@ public class CoreGame implements Serializable{
 	private String ipCurrentPartecipant;
 	private String winner;
 	private boolean isDoubleTurn;
-	private int turn;
+	private int turn; /*increase each time a player play*/
+	private int round; 
 
 	public CoreGame(List<String> ipGamers) {
 
@@ -45,8 +46,8 @@ public class CoreGame implements Serializable{
 		return 1 + new Random().nextInt(6);
 	}
 	
-	public int getTurn() {
-		return this.turn;
+	public int getRound() {
+		return (this.turn % (this.partecipants.size())) + 1;
 	}
 	
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {
@@ -54,7 +55,6 @@ public class CoreGame implements Serializable{
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
 		// check if my ip is equals to the last that has just played
 		String myIP = this.getMyPartecipant().getIp();
-		this.turn++;
 		if (myIP.equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
 				return Constants.END_GAME;
