@@ -12,6 +12,9 @@ public interface UserPlayerInterface extends Remote {
 	//it creates the CoreGame and prepares the game
 	void start(List<String> gamersIp) throws RemoteException;
 	
+	// allows player to initialize gui
+	void buildGUI() throws RemoteException;
+	
 	//it updates the game status
 	void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException;
 	

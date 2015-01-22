@@ -44,11 +44,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			
+			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
-			this.mainFrame.setSize(900, 900);
-			this.mainFrame.addPanel(new GamePanel());
-			
+			if (coreGame.amItheCurrentPartecipant()) {
+				this.buildGUIAndForward();
+			}
 			
 			try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress());
@@ -56,22 +57,33 @@ public class UserPlayer extends UnicastRemoteObject implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			/* END update GUI here */
 			
-				/* check if I'm the first player */ 
-//				if (coreGame.amItheCurrentPartecipant()) {
-//					try {
-//						/* start my turn */
-//						this.initTurn();
-//					} catch (RemoteException e) {
-//						e.printStackTrace();
-//					}
-//				}
 			
 		}
 
 	}
 
+	@Override
+	public void buildGUI() throws RemoteException {
+		if (!coreGame.amItheCurrentPartecipant()) {
+			this.buildGUIAndForward();
+		} else {
+			this.initTurn();
+		}
+	}
+	
+	private void buildGUIAndForward() {
+		this.mainFrame.setSize(800, 900);
+		this.mainFrame.addPanel(new GamePanel());
+		try {
+			String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+			nextInTurn.buildGUI();
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
 		try {
