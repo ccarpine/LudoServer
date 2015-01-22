@@ -35,10 +35,13 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void addPanel(JPanel panel) {
+	public void addPanel(JPanel panel, String borderLayout) {
 		this.getContentPane().removeAll();
 		this.setLayout(new BorderLayout());
-		this.add(panel, BorderLayout.CENTER);
+		this.add(panel, borderLayout);
+		if (borderLayout.equals(BorderLayout.WEST)) {
+			panel.setPreferredSize(new java.awt.Dimension(760, 702));
+		}
 		this.revalidate();
 		this.repaint();
 	}

@@ -1,5 +1,6 @@
 package sd.core.player;
 
+import java.awt.BorderLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
@@ -36,7 +37,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		System.out.println("costruisco lo user player");
 		this.mainFrame = new MainFrame();
 		System.out.println("main frame creato");
-		this.mainFrame.addPanel(new IntroPanel(ServerIp));
+		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
 	}
 
 	public void start(List<String> gamersIp) {
@@ -77,20 +78,37 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void buildGUIAndForward() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
+		Thread t = new Thread() {
 			public void run() {
-				mainFrame.setSize(800, 900);
-				mainFrame.addPanel(new GamePanel());
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							mainFrame.setSize(800, 900);
+							mainFrame.addPanel(new GamePanel(), BorderLayout.CENTER);
+						}
+					});
+				} catch (Exception ex) {
+				}
+				try {
+					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
+					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+					nextInTurn.buildGUI();
+				} catch (MalformedURLException | RemoteException | NotBoundException e) {
+					e.printStackTrace();
+				}
 			}
-		});
-		try {
+		};
+		t.start();
+		//this.mainFrame.setSize(800, 900);
+		//this.mainFrame.addPanel(new GamePanel(), BorderLayout.CENTER);
+		/*try {
 			String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
 			nextInTurn.buildGUI();
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	@Override

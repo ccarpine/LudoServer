@@ -24,7 +24,7 @@ public class Constants {
 	/* constants for game panel */
 	public static final int GUI_ROWS = 17;
 	public static final int GUI_COLS = 19;
-	public static final int CELL_SIZE = 40;
+	public static final int CELL_SIZE = 30;
 	
 	public static final String RIGHT = "RIGHT";
 	public static final String LEFT = "LEFT";

@@ -7,13 +7,13 @@ import sd.util.CellButton;
 import sd.util.Constants;
 import layout.TableLayout;
 
-public class GamePanel extends BGPanel {
+public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private double[][] size;
 
-	public GamePanel() {
+	public ControlBoardPanel() {
 		super("images/table.png");
 
 		this.size = new double[2][];
@@ -163,8 +163,8 @@ public class GamePanel extends BGPanel {
 	public static void main(String argv[]) {
 
 		MainFrame mainFrame = new MainFrame();
-		mainFrame.setSize(900, 500);
-		mainFrame.addPanel(new GamePanel(), BorderLayout.WEST);
+		mainFrame.setSize(760, 702);
+		mainFrame.addPanel(new ControlBoardPanel(), BorderLayout.WEST);
 
 	}
 
