@@ -1,171 +1,117 @@
 package sd.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
-import sd.util.CellButton;
-import sd.util.Constants;
-import layout.TableLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
-
-	private double[][] size;
-
+	private boolean dieLaunched;
+	
 	public ControlBoardPanel() {
-		super("images/table.png");
-
-		this.size = new double[2][];
-		this.size[0] = new double[Constants.GUI_COLS];
-		this.size[1] = new double[Constants.GUI_ROWS];
-
-		for (int i = 0; i < Constants.GUI_COLS; i++) {
-			this.size[0][i] = Constants.CELL_SIZE;
-		}
-
-		for (int i = 0; i < Constants.GUI_ROWS; i++) {
-			this.size[1][i] = Constants.CELL_SIZE;
-		}
-
-		this.setLayout(new TableLayout(size));
-
-		CellButton buttonPosition = null;
-		int[] currentPosition = new int[2];
-
-		for (int i = 0; i < Constants.COLOR.length; i++) {
-
-			/* creating first cell for that color */
-
-			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0],
-					Constants.STARTS_COLORS[i][1], Constants.COLOR_VALUES[i]);
-			currentPosition[0] = Constants.STARTS_COLORS[i][0];
-			currentPosition[1] = Constants.STARTS_COLORS[i][1];
-			this.add(buttonPosition, this.positionToString(currentPosition));
-
-			/* creating remaining cells before next color */
-			for (int j = 0; j < Constants.PATHS_COLORS[i].length; j++) {
-				int[] nextPosition = this.getPositionButton(currentPosition,
-						Constants.PATHS_COLORS[i][j]);
-				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Color.WHITE);
-				currentPosition[0] = nextPosition[0];
-				currentPosition[1] = nextPosition[1];
-				this.add(buttonPosition, this.positionToString(nextPosition));
-
+		super("images/desk.jpg");
+		//this.setOpaque(true);
+		this.setLayout(null);
+		this.dieLaunched = false;
+		
+		JLabel timeOfGameIntro = new JLabel("Time of game:");
+		timeOfGameIntro.setBounds(10, 20, 180, 25);
+		timeOfGameIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		timeOfGameIntro.setForeground(Color.WHITE);
+		this.add(timeOfGameIntro);
+		
+		JLabel timeOfGame = new JLabel("0:00:00");
+		timeOfGame.setBounds(10, 50, 180, 25);
+		timeOfGame.setFont(new java.awt.Font("Helvetica", 0, 18));
+		timeOfGame.setForeground(Color.LIGHT_GRAY);
+		this.add(timeOfGame);
+		
+		JLabel playerConnectedIntro = new JLabel("Current turn:");
+		playerConnectedIntro.setBounds(10, 100, 180, 25);
+		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		playerConnectedIntro.setForeground(Color.WHITE);
+		this.add(playerConnectedIntro);
+		
+		JLabel playerConnected = new JLabel("Player 1");
+		playerConnected.setBounds(10, 130, 180, 25);
+		playerConnected.setFont(new java.awt.Font("Helvetica", 0, 18));
+		playerConnected.setForeground(Color.LIGHT_GRAY);
+		this.add(playerConnected);
+		
+		final JPanel containerDie = new JPanel();
+		containerDie.setBorder(BorderFactory.createTitledBorder(null,
+				"Container die", 0, 0, null, 
+				new java.awt.Color(0, 0, 0)));
+		containerDie.setBounds(10, 280, 180, 150);
+		this.add(containerDie);
+		
+		JButton die = new JButton("Launch die");
+		die.setBounds(10, 450, 180, 25);
+		die.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!dieLaunched) {
+					dieLaunched = true;
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							startAnimationDie(containerDie);
+						}
+					}).start();
+				} else {
+					JOptionPane.showMessageDialog(null, "You have already launched the die.");
+				}
 			}
-
-			/* creating starting cell for the win path for that color */
-
-			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0],
-					Constants.STARTS_WIN_COLORS[i][1],
-					Constants.COLOR_VALUES[i]);
-			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
-			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
-			this.add(buttonPosition, this.positionToString(currentPosition));
-
-			for (int j = 0; j < Constants.PATHS_WIN_COLORS[i].length; j++) {
-				int[] nextPosition = this.getPositionButton(currentPosition,
-						Constants.PATHS_WIN_COLORS[i][j]);
-				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Constants.COLOR_VALUES[i]);
-				currentPosition[0] = nextPosition[0];
-				currentPosition[1] = nextPosition[1];
-				this.add(buttonPosition, this.positionToString(nextPosition));
-
+		});
+		this.add(die);
+		
+		JButton fold = new JButton("Fold");
+		fold.setBounds(10, 480, 180, 25);
+		fold.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
+		});
+		this.add(fold);
+	}
+	
+	private void startAnimationDie(JPanel container) {
+		int animationSpeed = 40;
+		BufferedImage[] animationBuffer = {DieSprite.getSprite(0, 1), DieSprite.getSprite(2, 1)};
+		// These are animation states
+		AnimationSprite move = new AnimationSprite(animationBuffer, animationSpeed);
 
-			/* creating benches */
-			buttonPosition = new CellButton(
-					Constants.STARTS_BENCH_COLORS[i][0],
-					Constants.STARTS_BENCH_COLORS[i][1],
-					Constants.COLOR_VALUES[i]);
-			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
-			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
-			this.add(buttonPosition, this.positionToString(currentPosition));
-
-			for (int j = 0; j < Constants.PATH_BENCH.length; j++) {
-				int[] nextPosition = this.getPositionButton(currentPosition,
-						Constants.PATH_BENCH[j]);
-				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Constants.COLOR_VALUES[i]);
-				currentPosition[0] = nextPosition[0];
-				currentPosition[1] = nextPosition[1];
-				this.add(buttonPosition, this.positionToString(nextPosition));
-
-			}
-
+		// This is the actual animation
+		AnimationSprite animation = move;
+		animation.start();
+		for (int counter=0; counter<animationSpeed*100; counter++) {
+			animation.update();
+			paint(container.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
-
+		dieLaunched = false;
 	}
+	
+	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
+        super.paint(g);
 
-	private int[] getPositionButton(int[] currentPosition, String moveDirection) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(dieSprite, x, y, this);
 
-		int[] nextPositionButton = new int[2];
-
-		switch (moveDirection) {
-
-		case Constants.UP:
-			nextPositionButton[0] = currentPosition[0] - 1;
-			nextPositionButton[1] = currentPosition[1];
-			break;
-
-		case Constants.DOWN:
-			nextPositionButton[0] = currentPosition[0] + 1;
-			nextPositionButton[1] = currentPosition[1];
-			break;
-
-		case Constants.LEFT:
-			nextPositionButton[0] = currentPosition[0];
-			nextPositionButton[1] = currentPosition[1] - 1;
-			break;
-
-		case Constants.RIGHT:
-			nextPositionButton[0] = currentPosition[0];
-			nextPositionButton[1] = currentPosition[1] + 1;
-			break;
-
-		case Constants.UP_LEFT:
-			nextPositionButton[0] = currentPosition[0] - 1;
-			nextPositionButton[1] = currentPosition[1] - 1;
-			break;
-
-		case Constants.UP_RIGHT:
-			nextPositionButton[0] = currentPosition[0] - 1;
-			nextPositionButton[1] = currentPosition[1] + 1;
-			break;
-
-		case Constants.DOWN_LEFT:
-			nextPositionButton[0] = currentPosition[0] + 1;
-			nextPositionButton[1] = currentPosition[1] - 1;
-			break;
-
-		case Constants.DOWN_RIGHT:
-			nextPositionButton[0] = currentPosition[0] + 1;
-			nextPositionButton[1] = currentPosition[1] + 1;
-			break;
-
-		default:
-			break;
-
-		}
-
-		return nextPositionButton;
-
-	}
-
-	private String positionToString(int[] position) {
-
-		return String.valueOf(position[1]) + "," + String.valueOf(position[0]);
-
-	}
-
-	public static void main(String argv[]) {
-
-		MainFrame mainFrame = new MainFrame();
-		mainFrame.setSize(760, 702);
-		mainFrame.addPanel(new ControlBoardPanel(), BorderLayout.WEST);
-
-	}
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
+    }
 
 }

@@ -1,7 +1,5 @@
 package sd.util;
 
-import java.awt.Color;
-
 public class Constants {
 
 	public static final int BENCH_DIMENSION = 4;
@@ -13,8 +11,9 @@ public class Constants {
 	public static final int COLUMNS = 12;
 	public static final String[] COLOR = { "RED", "GREEN", "VIOLET", "YELLOW",
 			"BLACK", "BLUE" };
-	public static final Color[] COLOR_VALUES = {Color.RED, Color.GREEN, new Color(153,0,153), Color.YELLOW,
-		Color.BLACK, Color.BLUE };
+	public static final String[] COLOR_VALUES = {"victoryRed30", "victoryGreen30", "victoryViolet30", "victoryYellow30",
+		"victoryBlack30", "victoryBlu30" };
+	public static final String COLOR_VALUES_WHITE = "white30";
 	public static final String BLANK = "WHITE";
 	public static final int UPDATE_NEXT = 0;
 	public static final int PLAY_NEXT = 1;

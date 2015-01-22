@@ -1,27 +1,18 @@
-package sd.util;
-
-import java.awt.Color;
+package sd.ui;
 
 import javax.swing.JButton;
 
-import sd.core.Cell;
-
 public class CellButton extends JButton {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private int row, col;
 		
-	public CellButton(int row, int col, Color color) {
+	public CellButton(int row, int col, String nameColor) {
 		super("");
 		this.row = row;
 		this.col = col;
-		this.setBackground(color);
-		this.setOpaque(true);
-		//this.setBorderPainted(false);
-		
-		
+		this.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/"+nameColor+".png")));
+		this.setBorder(null);
 	}
 
 	public int getRow() {
@@ -31,7 +22,5 @@ public class CellButton extends JButton {
 	public int getCol() {
 		return col;
 	}
-	
-	
 
 }

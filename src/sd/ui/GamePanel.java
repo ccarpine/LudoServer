@@ -1,9 +1,6 @@
 package sd.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-
-import sd.util.CellButton;
 import sd.util.Constants;
 import layout.TableLayout;
 
@@ -36,7 +33,6 @@ public class GamePanel extends BGPanel {
 		for (int i = 0; i < Constants.COLOR.length; i++) {
 
 			/* creating first cell for that color */
-
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0],
 					Constants.STARTS_COLORS[i][1], Constants.COLOR_VALUES[i]);
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
@@ -48,7 +44,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], Color.WHITE);
+						nextPosition[1], Constants.COLOR_VALUES_WHITE);
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -56,7 +52,6 @@ public class GamePanel extends BGPanel {
 			}
 
 			/* creating starting cell for the win path for that color */
-
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0],
 					Constants.STARTS_WIN_COLORS[i][1],
 					Constants.COLOR_VALUES[i]);
@@ -163,8 +158,12 @@ public class GamePanel extends BGPanel {
 	public static void main(String argv[]) {
 
 		MainFrame mainFrame = new MainFrame();
-		mainFrame.setSize(900, 500);
-		mainFrame.addPanel(new GamePanel(), BorderLayout.WEST);
+		mainFrame.setSize(770, 532);
+		GamePanel gamePanel = new GamePanel();
+		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
+		ControlBoardPanel controlBoardPanel = new ControlBoardPanel();
+		mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 
 	}
 

@@ -1,7 +1,6 @@
 package sd.core.player;
 
 import java.awt.BorderLayout;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;

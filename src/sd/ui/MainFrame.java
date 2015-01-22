@@ -17,7 +17,6 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Ludo Game");
-		System.out.println("ptima");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
 			if ("Nimbus".equals(info.getName())) {
@@ -28,22 +27,22 @@ public class MainFrame extends JFrame {
 				}
 				break;
 			}
-		System.out.println("due");
+		this.setResizable(false);
 		this.setSize(600, 500);
 		this.setLocationRelativeTo(null);
-		System.out.println("tre");
 		this.setVisible(true);
+		this.resetFrame();
 	}
 	
 	public void addPanel(JPanel panel, String borderLayout) {
-		this.getContentPane().removeAll();
-		this.setLayout(new BorderLayout());
 		this.add(panel, borderLayout);
-		if (borderLayout.equals(BorderLayout.WEST)) {
-			panel.setPreferredSize(new java.awt.Dimension(760, 702));
-		}
 		this.revalidate();
 		this.repaint();
+	}
+	
+	public void resetFrame() {
+		this.getContentPane().removeAll();
+		this.setLayout(new BorderLayout());
 	}
 	
 }
