@@ -1,5 +1,6 @@
 package sd.core.player;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -8,6 +9,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
 import sd.core.GameBoard;
@@ -25,7 +28,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
-	private GamePanel gamePanel;
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
@@ -47,7 +49,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
-			this.gamePanel = new GamePanel();
 			if (coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward();
@@ -76,8 +77,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void buildGUIAndForward() {
-		this.mainFrame.setSize(800, 900);
-		this.mainFrame.addPanel(gamePanel);
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					mainFrame.setSize(800, 900);
+					mainFrame.addPanel(new GamePanel());
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
