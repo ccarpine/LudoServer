@@ -12,10 +12,8 @@ public class Constants {
 	public static final int FAIL = 3;
 	public static final int ROWS = 6;
 	public static final int COLUMNS = 12;
-	public static final String[] COLOR = { "RED", "GREEN", "VIOLET", "YELLOW", "BLACK", "BLUE" };
-	public static final String[] COLOR_VALUES = {"victoryRed30", "victoryGreen30", "victoryViolet30", "victoryYellow30", "victoryBlack30", "victoryBlu30" };
-	public static final String[] COLOR_PAWNS = {"pawnRed30", "pawnGreen30","pawnViolet30","pawnYellow30","pawnBlack30","pawnBlue30"};
-	public static final String COLOR_VALUES_WHITE = "white30";
+	public static final String[] COLOR = { "RED", "GREEN", "VIOLET", "YELLOW",
+			"BLACK", "BLUE" };
 	public static final String BLANK = "WHITE";
 	public static final int UPDATE_NEXT = 0;
 	public static final int PLAY_NEXT = 1;

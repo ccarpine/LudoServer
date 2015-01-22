@@ -8,14 +8,18 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import sd.core.CoreGame;
+import sd.core.Partecipant;
 import sd.util.Constants;
 
 public class ControlBoardPanel extends BGPanel {
@@ -23,7 +27,7 @@ public class ControlBoardPanel extends BGPanel {
 	private static final long serialVersionUID = 1L;
 	private CoreGame coreGame;
 	private boolean dieLaunched;
-	private JLabel playerConnected;
+	private List<JButton> currentPlayer;
 	private JLabel timeOfTurn;
 	private JLabel round;
 	private long countdown;
@@ -49,23 +53,27 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(timeOfTurn);
 		this.setTimer();
 		
+		JLabel roundIntro = new JLabel("Round:");
+		roundIntro.setBounds(10, 100, 180, 25);
+		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		roundIntro.setForeground(Color.WHITE);
+		this.add(roundIntro);
+		
+		round = new JLabel();
+		round.setBounds(10, 130, 180, 25);
+		round.setFont(new java.awt.Font("Helvetica", 0, 18));
+		round.setForeground(Color.LIGHT_GRAY);
+		this.add(round);
+		this.setRound();
+		
 		JLabel playerConnectedIntro = new JLabel("Current player:");
-		playerConnectedIntro.setBounds(10, 100, 180, 25);
+		playerConnectedIntro.setBounds(10, 160, 180, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		
-		playerConnected = new JLabel("Player 1");
-		playerConnected.setBounds(10, 130, 180, 25);
-		playerConnected.setFont(new java.awt.Font("Helvetica", 0, 18));
-		playerConnected.setForeground(Color.LIGHT_GRAY);
-		this.add(playerConnected);
-		
-		JLabel roundIntro = new JLabel("Round:");
-		roundIntro.setBounds(10, 160, 180, 25);
-		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
-		roundIntro.setForeground(Color.WHITE);
-		this.add(roundIntro);
+		this.initRound();
+		this.setPlayerConnected();
 		
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
@@ -121,8 +129,39 @@ public class ControlBoardPanel extends BGPanel {
 		dieLaunched = false;
 	}
 	
-	public void setPlayerConnected(String player) {
-		this.playerConnected.setText(player);
+	private void initRound() {
+		currentPlayer = new ArrayList<JButton>();
+		for (int i=0; i<Constants.COLOR.length; i++) {
+			JButton button = new JButton();
+			button.setBounds(10+(i*23), 190, 20, 20);
+			button.setOpaque(true);
+			button.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/"+Constants.COLOR[i]+".png")));
+			button.setBorder(new LineBorder(Color.BLACK, 1));
+			currentPlayer.add(button);
+			this.add(button);
+		}
+	}
+	
+	private void setPlayerConnected() {
+		String currentColor = this.coreGame.getCurrentPartecipant().getColor();
+		int position = 0;
+		for (int i=0; i<Constants.COLOR.length; i++) {
+			if (currentColor.equals(Constants.COLOR[i])) {
+				position = i;
+				break;
+			}
+		}
+		for (int i=0; i<currentPlayer.size(); i++) {
+			if (i != position) {
+				currentPlayer.get(i).setOpaque(false);
+			} else {
+				currentPlayer.get(i).setOpaque(true);
+			}
+		}
+	}
+	
+	public void setRound() {
+		round.setText(String.valueOf(this.coreGame.getRound()));
 	}
 	
 	public void setTimer() {
