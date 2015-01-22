@@ -1,6 +1,5 @@
 package sd.core.player;
 
-import java.awt.BorderLayout;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -48,6 +47,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
 			if (coreGame.amItheCurrentPartecipant()) {
+				System.out.println("Sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward();
 			}
 			
@@ -66,8 +66,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	@Override
 	public void buildGUI() throws RemoteException {
 		if (!coreGame.amItheCurrentPartecipant()) {
+			System.out.println("Non sono il primo e creo l'interfaccia");
 			this.buildGUIAndForward();
 		} else {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.initTurn();
 		}
 	}
@@ -153,6 +159,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		/* update GUI here showing possible moves passing the list above */
 		/* init GUI here */
 		/* END update GUI here */
+		
 		/* TODO togliere questa apply move, va chiamata da interfaccia */
 		this.applyMove(null);
 
