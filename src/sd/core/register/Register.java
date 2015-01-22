@@ -102,7 +102,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		System.out.println("------------------------");
 
 		/* partecipant limit reached, start the game */
-		if (this.gamersIp.size() == 2) {
+		if (this.gamersIp.size() == 3) {
 			System.out.println("SI PARTE!");
 			/* stop timer */
 			this.endTimer();

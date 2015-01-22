@@ -69,11 +69,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			System.out.println("Non sono il primo e creo l'interfaccia");
 			this.buildGUIAndForward();
 		} else {
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			this.initTurn();
 		}
 	}
