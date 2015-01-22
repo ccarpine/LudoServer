@@ -9,13 +9,12 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import sd.core.Partecipant;
 import sd.core.player.UserPlayerInterface;
+import sd.util.Constants;
 
 public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	private static final long serialVersionUID = 1L;
-	private final long timeLimit = 3000000000L;
 	private List<String> gamersIp;
 	private Thread ludoChronometer;
 	private long counter;
@@ -34,7 +33,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			public void run() {
 				counter = 0;
 				long startedAt = System.currentTimeMillis();
-				while (counter < timeLimit) {
+				while (counter < Constants.MAX_WAIT_FOR_MATCH) {
 					counter = System.currentTimeMillis() - startedAt;
 				}
 				startGame();
@@ -102,7 +101,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		System.out.println("------------------------");
 
 		/* partecipant limit reached, start the game */
-		if (this.gamersIp.size() == 2) {
+		if (this.gamersIp.size() == Constants.MAX_PLAYER) {
 			System.out.println("SI PARTE!");
 			/* stop timer */
 			this.endTimer();
@@ -111,7 +110,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			this.initVariable();
 			return 0;
 		}
-		return (this.timeLimit - this.counter);
+		return (Constants.MAX_WAIT_FOR_MATCH - this.counter);
 
 	}
 

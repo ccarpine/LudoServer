@@ -1,13 +1,9 @@
 package sd.core;
 
 import java.io.Serializable;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
 
 import sd.util.Constants;
 
@@ -47,6 +43,10 @@ public class CoreGame implements Serializable{
 	// returns the die launch result
 	private int getDie() {
 		return 1 + new Random().nextInt(6);
+	}
+	
+	public int getTurn() {
+		return this.turn;
 	}
 	
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {

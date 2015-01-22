@@ -1,6 +1,10 @@
 package sd.ui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+
+import sd.core.CoreGame;
 import sd.util.Constants;
 import layout.TableLayout;
 
@@ -162,7 +166,9 @@ public class GamePanel extends BGPanel {
 		GamePanel gamePanel = new GamePanel();
 		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
-		ControlBoardPanel controlBoardPanel = new ControlBoardPanel();
+		List<String> ip = new ArrayList<>();
+		ip.add("192.168.0.1");
+		ControlBoardPanel controlBoardPanel = new ControlBoardPanel(new CoreGame(ip));
 		mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 
 	}

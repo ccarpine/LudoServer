@@ -99,15 +99,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 		};
 		t.start();
-		//this.mainFrame.setSize(800, 900);
-		//this.mainFrame.addPanel(new GamePanel(), BorderLayout.CENTER);
-		/*try {
-			String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
-			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-			nextInTurn.buildGUI();
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			e.printStackTrace();
-		}*/
 	}
 	
 	@Override

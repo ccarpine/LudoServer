@@ -15,40 +15,57 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sd.core.CoreGame;
+import sd.util.Constants;
+
 public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
+	private CoreGame coreGame;
 	private boolean dieLaunched;
+	private JLabel playerConnected;
+	private JLabel timeOfTurn;
+	private JLabel round;
+	private long countdown;
 	
-	public ControlBoardPanel() {
+	public ControlBoardPanel(CoreGame coreGame) {
 		super("images/desk.jpg");
 		//this.setOpaque(true);
 		this.setLayout(null);
+		this.coreGame = coreGame;
 		this.dieLaunched = false;
+		this.countdown = Constants.MAX_WAIT_FOR_TURN;
 		
-		JLabel timeOfGameIntro = new JLabel("Time of game:");
-		timeOfGameIntro.setBounds(10, 20, 180, 25);
-		timeOfGameIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
-		timeOfGameIntro.setForeground(Color.WHITE);
-		this.add(timeOfGameIntro);
+		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
+		timeOfTurnIntro.setBounds(10, 20, 180, 25);
+		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		timeOfTurnIntro.setForeground(Color.WHITE);
+		this.add(timeOfTurnIntro);
 		
-		JLabel timeOfGame = new JLabel("0:00:00");
-		timeOfGame.setBounds(10, 50, 180, 25);
-		timeOfGame.setFont(new java.awt.Font("Helvetica", 0, 18));
-		timeOfGame.setForeground(Color.LIGHT_GRAY);
-		this.add(timeOfGame);
+		timeOfTurn = new JLabel();
+		timeOfTurn.setBounds(10, 50, 180, 25);
+		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
+		timeOfTurn.setForeground(Color.LIGHT_GRAY);
+		this.add(timeOfTurn);
+		this.setTimer();
 		
-		JLabel playerConnectedIntro = new JLabel("Current turn:");
+		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 100, 180, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		
-		JLabel playerConnected = new JLabel("Player 1");
+		playerConnected = new JLabel("Player 1");
 		playerConnected.setBounds(10, 130, 180, 25);
 		playerConnected.setFont(new java.awt.Font("Helvetica", 0, 18));
 		playerConnected.setForeground(Color.LIGHT_GRAY);
 		this.add(playerConnected);
+		
+		JLabel roundIntro = new JLabel("Round:");
+		roundIntro.setBounds(10, 160, 180, 25);
+		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		roundIntro.setForeground(Color.WHITE);
+		this.add(roundIntro);
 		
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
@@ -104,12 +121,35 @@ public class ControlBoardPanel extends BGPanel {
 		dieLaunched = false;
 	}
 	
+	public void setPlayerConnected(String player) {
+		this.playerConnected.setText(player);
+	}
+	
+	public void setTimer() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (countdown > 0) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					countdown--;
+					int seconds = (int) countdown % 60;
+					int minutes = (int) ((countdown / 60) % 60);
+					timeOfTurn.setText(String.format("%02d", minutes)+":"+String.format("%02d", seconds));
+				}
+				// Chiamata al prossimo
+			}
+		}).start();
+	}
+	
 	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
         super.paint(g);
-
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(dieSprite, x, y, this);
-
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
