@@ -20,6 +20,14 @@ public class CellButton extends JButton implements Runnable {
 	private String pathOn;
 	private String pathOff;
 
+	/** it creates a graphical cel and associates it to the corresponding one in memory
+	 * 
+	 * @param pRow, the row of the GUI in which the cell will be inserted
+	 * @param pCol, the col of the GUI in which the cell will be inserted
+	 * @param pathOn, path to an icon representing the cell as on
+	 * @param pathOff, path to an icon representing the cell as turned off
+	 * @param cell, the cell in memory to which the GUI cell will be associated
+	 */
 	public CellButton(int pRow, int pCol, String pathOn, String pathOff,
 			Cell cell) {
 		super("");
@@ -69,6 +77,9 @@ public class CellButton extends JButton implements Runnable {
 		this.colOnGameBoard = colOnGameBoard;
 	}
 
+	/**
+	 * If this GUI cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
+	 */
 	public void changeState() {
 		if (isOn) {
 			this.isOn = false;

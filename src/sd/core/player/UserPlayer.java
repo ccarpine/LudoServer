@@ -208,12 +208,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 			
 	}
 	@Override
+	/**
+	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
+	 */
 	public void initTurn() throws RemoteException {
 		
 		System.out.println("2 INIT TURN RECEIVED -->" );
 		controlBoardPanel.enableTurn();
 	}
 
+	/** It causes the chosen move to be performed by applying the game rules
+	 * 
+	 * @param chosenMove, the move a player has decided to perform
+	 */
 	public void applyMove(Move chosenMove) {
 		this.coreGame.handleTurn(chosenMove);
 		/* update GUI here */
