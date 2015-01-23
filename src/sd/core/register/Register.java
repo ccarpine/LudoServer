@@ -86,32 +86,44 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	private synchronized long registerSynch(String clientIp) {
-		//System.out.println("register!");
-		if (this.gamersIp.size() == 0) {
-			/* start timer */
-			this.startTimer();
+		if (this.getPresenceIp(clientIp)) {
+			
+			if (this.gamersIp.size() == 0) {
+				/* start timer */
+				this.startTimer();
+			}
+			/* add the partecipant ip to the list */
+			
+			this.gamersIp.add(clientIp);
+	
+			System.out.println("SERVER ---- client ip:" + clientIp);
+			System.out.println("------------------------");
+			System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
+			System.out.println("------------------------");
+	
+			/* partecipant limit reached, start the game */
+			if (this.gamersIp.size() == Constants.MAX_PLAYER) {
+				System.out.println("SI PARTE!");
+				/* stop timer */
+				this.endTimer();
+				this.startGame();
+				/* reset variables */
+				this.initVariable();
+				return 0;
+			}
 		}
-		/* add the partecipant ip to the list */
-		this.gamersIp.add(clientIp);
-
-		System.out.println("SERVER ---- client ip:" + clientIp);
-		System.out.println("------------------------");
-		System.out.println("SERVER ---- Client registrati per la partita:"
-				+ this.gamersIp.size());
-		System.out.println("------------------------");
-
-		/* partecipant limit reached, start the game */
-		if (this.gamersIp.size() == Constants.MAX_PLAYER) {
-			System.out.println("SI PARTE!");
-			/* stop timer */
-			this.endTimer();
-			this.startGame();
-			/* reset variables */
-			this.initVariable();
-			return 0;
-		}
+		
 		return (Constants.MAX_WAIT_FOR_MATCH - this.counter);
 
+	}
+	
+	private boolean getPresenceIp(String ip) {
+		for (int i=0; i<this.gamersIp.size(); i++) {
+			if (ip.equals(this.gamersIp.get(i))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

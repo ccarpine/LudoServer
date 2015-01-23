@@ -28,22 +28,23 @@ public class IntroPanel extends BGPanel {
 	public IntroPanel(final String serverIP) {
 		super("images/startWallpaper.jpg");
 		this.setLayout(null);
-
-		timer = new JLabel("Start in:");
-		timer.setBounds(420, 110, 100, 30);
-		timer.setFont(new java.awt.Font("Helvetica", Font.BOLD, 22));
-		timer.setForeground(Color.BLACK);
-		timer.setVisible(false);
-		this.add(timer);
 		
-		countdown = new JLabel();
-		countdown.setBounds(450, 140, 100, 30);
-		countdown.setFont(new java.awt.Font("Helvetica", 0, 20));
-		countdown.setForeground(Color.BLACK);
-		countdown.setVisible(false);
-		this.add(countdown);
+		JLabel ludo1 = new JLabel();
+		ludo1.setBounds(300, 30, 150, 200);
+		ludo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry1.png")));
+		this.add(ludo1);
 		
-		JButton goOnMatch = new javax.swing.JButton();
+		JLabel ludo2 = new JLabel();
+		ludo2.setBounds(440, 30, 150, 200);
+		ludo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry2.png")));
+		this.add(ludo2);
+		
+		JLabel ludo3 = new JLabel();
+		ludo3.setBounds(10, 280, 200, 200);
+		ludo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry3.png")));
+		this.add(ludo3);
+		
+		final JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 250, 180, 60);
 		goOnMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/start.jpg")));
 		goOnMatch.addActionListener(new ActionListener() {
@@ -51,6 +52,8 @@ public class IntroPanel extends BGPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				goOnMatch.setEnabled(false);
+				
 				if (startConnection(serverIP)) {
 					System.out.println("RICHIESTA INVIATA!");
 					timer.setVisible(true);
@@ -71,11 +74,27 @@ public class IntroPanel extends BGPanel {
 			}
 		});
 		this.add(exit);
+		
+		timer = new JLabel("Start in:");
+		timer.setBounds(330, 405, 100, 30);
+		timer.setFont(new java.awt.Font("Helvetica", 0, 18));
+		timer.setForeground(Color.BLACK);
+		timer.setVisible(false);
+		this.add(timer);
+		
+		countdown = new JLabel();
+		countdown.setBounds(410, 405, 100, 30);
+		countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
+		countdown.setForeground(Color.BLACK);
+		countdown.setVisible(false);
+		this.add(countdown);
+		
 		this.waitingLabel = new JLabel("Wait other players...");
 		this.waitingLabel.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.waitingLabel.setBounds(330, 420, 300, 50);
 		this.waitingLabel.setVisible(false);
 		this.add(waitingLabel);
+		
 	}
 	
 	private boolean startConnection(String serverIP) {
