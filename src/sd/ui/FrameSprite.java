@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 public class FrameSprite {
 
     private BufferedImage frame;
-    private int duration;
+    //private int duration;
 
-    public FrameSprite(BufferedImage frame, int duration) {
+    public FrameSprite(BufferedImage frame/*, int duration*/) {
         this.frame = frame;
-        this.duration = duration;
+        //this.duration = duration;
     }
 
     public BufferedImage getFrame() {
@@ -20,12 +20,12 @@ public class FrameSprite {
         this.frame = frame;
     }
 
-    public int getDuration() {
+    /*public int getDurations() {
         return duration;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
+    }*/
 
 }

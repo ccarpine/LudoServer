@@ -65,7 +65,7 @@ public class AnimationSprite {
             System.err.println("Invalid duration: " + duration);
             throw new RuntimeException("Invalid duration: " + duration);
         }
-        frames.add(new FrameSprite(frame, duration));
+        frames.add(new FrameSprite(frame/*, duration*/));
         currentFrame = 0;
     }
     
