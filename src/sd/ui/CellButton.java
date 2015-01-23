@@ -5,21 +5,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import sd.core.Cell;
 
 public class CellButton extends JButton implements Runnable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private int row;
 	private int col;
 	private int rowOnGameBoard;
 	private int colOnGameBoard;
 	private boolean isOn;
+	private boolean flashing = false;
 	private String pathOn;
 	private String pathOff;
-		
-	public CellButton(int pRow, int pCol, String pathOn, String pathOff, Cell cell) {
+
+	public CellButton(int pRow, int pCol, String pathOn, String pathOff,
+			Cell cell) {
 		super("");
 		this.isOn = false;
 		this.pathOn = pathOn;
@@ -33,7 +36,8 @@ public class CellButton extends JButton implements Runnable {
 			this.rowOnGameBoard = -1;
 			this.colOnGameBoard = -1;
 		}
-		this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
+		this.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+				this.pathOff)));
 		this.setBorder(null);
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
@@ -41,10 +45,14 @@ public class CellButton extends JButton implements Runnable {
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Hai cliccato:\nla cella in matrice ("+rowOnGameBoard+", "+colOnGameBoard+")'\nla cella nella gui ("+row+", "+col+")");
+				JOptionPane.showMessageDialog(null,
+						"Hai cliccato:\nla cella in matrice (" + rowOnGameBoard
+								+ ", " + colOnGameBoard
+								+ ")'\nla cella nella gui (" + row + ", " + col
+								+ ")");
 			}
 		});
-		
+
 	}
 
 	public int getRow() {
@@ -70,27 +78,45 @@ public class CellButton extends JButton implements Runnable {
 	public void setColOnGameBoard(int colOnGameBoard) {
 		this.colOnGameBoard = colOnGameBoard;
 	}
-	
+
 	public void changeState() {
 		if (isOn) {
 			this.isOn = false;
-			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
+			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+					this.pathOff)));
 		} else {
 			this.isOn = true;
 			new Thread(this).start();
 		}
 	}
 
+	/*
+	 * @Override public void run() { while (this.isOn) { try { this.setIcon(new
+	 * javax.swing.ImageIcon(getClass().getResource(this.pathOn)));
+	 * Thread.sleep(500); this.setIcon(new
+	 * javax.swing.ImageIcon(getClass().getResource(this.pathOff))); } catch
+	 * (InterruptedException e) { e.printStackTrace(); } } }
+	 */
+
 	@Override
 	public void run() {
 		while (this.isOn) {
-			try {
-				this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOn)));
-				Thread.sleep(500);
-				this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}			
+			Timer timer = new Timer(500, new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!flashing) {
+						setIcon(new javax.swing.ImageIcon(getClass()
+								.getResource(pathOn)));
+					}
+
+					else
+						setIcon(new javax.swing.ImageIcon(getClass()
+								.getResource(pathOff)));
+
+				}
+			});
+			timer.start();
 		}
 	}
 }
