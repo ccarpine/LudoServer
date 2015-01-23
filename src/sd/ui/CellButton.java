@@ -43,14 +43,7 @@ public class CellButton extends JButton implements Runnable {
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
-		this.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (isOn) {
-					cellChosen = true;
-				}
-			}
-		});
+		
 
 	}
 
@@ -103,25 +96,26 @@ public class CellButton extends JButton implements Runnable {
 
 	@Override
 	public void run() {
-		while (this.isOn) {
-			Timer timer = new Timer(500, new ActionListener() {
+		Timer timer = new Timer(500, new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (!flashing) {
-						setIcon(new javax.swing.ImageIcon(getClass()
-								.getResource(pathOn)));
-						flashing = true;
-					}
-
-					else {
-						setIcon(new javax.swing.ImageIcon(getClass()
-								.getResource(pathOff)));
-						flashing = false;
-					}
-
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!flashing) {
+					setIcon(new javax.swing.ImageIcon(getClass().getResource(
+							pathOn)));
+					flashing = true;
 				}
-			});
+
+				else {
+					setIcon(new javax.swing.ImageIcon(getClass().getResource(
+							pathOff)));
+					flashing = false;
+				}
+
+			}
+		});
+		while (this.isOn) {
+
 			timer.start();
 		}
 	}
