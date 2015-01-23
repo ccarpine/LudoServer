@@ -17,6 +17,9 @@ public class CoreGame implements Serializable{
 	private boolean isDoubleTurn;
 	private int turn; /*increase each time a player play*/ 
 
+	/**  Create a new empty cell
+	 *   @param ipGamers, IP list of all player
+	 */
 	public CoreGame(List<String> ipGamers) {
 
 		this.winner = null;
@@ -40,16 +43,138 @@ public class CoreGame implements Serializable{
 		return this.partecipants;
 	}
 	
-	// returns the die launch result
-	public int getDie() {
+	public GameBoard getGameBoard() {
+		return this.gameBoard;
+	}
+	
+	/**
+	 * 
+	 * @return boolean, TRUE if how invoke is the current partecipant
+	 */
+	public boolean amItheCurrentPartecipant( ){
+		return this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp());
+	}
+	
+	/**
+	 * 
+	 * @return random int from 0 to 6
+	 */
+	public int launchDie() {
+		//TODO 
 		//return 1 + new Random().nextInt(6);
 		return 5;
 	}
 	
+	/**
+	 * 
+	 * @return int represent the current turn
+	 * 
+	 */
 	public int getRound() {
 		return (this.turn % (this.partecipants.size())) + 1;
 	}
+
+	/**
+	 * 
+	 * @return partecipant of client that invoke
+	 */
+	public Partecipant getMyPartecipant() {
+		Partecipant myPartecipant = null;
+		for (int i = 0; i < this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).isMine()) {
+				myPartecipant = this.partecipants.get(i);
+				break;
+			}
+		}
+		return myPartecipant;
+	}
+
+	/**
+	 * 
+	 * @param ip, String ip of a specific partecipant
+	 * @return partecipant, the next player
+	 */
+	public Partecipant getNextPartecipant(String ip) {
+		Partecipant partecipant = null;
+		for (int i = 0; i < this.partecipants.size(); i++) {
+			if (ip.equals(this.partecipants.get(i).getIp())) {
+				partecipant = this.partecipants.get( (i +1) % this.partecipants.size());
+				break;
+			}
+		}
+		return partecipant;
+	}
+
+	/**
+	 * 
+	 * @param color of the partecipant
+	 * @return int, index in partecipant list 
+	 */
+	public int getIDPartecipantByColor(String color) {
+		for (int i = 0; i < this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).getColor().equals(color)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 	
+	/**
+	 * 
+	 * @return partecipant, current partecipant
+	 */
+	public Partecipant getCurrentPartecipant() {
+		Partecipant partecipant = null;
+		for (int i=0; i<this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).getIp().equals(ipCurrentPartecipant)) {
+				partecipant = this.partecipants.get(i);
+				break;
+			}
+		}
+		return partecipant;
+	}
+	
+	/**
+	 * Prepares the turn by setting the current player and returning his list of possible moves, setting
+	 * isDoubleTurn to true if the launch die result is equal to 6
+	 * @param resultDie, int the result of launch die
+	 * @return List<Move>, all the possibile for partecipant 
+	 */
+	public List<Move> initTurn(int resultDie) {
+		Partecipant tempPartecipant = this.getMyPartecipant();
+		this.ipCurrentPartecipant = tempPartecipant.getIp();
+		System.out.println("result die: "+ resultDie);
+		if (resultDie == 6 && !this.isDoubleTurn) {
+			this.isDoubleTurn = true;
+		} else {
+			this.isDoubleTurn = false;
+		}
+		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
+	}
+	
+	/**
+	 * make move choosen and check if the partecipant win
+	 * @param chosenMove, Move choosen by partecipant
+	 */
+	public void handleTurn(Move chosenMove) {
+		String result = this.gameBoard.makeMove(chosenMove,this.getMyPartecipant());
+		if (result != null) {
+			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
+		}
+		Partecipant partecipant = this.getMyPartecipant();
+		if (this.gameBoard.isVictory(partecipant)) {
+			this.winner = partecipant.getColor();
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param partecipant, list of all partecipant 
+	 * @param gameBoard, current game board of the match with pawn in correct position
+	 * @param ipCurrentPartecipant, IP of the new current partecipant that have to play
+	 * @return int the result of the updateStatus (tell if the player have to play again, send update to next partecipant...)
+	 */
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {
 		
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
@@ -68,89 +193,5 @@ public class CoreGame implements Serializable{
 			this.gameBoard = gameBoard;
 			return Constants.UPDATE_NEXT;
 		}
-	}
-
-	public Partecipant getMyPartecipant() {
-
-		Partecipant myPartecipant = null;
-		for (int i = 0; i < this.partecipants.size(); i++) {
-
-			if (this.partecipants.get(i).isMine()) {
-				myPartecipant = this.partecipants.get(i);
-				break;
-			}
-		}
-		return myPartecipant;
-	}
-
-	// return the next player from the given IP
-	public Partecipant getNextPartecipant(String ip) {
-		
-		Partecipant partecipant = null;
-		for (int i = 0; i < this.partecipants.size(); i++) {
-			if (ip.equals(this.partecipants.get(i).getIp())) {
-				partecipant = this.partecipants.get( (i +1) % this.partecipants.size());
-				break;
-			}
-		}
-		return partecipant;
-	}
-
-	public int getIDPartecipantByColor(String color) {
-
-		for (int i = 0; i < this.partecipants.size(); i++) {
-			if (this.partecipants.get(i).getColor().equals(color)) {
-				return i;
-			}
-		}
-		/* it should never get here */
-		return -1;
-	}
-
-	/* prepares the turn by setting the current player and returning his list of possible moves */
-	public List<Move> initTurn(int resultDie) {
-		Partecipant tempPartecipant = this.getMyPartecipant();
-		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		System.out.println("result die: "+ resultDie);
-		if (resultDie == 6 && !this.isDoubleTurn) {
-			this.isDoubleTurn = true;
-		} else {
-			this.isDoubleTurn = false;
-		}
-		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
-	}
-
-	public void handleTurn(Move chosenMove) {
-		String result = this.gameBoard.makeMove(chosenMove,this.getMyPartecipant());
-
-		if (result != null) {
-			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
-		}
-
-		Partecipant partecipant = this.getMyPartecipant();
-
-		if (this.gameBoard.isVictory(partecipant)) {
-			this.winner = partecipant.getColor();
-		}
-
-	}
-	
-	public GameBoard getGameBoard() {
-		return this.gameBoard;
-	}
-
-	public boolean amItheCurrentPartecipant( ){
-		return this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp());
-	}
-	
-	public Partecipant getCurrentPartecipant() {
-		Partecipant partecipant = null;
-		for (int i=0; i<this.partecipants.size(); i++) {
-			if (this.partecipants.get(i).getIp().equals(ipCurrentPartecipant)) {
-				partecipant = this.partecipants.get(i);
-				break;
-			}
-		}
-		return partecipant;
 	}
 }

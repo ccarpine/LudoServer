@@ -192,7 +192,7 @@ public class ControlBoardPanel extends BGPanel {
 					.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 
-		int launchResult = coreGame.getDie();
+		int launchResult = coreGame.launchDie();
 		
 		System.out.println(launchResult);
 
