@@ -8,30 +8,16 @@ import javax.imageio.ImageIO;
 
 public class DieSprite {
 
-    private static BufferedImage spriteSheet;
     private static final int TILE_SIZE = 37;
 
-    private static BufferedImage loadSprite(String filePath) {
-    	BufferedImage sprite = null;
-        try {
-        	sprite = ImageIO.read(new File(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sprite;
-    }
-
     public static BufferedImage getSprite(int xGrid, int yGrid) {
-    	//BufferedImage sprite = null;
-        try {
+    	try {
         	BufferedImage sprite = ImageIO.read(new File("src/sd/ui/images/diceSprite.png"));
-        	spriteSheet = sprite;
-        	return spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        	return sprite.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    	//spriteSheet = sprite;
-        return null;//spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        return null;
     }
 
 }
