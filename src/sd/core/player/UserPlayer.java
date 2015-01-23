@@ -91,7 +91,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							gamePanel = new GamePanel(coreGame);
 							gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 							mainFrame.addPanel(gamePanel, BorderLayout.WEST);
-							controlBoardPanel = new ControlBoardPanel(coreGame);
+							controlBoardPanel = new ControlBoardPanel(gamePanel, coreGame);
 							mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 						}
 					});

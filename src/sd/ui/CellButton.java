@@ -71,7 +71,7 @@ public class CellButton extends JButton implements Runnable {
 		this.colOnGameBoard = colOnGameBoard;
 	}
 	
-	public void changeState(){
+	public void changeState() {
 		if (isOn) {
 			this.isOn = false;
 			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
@@ -80,29 +80,17 @@ public class CellButton extends JButton implements Runnable {
 			new Thread(this).start();
 		}
 	}
-	
-//	private void flashImage(JButton button) {
-//		Color origColor = button.getBackground();
-//		button.setBackground(color);
-//		pause(250);
-//		button.setBackground(origColor);
-//		pause(250);
-//		button.setBackground(color);
-//		pause(250);
-//		button.setBackground(origColor);
-//	}
 
 	@Override
 	public void run() {
 		while (this.isOn) {
-			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOn)));
 			try {
+				this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOn)));
 				Thread.sleep(500);
+				this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(this.pathOff)));
+			}			
 		}
 	}
 }

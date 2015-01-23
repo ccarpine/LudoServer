@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
 import sd.core.Move;
@@ -24,6 +25,7 @@ import sd.util.Constants;
 public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
+	private GamePanel gamePanel;
 	private CoreGame coreGame;
 	private List<JButton> currentPlayer;
 	private JLabel timeOfTurn;
@@ -39,10 +41,11 @@ public class ControlBoardPanel extends BGPanel {
 											 */
 	private JButton die;
 
-	public ControlBoardPanel(CoreGame coreGame) {
+	public ControlBoardPanel(GamePanel gamePanel, CoreGame coreGame) {
 		super("images/desk.jpg");
 		// this.setOpaque(true);
 		this.setLayout(null);
+		this.gamePanel = gamePanel;
 		this.coreGame = coreGame;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
 
@@ -265,9 +268,23 @@ public class ControlBoardPanel extends BGPanel {
 	
 	private void executeTurn(int resultDie) {
 		List<Move> possibleMoves = coreGame.initTurn(resultDie);
-		System.out.println(possibleMoves.get(0).getDestination());
+		System.out.println(possibleMoves.get(0).getDestination().getRow()+", "+possibleMoves.get(0).getDestination().getColumn());
 		/* update GUI here showing possible moves passing the list above */
-		//gamePanel.setPossibleMovesStartingFrom(possibleMoves);
+		this.gamePanel.setPossibleMovesStartingFrom(possibleMoves);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				l();
+				
+			}
+		}).start();
+	}
+	
+	private void l() {
+		while (true) {
+			this.gamePanel.revalidate();
+			this.gamePanel.repaint();
+		}
 	}
 
 }
