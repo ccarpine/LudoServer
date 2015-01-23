@@ -189,6 +189,14 @@ public class GamePanel extends BGPanel {
 		return String.valueOf(position[1]) + "," + String.valueOf(position[0]);
 
 	}
+	
+	public static void setPossibleMovesStartingFrom(List<Move> possibleMoves){
+		for (int i = 0; i < possibleMoves.size(); i++){
+			possibleMoves.get(i).getStart().getRow();
+			possibleMoves.get(i).getStart().getColumn();
+		}
+		
+	}
 
 	public static void main(String argv[]) {
 

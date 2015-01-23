@@ -84,6 +84,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						@Override
 						public void run() {
 							mainFrame.setSize(800, 900);
+							mainFrame.resetFrame();
 							mainFrame.addPanel(new GamePanel(coreGame), BorderLayout.CENTER);
 						}
 					});
