@@ -41,6 +41,11 @@ public class ControlBoardPanel extends BGPanel {
 											 */
 	private JButton die;
 
+	/**
+	 * 
+	 * @param gamePanel
+	 * @param coreGame
+	 */
 	public ControlBoardPanel(GamePanel gamePanel, CoreGame coreGame) {
 		super("images/desk.jpg");
 		// this.setOpaque(true);
@@ -138,12 +143,33 @@ public class ControlBoardPanel extends BGPanel {
 		this.exactDieFaces = this.initExactDieFaces();
 	}
 	
+	/**
+	 * enable the button for launch die
+	 */
 	public void enableTurn() {
 		die.setEnabled(true);
 	}
 
+	/**
+	 * Add the die in the panel in a specific position
+	 * @param g 
+	 * @param dieSprite, buffered image of the die
+	 * @param x, orizontal position in the panel
+	 * @param y, vertical position in the panel
+	 */
+	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
+		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(dieSprite, x, y, this);
+		Toolkit.getDefaultToolkit().sync();
+		g.dispose();
+	}
+	
+	/**
+	 * 
+	 * @return multidimensional array of buffered images for the 6 final image representing the die luaunch
+	 */
 	private BufferedImage[][] initExactDieFaces() {
-
 		BufferedImage[][] result = new BufferedImage[6][1];
 		result[0][0] = DieSprite.getSprite(0, 4); /* die face 1 */
 		result[1][0] = DieSprite.getSprite(4, 4); /* die face 2 */
@@ -151,67 +177,59 @@ public class ControlBoardPanel extends BGPanel {
 		result[3][0] = DieSprite.getSprite(0, 0); /* die face 4 */
 		result[4][0] = DieSprite.getSprite(12, 4); /* die face 5 */
 		result[5][0] = DieSprite.getSprite(8, 4); /* die face 6 */
-
 		return result;
-
 	}
 
+	/**
+	 * 
+	 * @return create array of buffered image with all possibile image for the die while is routing
+	 */
 	private BufferedImage[] initAnimationBuffer() {
-
 		BufferedImage[] result = new BufferedImage[Constants.ROTATIONS];
-
 		int rowSprite, colSprite;
 		Random random = new Random();
-
 		for (int i = 0; i < Constants.ROTATIONS; i++) {
 			rowSprite = random.nextInt(9);
-
 			if (rowSprite == 0 || rowSprite == 8)
 				colSprite = 0;
 			else
 				colSprite = random.nextInt(16);
-
 			result[i] = DieSprite.getSprite(colSprite, rowSprite);
 		}
-
 		return result;
-
 	}
 
+	/**
+	 * make the animation of launch die in a specific container and set the
+	 * possible destination for the result in the game panel
+	 * @param Jpanel, the container for the die animation 
+	 */
 	private void startAnimationDie(JPanel container) {
 		int animationSpeed = 40;
 		// These are animation states
-		AnimationSprite move = new AnimationSprite(this.animationBuffer,
-				animationSpeed);
+		AnimationSprite move = new AnimationSprite(this.animationBuffer,animationSpeed);
 		// This is the actual animation
 		AnimationSprite animation = move;
 		animation.start();
 		for (int counter = 0; counter < animationSpeed * 100; counter++) {
 			animation.update();
-			paint(container.getGraphics(), animation.getSprite(), animation
-					.getSprite().getWidth(), animation.getSprite().getHeight());
+			paint(container.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
-
 		int launchResult = coreGame.launchDie();
-		
 		System.out.println(launchResult);
-
 		/* showing final face of the die, according to the launch result */
-		AnimationSprite resultAnimation = new AnimationSprite(
-				this.exactDieFaces[launchResult - 1], 6);
+		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult - 1], 6);
 		resultAnimation.start();
-
-		// for (int counter = 0; counter < animationSpeed * 100; counter++) {
 		resultAnimation.update();
 		paint(container.getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
-		// }
-		
 		this.gamePanel.makePossibleMoveFlash(launchResult);
-		
 	}
 
+	/**
+	 * set the icon for all the player
+	 */
 	private void initRound() {
 		currentPlayer = new ArrayList<JButton>();
 		for (int i = 0; i < Constants.COLOR.length; i++) {
@@ -227,18 +245,23 @@ public class ControlBoardPanel extends BGPanel {
 		}
 	}
 
+	/**
+	 * set the icon for the current player as on, the other as off
+	 */
 	private void setPlayerConnected() {
 		for (int i = 0; i < currentPlayer.size(); i++) {
 			if (i != ((this.coreGame.getRound()-1)) % Constants.COLOR.length) {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
-						"images/box/off/" + Constants.COLOR[i] + ".png")));
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
-						"images/box/on/" + Constants.COLOR[i] + ".png")));
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("images/box/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
 	}
 
+	/**
+	 * set the timer for the turn of single player. 
+	 * When timer end the turn pass to the next player
+	 */
 	private void setTimer() {
 		thread = new Thread(new Runnable() {
 			@Override
@@ -261,14 +284,6 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		thread.start();
-	}
-
-	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(dieSprite, x, y, this);
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
 	}
 
 }
