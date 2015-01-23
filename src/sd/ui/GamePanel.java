@@ -41,7 +41,7 @@ public class GamePanel extends BGPanel {
 
 			/* creating first cell for that color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0],
-					Constants.STARTS_COLORS[i][1], "images/box/"+Constants.COLOR[i]+".png");
+					Constants.STARTS_COLORS[i][1], "images/box/"+Constants.COLOR[i]+".png", this.coreGame.getGameBoard().getCell(i, 0));
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -51,7 +51,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], "images/box/"+Constants.BLANK+".png");
+						nextPosition[1], "images/box/"+Constants.BLANK+".png",this.coreGame.getGameBoard().getCell(i, j+1));
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -61,7 +61,7 @@ public class GamePanel extends BGPanel {
 			/* creating starting cell for the win path for that color */
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0],
 					Constants.STARTS_WIN_COLORS[i][1],
-					"images/victory/"+Constants.COLOR[i]+".png");
+					"images/victory/"+Constants.COLOR[i]+".png",this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -70,7 +70,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
-						nextPosition[1], "images/victory/"+Constants.COLOR[i]+".png");
+						nextPosition[1], "images/victory/"+Constants.COLOR[i]+".png", this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
