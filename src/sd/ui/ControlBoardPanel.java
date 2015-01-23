@@ -84,12 +84,11 @@ public class ControlBoardPanel extends BGPanel {
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
 
-		round = new JLabel();
+		round = new JLabel(String.valueOf(this.coreGame.getRound()));
 		round.setBounds(10, 170, 185, 25);
 		round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
-		this.setRound();
 
 		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 200, 185, 25);
@@ -240,11 +239,7 @@ public class ControlBoardPanel extends BGPanel {
 		}
 	}
 
-	public void setRound() {
-		round.setText(String.valueOf(this.coreGame.getRound()));
-	}
-
-	public void setTimer() {
+	private void setTimer() {
 		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -261,8 +256,8 @@ public class ControlBoardPanel extends BGPanel {
 							+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
+				// TODO chiamata al prossimo
 				setPlayerConnected();
-				setRound();
 			}
 		});
 		thread.start();

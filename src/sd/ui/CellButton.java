@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sd.core.Cell;
@@ -17,6 +16,7 @@ public class CellButton extends JButton implements Runnable {
 	private int rowOnGameBoard;
 	private int colOnGameBoard;
 	private boolean isOn;
+	private boolean cellChosen;
 	private boolean flashing = false;
 	private String pathOn;
 	private String pathOff;
@@ -25,6 +25,7 @@ public class CellButton extends JButton implements Runnable {
 			Cell cell) {
 		super("");
 		this.isOn = false;
+		this.cellChosen = false;
 		this.pathOn = pathOn;
 		this.pathOff = pathOff;
 		this.row = pRow;
@@ -45,11 +46,9 @@ public class CellButton extends JButton implements Runnable {
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,
-						"Hai cliccato:\nla cella in matrice (" + rowOnGameBoard
-								+ ", " + colOnGameBoard
-								+ ")'\nla cella nella gui (" + row + ", " + col
-								+ ")");
+				if (isOn) {
+					cellChosen = true;
+				}
 			}
 		});
 
@@ -77,6 +76,10 @@ public class CellButton extends JButton implements Runnable {
 
 	public void setColOnGameBoard(int colOnGameBoard) {
 		this.colOnGameBoard = colOnGameBoard;
+	}
+	
+	public boolean isCellChosen() {
+		return cellChosen;
 	}
 
 	public void changeState() {
