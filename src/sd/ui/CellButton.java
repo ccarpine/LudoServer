@@ -78,7 +78,7 @@ public class CellButton extends JButton implements Runnable {
 	}
 
 	/**
-	 * If this GUI cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
+	 * If this GUI  cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
 	 */
 	public void changeState() {
 		if (isOn) {
