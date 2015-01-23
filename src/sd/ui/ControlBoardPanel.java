@@ -47,35 +47,51 @@ public class ControlBoardPanel extends BGPanel {
 		this.gamePanel = gamePanel;
 		this.coreGame = coreGame;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
+		
+		JLabel colorIntro = new JLabel("Your color:");
+		colorIntro.setBounds(10, 20, 185, 25);
+		colorIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		colorIntro.setForeground(Color.WHITE);
+		this.add(colorIntro);
+		
+		JButton color = new JButton();
+		color.setBounds(10, 50, 30, 30);
+		color.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+				"images/box/on/" + this.coreGame.getCurrentPartecipant().getColor() + ".png")));
+		color.setBorder(null);
+		color.setFocusPainted(false);
+		color.setBorderPainted(false);
+		color.setContentAreaFilled(false);
+		this.add(color);
 
 		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
-		timeOfTurnIntro.setBounds(10, 20, 185, 25);
+		timeOfTurnIntro.setBounds(10, 80, 185, 25);
 		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		timeOfTurnIntro.setForeground(Color.WHITE);
 		this.add(timeOfTurnIntro);
 
 		timeOfTurn = new JLabel();
-		timeOfTurn.setBounds(10, 50, 185, 25);
+		timeOfTurn.setBounds(10, 110, 185, 25);
 		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
 		this.setTimer();
 
 		JLabel roundIntro = new JLabel("Round:");
-		roundIntro.setBounds(10, 100, 185, 25);
+		roundIntro.setBounds(10, 140, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
 
 		round = new JLabel();
-		round.setBounds(10, 130, 185, 25);
+		round.setBounds(10, 170, 185, 25);
 		round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
 		this.setRound();
 
 		JLabel playerConnectedIntro = new JLabel("Current player:");
-		playerConnectedIntro.setBounds(10, 160, 185, 25);
+		playerConnectedIntro.setBounds(10, 200, 185, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD,
 				18));
 		playerConnectedIntro.setForeground(Color.WHITE);
@@ -200,7 +216,7 @@ public class ControlBoardPanel extends BGPanel {
 		currentPlayer = new ArrayList<JButton>();
 		for (int i = 0; i < Constants.COLOR.length; i++) {
 			JButton button = new JButton();
-			button.setBounds(5 + (i * 33), 195, 30, 30);
+			button.setBounds(5 + (i * 33), 235, 30, 30);
 			button.setOpaque(true);
 			button.setBorder(null);
 			button.setFocusPainted(false);
@@ -246,6 +262,7 @@ public class ControlBoardPanel extends BGPanel {
 				die.setEnabled(false);
 				setPlayerConnected();
 				setRound();
+				updateUI();
 				// TODO Chiamata al prossimo
 			}
 		}).start();
