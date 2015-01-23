@@ -16,7 +16,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
 import sd.core.Move;
@@ -213,17 +212,8 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	private void setPlayerConnected() {
-		String currentColor = this.coreGame.getCurrentPartecipant().getColor();
-		int position = 0;
-		for (int i = 0; i < Constants.COLOR.length; i++) {
-			if (currentColor.equals(Constants.COLOR[i])) {
-				position = i;
-				break;
-			}
-		}
-		// TODO no funziona
 		for (int i = 0; i < currentPlayer.size(); i++) {
-			if (i != position) {
+			if (i != this.coreGame.getRound()) {
 				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
 						"images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
@@ -253,6 +243,9 @@ public class ControlBoardPanel extends BGPanel {
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"
 							+ String.format("%02d", seconds));
 				}
+				die.setEnabled(false);
+				setPlayerConnected();
+				setRound();
 				// TODO Chiamata al prossimo
 			}
 		}).start();
@@ -271,20 +264,6 @@ public class ControlBoardPanel extends BGPanel {
 		System.out.println(possibleMoves.get(0).getDestination().getRow()+", "+possibleMoves.get(0).getDestination().getColumn());
 		/* update GUI here showing possible moves passing the list above */
 		this.gamePanel.setPossibleMovesStartingFrom(possibleMoves);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				l();
-				
-			}
-		}).start();
-	}
-	
-	private void l() {
-		while (true) {
-			this.gamePanel.revalidate();
-			this.gamePanel.repaint();
-		}
 	}
 
 }
