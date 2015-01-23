@@ -11,6 +11,11 @@ import sd.core.Move;
 import sd.util.Constants;
 import layout.TableLayout;
 
+/**
+ * 
+ * Game Panel, portion of GUI for the Board, manage
+ *
+ */
 public class GamePanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -20,6 +25,10 @@ public class GamePanel extends BGPanel {
 	private CellButton[][] cellsButton;
 	private List<Move> possibleMoves;
 
+	/**
+	 * create a gameBoard, each cell is a cell button 
+	 * @param coreGame
+	 */
 	public GamePanel(CoreGame coreGame) {
 		super("images/table.png");
 		this.coreGame = coreGame;
@@ -164,69 +173,68 @@ public class GamePanel extends BGPanel {
 		}
 
 	}
-
+	/**
+	 *  
+	 * @param currentPosition, current position (cell index) while we are building the GUI
+	 * @param moveDirection, the direction of the next cell
+	 * @return the nextPosition (cell index) of the next cell in according to moveDirecetion
+	 */
 	private int[] getPositionButton(int[] currentPosition, String moveDirection) {
-
 		int[] nextPositionButton = new int[2];
-
 		switch (moveDirection) {
-
 		case Constants.UP:
 			nextPositionButton[0] = currentPosition[0] - 1;
 			nextPositionButton[1] = currentPosition[1];
 			break;
-
 		case Constants.DOWN:
 			nextPositionButton[0] = currentPosition[0] + 1;
 			nextPositionButton[1] = currentPosition[1];
 			break;
-
 		case Constants.LEFT:
 			nextPositionButton[0] = currentPosition[0];
 			nextPositionButton[1] = currentPosition[1] - 1;
 			break;
-
 		case Constants.RIGHT:
 			nextPositionButton[0] = currentPosition[0];
 			nextPositionButton[1] = currentPosition[1] + 1;
 			break;
-
 		case Constants.UP_LEFT:
 			nextPositionButton[0] = currentPosition[0] - 1;
 			nextPositionButton[1] = currentPosition[1] - 1;
 			break;
-
 		case Constants.UP_RIGHT:
 			nextPositionButton[0] = currentPosition[0] - 1;
 			nextPositionButton[1] = currentPosition[1] + 1;
 			break;
-
 		case Constants.DOWN_LEFT:
 			nextPositionButton[0] = currentPosition[0] + 1;
 			nextPositionButton[1] = currentPosition[1] - 1;
 			break;
-
 		case Constants.DOWN_RIGHT:
 			nextPositionButton[0] = currentPosition[0] + 1;
 			nextPositionButton[1] = currentPosition[1] + 1;
 			break;
-
 		default:
 			break;
-
 		}
-
 		return nextPositionButton;
-
 	}
 
+	/**
+	 * 
+	 * @param position, position in size
+	 * @return position converted to string
+	 */
 	private String positionToString(int[] position) {
-
 		return String.valueOf(position[1]) + "," + String.valueOf(position[0]);
 
 	}
 	
-	/* change the panel so the player can choose a move*/
+	/**
+	 * change the panel according to value of launch die
+	 * so the player can choose a move
+	 * @param resultDie, int the result of launch die
+	 */
 	public void makePossibleMoveFlash(int resultDie) {
 		possibleMoves = coreGame.initTurn(resultDie);
 		for (int i=0; i<possibleMoves.size(); i++) {
@@ -234,6 +242,11 @@ public class GamePanel extends BGPanel {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param row, int the row in gameBoard of destination cell
+	 * @param column, int the column in gameBoard of destination cell
+	 */
 	private void applyMove(int row, int column) {
 		this.makePossibleMoveDisable();
 		Cell cellStart = null;
