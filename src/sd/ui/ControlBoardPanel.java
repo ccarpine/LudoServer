@@ -15,17 +15,16 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sd.core.CoreGame;
+import sd.core.Move;
 import sd.util.Constants;
 
 public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
 	private CoreGame coreGame;
-	private boolean dieLaunched;
 	private List<JButton> currentPlayer;
 	private JLabel timeOfTurn;
 	private JLabel round;
@@ -38,13 +37,13 @@ public class ControlBoardPanel extends BGPanel {
 											 * facce da mostrare durante la
 											 * rotazione del dado
 											 */
+	private JButton die;
 
 	public ControlBoardPanel(CoreGame coreGame) {
 		super("images/desk.jpg");
 		// this.setOpaque(true);
 		this.setLayout(null);
 		this.coreGame = coreGame;
-		this.dieLaunched = false;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
 
 		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
@@ -89,25 +88,22 @@ public class ControlBoardPanel extends BGPanel {
 		containerDie.setBounds(10, 280, 185, 150);
 		this.add(containerDie);
 
-		JButton die = new JButton("Launch die");
+		die = new JButton("Launch die");
 		die.setBounds(10, 450, 185, 25);
 		die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!dieLaunched) {
-					dieLaunched = true;
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							startAnimationDie(containerDie);
-						}
-					}).start();
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"You have already launched the die.");
-				}
+				die.setEnabled(false);
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						startAnimationDie(containerDie);
+					}
+				}).start();
 			}
 		});
+		die.setEnabled(false);
 		this.add(die);
 
 		JButton fold = new JButton("Fold");
@@ -122,6 +118,10 @@ public class ControlBoardPanel extends BGPanel {
 
 		this.animationBuffer = this.initAnimationBuffer();
 		this.exactDieFaces = this.initExactDieFaces();
+	}
+	
+	public void enableTurn() {
+		die.setEnabled(true);
 	}
 
 	private BufferedImage[][] initExactDieFaces() {
@@ -174,8 +174,8 @@ public class ControlBoardPanel extends BGPanel {
 					.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 
-		int launchResult = 1 + new Random().nextInt(6);
-
+		int launchResult = coreGame.getDie();
+		
 		System.out.println(launchResult);
 
 		/* showing final face of the die, according to the launch result */
@@ -189,8 +189,9 @@ public class ControlBoardPanel extends BGPanel {
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
 		// }
-
-		dieLaunched = false;
+		
+		this.executeTurn(launchResult);
+		
 	}
 
 	private void initRound() {
@@ -260,6 +261,13 @@ public class ControlBoardPanel extends BGPanel {
 		g2d.drawImage(dieSprite, x, y, this);
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
+	}
+	
+	private void executeTurn(int resultDie) {
+		List<Move> possibleMoves = coreGame.initTurn(resultDie);
+		System.out.println(possibleMoves.get(0).getDestination());
+		/* update GUI here showing possible moves passing the list above */
+		//gamePanel.setPossibleMovesStartingFrom(possibleMoves);
 	}
 
 }

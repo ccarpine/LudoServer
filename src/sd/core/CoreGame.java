@@ -41,9 +41,8 @@ public class CoreGame implements Serializable{
 	}
 	
 	// returns the die launch result
-	private int getDie() {
-		//return 1 + new Random().nextInt(6);
-		return 5;
+	public int getDie() {
+		return 1 + new Random().nextInt(6);
 	}
 	
 	public int getRound() {
@@ -108,10 +107,9 @@ public class CoreGame implements Serializable{
 	}
 
 	/* prepares the turn by setting the current player and returning his list of possible moves */
-	public List<Move> initTurn() {
+	public List<Move> initTurn(int resultDie) {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		int resultDie = this.getDie();
 		System.out.println("result die: "+ resultDie);
 		if (resultDie == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;

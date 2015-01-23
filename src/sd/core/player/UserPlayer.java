@@ -30,6 +30,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
 	private GamePanel gamePanel;
+	private ControlBoardPanel controlBoardPanel;
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
@@ -90,7 +91,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							gamePanel = new GamePanel(coreGame);
 							gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 							mainFrame.addPanel(gamePanel, BorderLayout.WEST);
-							ControlBoardPanel controlBoardPanel = new ControlBoardPanel(coreGame);
+							controlBoardPanel = new ControlBoardPanel(coreGame);
 							mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 						}
 					});
@@ -166,16 +167,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	@Override
 	public void initTurn() throws RemoteException {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
 		
 		System.out.println("2 INIT TURN RECEIVED -->" );
-		List<Move> possibleMoves = this.coreGame.initTurn();
-		/* update GUI here showing possible moves passing the list above */
-		this.gamePanel.setPossibleMovesStartingFrom(possibleMoves);
+		controlBoardPanel.enableTurn();
+		
 		/* END update GUI here */
 		/* TODO togliere questa apply move, va chiamata da interfaccia */
 		//this.applyMove(null);
