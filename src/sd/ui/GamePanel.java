@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sd.core.CoreGame;
+import sd.core.Move;
 import sd.util.Constants;
 import layout.TableLayout;
 
@@ -14,10 +15,11 @@ public class GamePanel extends BGPanel {
 
 	private double[][] size;
 	private CoreGame coreGame;
+	private List<CellButton> cellsButton;
 
 	public GamePanel(CoreGame coreGame) {
 		super("images/table.png");
-		
+		this.cellsButton =  new ArrayList<CellButton>();
 		this.coreGame = coreGame;
 
 		this.size = new double[2][];
@@ -42,6 +44,7 @@ public class GamePanel extends BGPanel {
 			/* creating first cell for that color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0],
 					Constants.STARTS_COLORS[i][1], "images/box/"+Constants.COLOR[i]+".png", this.coreGame.getGameBoard().getCell(i, 0));
+			this.cellsButton.add(buttonPosition);
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -52,6 +55,7 @@ public class GamePanel extends BGPanel {
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
 						nextPosition[1], "images/box/"+Constants.BLANK+".png",this.coreGame.getGameBoard().getCell(i, j+1));
+				this.cellsButton.add(buttonPosition);
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -62,6 +66,7 @@ public class GamePanel extends BGPanel {
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0],
 					Constants.STARTS_WIN_COLORS[i][1],
 					"images/victory/"+Constants.COLOR[i]+".png",this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
+			this.cellsButton.add(buttonPosition);
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -71,6 +76,7 @@ public class GamePanel extends BGPanel {
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0],
 						nextPosition[1], "images/victory/"+Constants.COLOR[i]+".png", this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
+				this.cellsButton.add(buttonPosition);
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
