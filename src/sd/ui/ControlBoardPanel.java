@@ -199,8 +199,6 @@ public class ControlBoardPanel extends BGPanel {
 			JButton button = new JButton();
 			button.setBounds(5 + (i * 33), 195, 30, 30);
 			button.setOpaque(true);
-			button.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-					"images/box/" + Constants.COLOR[i] + ".png")));
 			button.setBorder(null);
 			button.setFocusPainted(false);
 			button.setBorderPainted(false);
@@ -222,9 +220,11 @@ public class ControlBoardPanel extends BGPanel {
 		// TODO no funziona
 		for (int i = 0; i < currentPlayer.size(); i++) {
 			if (i != position) {
-				currentPlayer.get(i).setOpaque(false);
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
+						"images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				currentPlayer.get(i).setOpaque(true);
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
+						"images/box/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
 	}

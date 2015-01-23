@@ -2,7 +2,6 @@ package sd.ui;
 
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Inet4Address;
@@ -30,12 +29,12 @@ public class IntroPanel extends BGPanel {
 		this.setLayout(null);
 		
 		JLabel ludo1 = new JLabel();
-		ludo1.setBounds(300, 30, 150, 200);
+		ludo1.setBounds(260, 30, 150, 220);
 		ludo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry1.png")));
 		this.add(ludo1);
 		
 		JLabel ludo2 = new JLabel();
-		ludo2.setBounds(440, 30, 150, 200);
+		ludo2.setBounds(440, 30, 150, 220);
 		ludo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry2.png")));
 		this.add(ludo2);
 		

@@ -28,6 +28,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
+	private GamePanel gamePanel;
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
@@ -85,7 +86,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 						public void run() {
 							mainFrame.setSize(800, 900);
 							mainFrame.resetFrame();
-							mainFrame.addPanel(new GamePanel(coreGame), BorderLayout.CENTER);
+							gamePanel = new GamePanel(coreGame);
+							mainFrame.addPanel(gamePanel, BorderLayout.CENTER);
 						}
 					});
 				} catch (Exception ex) {
@@ -169,11 +171,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 		System.out.println("2 INIT TURN RECEIVED -->" );
 		List<Move> possibleMoves = this.coreGame.initTurn();
 		/* update GUI here showing possible moves passing the list above */
-		/* init GUI here */
+		this.gamePanel.setPossibleMovesStartingFrom(possibleMoves);
 		/* END update GUI here */
-		
 		/* TODO togliere questa apply move, va chiamata da interfaccia */
-		this.applyMove(null);
+		//this.applyMove(null);
 
 	}
 
