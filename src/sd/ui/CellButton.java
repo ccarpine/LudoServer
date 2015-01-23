@@ -77,7 +77,7 @@ public class CellButton extends JButton implements Runnable {
 	public void setColOnGameBoard(int colOnGameBoard) {
 		this.colOnGameBoard = colOnGameBoard;
 	}
-	
+
 	public boolean isCellChosen() {
 		return cellChosen;
 	}
@@ -111,11 +111,14 @@ public class CellButton extends JButton implements Runnable {
 					if (!flashing) {
 						setIcon(new javax.swing.ImageIcon(getClass()
 								.getResource(pathOn)));
+						flashing = true;
 					}
 
-					else
+					else {
 						setIcon(new javax.swing.ImageIcon(getClass()
 								.getResource(pathOff)));
+						flashing = false;
+					}
 
 				}
 			});
