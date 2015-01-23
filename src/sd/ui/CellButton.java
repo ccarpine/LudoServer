@@ -61,5 +61,19 @@ public class CellButton extends JButton {
 	public void setColOnGameBoard(int colOnGameBoard) {
 		this.colOnGameBoard = colOnGameBoard;
 	}
-
+	
+	public void setFlash(){
+		
+	}
+	
+	private void flashImage(JButton button) {
+//		Color origColor = button.getBackground();
+//		button.setBackground(color);
+//		pause(250);
+//		button.setBackground(origColor);
+//		pause(250);
+//		button.setBackground(color);
+//		pause(250);
+//		button.setBackground(origColor);
+	}
 }
