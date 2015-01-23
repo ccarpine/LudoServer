@@ -86,7 +86,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	private synchronized long registerSynch(String clientIp) {
-		if (this.getPresenceIp(clientIp)) {
+		if (!this.getPresenceIp(clientIp)) {
 			
 			if (this.gamersIp.size() == 0) {
 				/* start timer */
