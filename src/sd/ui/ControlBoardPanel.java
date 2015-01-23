@@ -55,9 +55,9 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(colorIntro);
 		
 		JButton color = new JButton();
-		color.setBounds(10, 50, 30, 30);
+		color.setBounds(10, 45, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"images/box/on/" + this.coreGame.getCurrentPartecipant().getColor() + ".png")));
+				"images/box/on/" + this.coreGame.getMyPartecipant().getColor() + ".png")));
 		color.setBorder(null);
 		color.setFocusPainted(false);
 		color.setBorderPainted(false);
@@ -216,7 +216,7 @@ public class ControlBoardPanel extends BGPanel {
 		currentPlayer = new ArrayList<JButton>();
 		for (int i = 0; i < Constants.COLOR.length; i++) {
 			JButton button = new JButton();
-			button.setBounds(5 + (i * 33), 235, 30, 30);
+			button.setBounds(5 + (i * 33), 230, 30, 30);
 			button.setOpaque(true);
 			button.setBorder(null);
 			button.setFocusPainted(false);
@@ -229,7 +229,7 @@ public class ControlBoardPanel extends BGPanel {
 
 	private void setPlayerConnected() {
 		for (int i = 0; i < currentPlayer.size(); i++) {
-			if (i != this.coreGame.getRound()) {
+			if (i != ((this.coreGame.getRound()-1)) % Constants.COLOR.length) {
 				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource(
 						"images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
