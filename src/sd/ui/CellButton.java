@@ -16,14 +16,14 @@ public class CellButton extends JButton {
 	private int rowOnGameBoard;
 	private int colOnGameBoard;
 		
-	public CellButton(int pRow, int pCol, String path) {
+	public CellButton(int pRow, int pCol, String path, Cell cell) {
 		super("");
-		// TODO
-		Cell cell = null;
 		this.row = pRow;
 		this.col = pCol;
-		this.rowOnGameBoard = cell.getRow();
-		this.colOnGameBoard = cell.getColumn();
+		if (cell != null) {
+			this.rowOnGameBoard = cell.getRow();
+			this.colOnGameBoard = cell.getColumn();
+		}
 		this.setIcon(new javax.swing.ImageIcon(getClass().getResource(path)));
 		this.setBorder(null);
 		this.setFocusPainted(false);
