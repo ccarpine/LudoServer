@@ -6,21 +6,22 @@ import java.util.List;
 
 public class AnimationSprite {
 
-    private int frameCount;                 // Counts ticks for change
-    private int frameDelay;                 // frame delay 1-12 (You will have to play around with this)
-    private int currentFrame;               // animations current frame
-    private int animationDirection;         // animation direction (i.e counting forward or backward)
-    private int totalFrames;                // total amount of frames for your animation
+    private int frameCount;                
+    private int frameDelay;                
+    private int currentFrame;              
+    private int animationDirection;        
+    private int totalFrames;               
+    private boolean stopped;               
 
-    private boolean stopped;                // has animations stopped
-
-    private List<FrameSprite> frames = new ArrayList<FrameSprite>();    // Arraylist of frames 
+    private List<BufferedImage> frames;
 
     public AnimationSprite(BufferedImage[] frames, int frameDelay) {
+    	this.frames = new ArrayList<BufferedImage>();
         this.frameDelay = frameDelay;
         this.stopped = true;
         for (int i = 0; i < frames.length; i++) {
-            addFrame(frames[i], frameDelay);
+            //addFrame(frames[i]/*, frameDelay);
+        	this.frames.add(frames[i]);
         }
         this.frameCount = 0;
         this.frameDelay = frameDelay;
@@ -39,7 +40,7 @@ public class AnimationSprite {
         stopped = false;
     }
 
-    public void stop() {
+    /*public void stop() {
         if (frames.size() == 0) {
             return;
         }
@@ -58,19 +59,20 @@ public class AnimationSprite {
         this.stopped = true;
         this.frameCount = 0;
         this.currentFrame = 0;
-    }
+    }*/
 
-    private void addFrame(BufferedImage frame, int duration) {
-        if (duration <= 0) {
+    
+    private void addFrame(BufferedImage frame/*, int duration*/) {
+        /*if (duration <= 0) {
             System.err.println("Invalid duration: " + duration);
             throw new RuntimeException("Invalid duration: " + duration);
-        }
-        frames.add(new FrameSprite(frame/*, duration*/));
-        currentFrame = 0;
+        }*/
+        //frames.add(frame);
+        //currentFrame = 0;
     }
     
     public BufferedImage getSprite() {
-        return frames.get(currentFrame).getFrame();
+        return frames.get(currentFrame);
     }
 
     public void update() {
