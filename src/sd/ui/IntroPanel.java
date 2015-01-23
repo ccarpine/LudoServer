@@ -52,12 +52,13 @@ public class IntroPanel extends BGPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				goOnMatch.setEnabled(false);
+				timer.setVisible(true);
+				startCountdown();
+				startWaiting();
 				
 				if (startConnection(serverIP)) {
 					System.out.println("RICHIESTA INVIATA!");
-					timer.setVisible(true);
-					startCountdown();
-					startWaiting();
+					
 				}
 			}
 		});
