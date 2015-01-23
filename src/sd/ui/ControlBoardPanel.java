@@ -208,7 +208,7 @@ public class ControlBoardPanel extends BGPanel {
 						.getSprite().getHeight());
 		// }
 		
-		this.executeTurn(launchResult);
+		this.gamePanel.makePossibleMoveFlash(launchResult);
 		
 	}
 
@@ -269,13 +269,6 @@ public class ControlBoardPanel extends BGPanel {
 		g2d.drawImage(dieSprite, x, y, this);
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
-	}
-	
-	private void executeTurn(int resultDie) {
-		List<Move> possibleMoves = coreGame.initTurn(resultDie);
-		System.out.println(possibleMoves.get(0).getDestination().getRow()+", "+possibleMoves.get(0).getDestination().getColumn());
-		/* update GUI here showing possible moves passing the list above */
-		this.gamePanel.setPossibleMovesStartingFrom(possibleMoves);
 	}
 
 }

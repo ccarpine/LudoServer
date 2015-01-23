@@ -14,7 +14,7 @@ public class Partecipant implements Serializable {
 	private String color;
 	private int colorPosition;
 	
-
+	
 	public Partecipant(String ip, String color, int colorPosition) {
 
 		this.ip = ip;

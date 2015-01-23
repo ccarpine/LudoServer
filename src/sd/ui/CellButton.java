@@ -16,7 +16,6 @@ public class CellButton extends JButton implements Runnable {
 	private int rowOnGameBoard;
 	private int colOnGameBoard;
 	private boolean isOn;
-	private boolean cellChosen;
 	private boolean flashing = false;
 	private String pathOn;
 	private String pathOff;
@@ -25,7 +24,6 @@ public class CellButton extends JButton implements Runnable {
 			Cell cell) {
 		super("");
 		this.isOn = false;
-		this.cellChosen = false;
 		this.pathOn = pathOn;
 		this.pathOff = pathOff;
 		this.row = pRow;
@@ -69,10 +67,6 @@ public class CellButton extends JButton implements Runnable {
 
 	public void setColOnGameBoard(int colOnGameBoard) {
 		this.colOnGameBoard = colOnGameBoard;
-	}
-
-	public boolean isCellChosen() {
-		return cellChosen;
 	}
 
 	public void changeState() {
