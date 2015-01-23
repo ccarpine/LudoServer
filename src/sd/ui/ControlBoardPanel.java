@@ -30,6 +30,7 @@ public class ControlBoardPanel extends BGPanel {
 	private JLabel timeOfTurn;
 	private JLabel round;
 	private long countdown;
+	private Thread thread;
 	private BufferedImage[][] exactDieFaces; /*
 											 * facce col risultato esatto del
 											 * dado
@@ -244,7 +245,7 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	public void setTimer() {
-		new Thread(new Runnable() {
+		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (countdown > 0) {
@@ -262,10 +263,9 @@ public class ControlBoardPanel extends BGPanel {
 				die.setEnabled(false);
 				setPlayerConnected();
 				setRound();
-				updateUI();
-				// TODO Chiamata al prossimo
 			}
-		}).start();
+		});
+		thread.start();
 	}
 
 	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
