@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ public class ControlBoardPanel extends BGPanel {
 	private JLabel timeOfTurn;
 	private JLabel round;
 	private long countdown;
+	private BufferedImage[][] exactDieFaces;
 	
 	public ControlBoardPanel(CoreGame coreGame) {
 		super("images/desk.jpg");
@@ -109,6 +111,22 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		this.add(fold);
+		
+		this.exactDieFaces = this.initExactDieFaces();
+	}
+	
+	private BufferedImage[][] initExactDieFaces() {
+		
+		BufferedImage[][] result = new BufferedImage[1][6];
+		result[0][0] = DieSprite.getSprite(0, 4); /* die face 1*/
+		result[0][1] = DieSprite.getSprite(4, 4); /* die face 2*/
+		result[0][2] = DieSprite.getSprite(0, 8); /* die face 3*/
+		result[0][3] = DieSprite.getSprite(0, 0); /* die face 4*/
+		result[0][4] = DieSprite.getSprite(4, 12); /* die face 5*/
+		result[0][5] = DieSprite.getSprite(4, 8); /* die face 6*/
+		
+		return result;
+		
 	}
 	
 	private void startAnimationDie(JPanel container) {
@@ -124,6 +142,11 @@ public class ControlBoardPanel extends BGPanel {
 			paint(container.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		dieLaunched = false;
+		
+		int launchResult = 1 + new Random().nextInt(6);
+		
+		/* showing final face of the die, according to the launch result */
+		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 0);
 	}
 	
 	private void initRound() {

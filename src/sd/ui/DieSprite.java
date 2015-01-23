@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class DieSprite {
 
     private static BufferedImage spriteSheet;
-    private static final int TILE_SIZE = 50;
+    private static final int TILE_SIZE = 37;
 
     public static BufferedImage loadSprite(String filePath) {
     	BufferedImage sprite = null;
