@@ -42,7 +42,8 @@ public class CoreGame implements Serializable{
 	
 	// returns the die launch result
 	private int getDie() {
-		return 1 + new Random().nextInt(6);
+		//return 1 + new Random().nextInt(6);
+		return 5;
 	}
 	
 	public int getRound() {
