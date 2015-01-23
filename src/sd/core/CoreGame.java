@@ -172,13 +172,13 @@ public class CoreGame implements Serializable{
 	 * 
 	 * @param partecipant, list of all partecipant 
 	 * @param gameBoard, current game board of the match with pawn in correct position
-	 * @param ipCurrentPartecipant, IP of the new current partecipant that have to play
+	 * @param ipCurrentPartecipant, IP of the new current partecipant
 	 * @return int the result of the updateStatus (tell if the player have to play again, send update to next partecipant...)
 	 */
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant) {
-		
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
-		// check if my ip is equals to the last that has just played
+		/* check if my ip is equals to the last that has just played,
+		 * means that you received the message that you have send */
 		String myIP = this.getMyPartecipant().getIp();
 		if (myIP.equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
