@@ -16,6 +16,7 @@ import sd.core.CoreGame;
 import sd.core.GameBoard;
 import sd.core.Move;
 import sd.core.Partecipant;
+import sd.ui.ControlBoardPanel;
 import sd.ui.GamePanel;
 import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
@@ -84,10 +85,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							mainFrame.setSize(800, 900);
 							mainFrame.resetFrame();
+							mainFrame.setSize(775, 532);
 							gamePanel = new GamePanel(coreGame);
-							mainFrame.addPanel(gamePanel, BorderLayout.CENTER);
+							gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+							mainFrame.addPanel(gamePanel, BorderLayout.WEST);
+							ControlBoardPanel controlBoardPanel = new ControlBoardPanel(coreGame);
+							mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
 						}
 					});
 				} catch (Exception ex) {
