@@ -193,7 +193,7 @@ public class GamePanel extends BGPanel {
 	/* change the panel so the player can choose a move*/
 	public void setPossibleMovesStartingFrom(List<Move> possibleMoves){
 		for (int i=0; i<possibleMoves.size(); i++) {
-			this.cellsButton[possibleMoves.get(i).getStart().getRow()][possibleMoves.get(i).getStart().getColumn()].changeState();
+			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
 		}
 	
 		
