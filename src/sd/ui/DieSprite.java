@@ -11,8 +11,7 @@ public class DieSprite {
     private static BufferedImage spriteSheet;
     private static final int TILE_SIZE = 37;
 
-
-    public static BufferedImage loadSprite(String filePath) {
+    private static BufferedImage loadSprite(String filePath) {
     	BufferedImage sprite = null;
         try {
         	sprite = ImageIO.read(new File(filePath));
@@ -23,8 +22,16 @@ public class DieSprite {
     }
 
     public static BufferedImage getSprite(int xGrid, int yGrid) {
-    	spriteSheet = loadSprite("src/sd/ui/images/diceSprite.png");
-        return spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    	//BufferedImage sprite = null;
+        try {
+        	BufferedImage sprite = ImageIO.read(new File("src/sd/ui/images/diceSprite.png"));
+        	spriteSheet = sprite;
+        	return spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	//spriteSheet = sprite;
+        return null;//spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 
 }
