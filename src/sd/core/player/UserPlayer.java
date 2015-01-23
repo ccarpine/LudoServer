@@ -34,6 +34,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	
+	/** when launched, it creates a future game player giving him the possibility to register at the server
+	 * 
+	 * @param ServerIp, the ip address of the register server
+	 * 
+	 */
 	public UserPlayer(String ServerIp) throws RemoteException {
 		this.isPlaying = false;
 		System.out.println("costruisco lo user player");
@@ -42,6 +47,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
 	}
 
+	/** this method is invokated by the server on the client when a match can start, either if a maximum number 
+	 * of 6 players is has been reached or the waiting time out has expired. A user game player will build his GUI
+	 * as soon as received the permission from the one before him in the list. The first of the list (which is the first
+	 * to play) will be the last to build the GUI.
+	 * 
+	 * @param gamersIp, the list of all gamers that have been registered by the server for a match
+	 */
 	public void start(List<String> gamersIp) {
 
 		System.out.println("UserPlayer starts " + isPlaying);
@@ -53,7 +65,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
 			if (coreGame.amItheCurrentPartecipant()) {
-				System.out.println("Sono il primo e creo l'interfaccia");
+				//System.out.println("Sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward();
 			}
 			
@@ -70,15 +82,24 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	@Override
+	/**
+	 * If the player invoking this method is not the first that will play then he can build his GUI 
+	 * and forward this permission to the next; On the contrary case, it means that all the other players
+	 * have finished buildind their GUI. The first player can start the game
+	 */
 	public void buildGUI() throws RemoteException {
 		if (!coreGame.amItheCurrentPartecipant()) {
-			System.out.println("Non sono il primo e creo l'interfaccia");
+			//System.out.println("Non sono il primo e creo l'interfaccia");
 			this.buildGUIAndForward();
 		} else {
 			this.initTurn();
 		}
 	}
 	
+	/**
+	 * it build the gui for the player that invokes this method and sends this permission to the one next to him
+	 * in the list of the partecipants for that match.
+	 */
 	private void buildGUIAndForward() {
 		Thread t = new Thread() {
 			public void run() {
@@ -110,6 +131,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	@Override
+	/** this method is invoked by a client when he has finished his turn so that all the other partecipants
+	 * can update the status of the match and its game board.
+	 * 
+	 * @param partecipants, the list of all the partecipants still taking part into the match (in case of crash) that need to have their game board updated
+	 * @param gameBoard, the game board and the status of the partecipant that has just played
+	 * @param ipCurrentPartecipant, the ip address of the player that has just played
+	 */
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
 		try {
 			Thread.sleep(2000);
@@ -117,22 +145,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 			e1.printStackTrace();
 		}
 		
+		/* the internal memory status of the game is updated */
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 		/* update GUI here */
 		System.out.println("3 UPDATE RECEIVED -->");
 		/* END update GUI here */
 		
+		/* according to the previous update, there are several possible consequences*/
 		switch (result) {
+		/* sending the update to the next player */
 		case Constants.UPDATE_NEXT:
 			System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
 			this.updateNext(partecipants, gameBoard, ipCurrentPartecipant);
 			break;
 
+		/* giving the next player the permission to play*/
 		case Constants.PLAY_NEXT:
 			System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
 			this.playNext();
 			break;
 
+		/* */
 		case Constants.PLAY_AGAIN:
 			this.initTurn();
 			break;
@@ -145,6 +178,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	}
 
+	/**
+	 * this method is invoked by a user player when he can allow the next to play
+	 */
 	private void playNext() {
 			try {
 				String nextPartecipantId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
@@ -155,6 +191,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 			} 
 	}
 	
+	/**
+	 * 
+	 * @param partecipants, partecipants still taking part into a match (in case of crash)
+	 * @param gameBoard, the current state of the game board in the current match
+	 * @param ipCurrentPartecipant
+	 */
 	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant){
 			try {
 				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();

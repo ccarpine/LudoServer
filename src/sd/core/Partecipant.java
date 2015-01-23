@@ -13,8 +13,18 @@ public class Partecipant implements Serializable {
 	private String ip;
 	private String color;
 	private int colorPosition;
-	
-	
+
+	/**
+	 * Creates a user game player taking part into the game and setting his
+	 * bench as full
+	 * 
+	 * @param ip
+	 *            , the ip address of that game player
+	 * @param color
+	 *            , the color of the pawns assigned to that game player
+	 * @param colorPosition
+	 *            , the position of the color in the relative array
+	 */
 	public Partecipant(String ip, String color, int colorPosition) {
 
 		this.ip = ip;
@@ -28,11 +38,17 @@ public class Partecipant implements Serializable {
 		return pawnsInBench;
 	}
 
+	/**
+	 * increments of 1 the number of the partecipant's pawns in his bench
+	 */
 	public void addPawnsInBench() {
 		if (this.pawnsInBench < Constants.BENCH_DIMENSION)
 			this.pawnsInBench++;
 	}
 
+	/**
+	 * decrements of 1 the number of the partecipant's pawns in his bench
+	 */
 	public void removePawnsInBench() {
 		if (this.pawnsInBench > 0)
 			this.pawnsInBench--;
@@ -49,7 +65,10 @@ public class Partecipant implements Serializable {
 	public int getColorPosition() {
 		return colorPosition;
 	}
-	
+
+	/**
+	 * verifies if the partecipant ip is equal to the one of the machine this method is invokated in
+	 */
 	public boolean isMine() {
 		try {
 			return this.ip.equals(Inet4Address.getLocalHost().getHostAddress());
