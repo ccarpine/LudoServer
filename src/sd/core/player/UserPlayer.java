@@ -170,11 +170,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		
 		System.out.println("2 INIT TURN RECEIVED -->" );
 		controlBoardPanel.enableTurn();
-		
-		/* END update GUI here */
-		/* TODO togliere questa apply move, va chiamata da interfaccia */
-		//this.applyMove(null);
-
 	}
 
 	public void applyMove(Move chosenMove) {
