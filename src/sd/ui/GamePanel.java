@@ -106,8 +106,8 @@ public class GamePanel extends BGPanel {
 			buttonPosition = new CellButton(
 					Constants.STARTS_BENCH_COLORS[i][0], Constants.STARTS_BENCH_COLORS[i][1],
 					"images/box/off/"+colorPawn+".png", "images/box/on/"+colorPawn+".png", null);
-			this.cellsButton[0][Constants.COLUMNS] = buttonPosition;
-			this.pawnsOnBoard[0][Constants.COLUMNS] = buttonPosition;
+			this.cellsButton[i][Constants.COLUMNS] = buttonPosition;
+			this.pawnsOnBoard[i][Constants.COLUMNS] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
