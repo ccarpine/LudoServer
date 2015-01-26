@@ -107,7 +107,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(containerDie);
 
 		die = new JButton("Launch die");
-		die.setBounds(10, 450, 185, 25);
+		die.setBounds(10, 440, 185, 25);
 		die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +125,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(die);
 
 		JButton fold = new JButton("Fold");
-		fold.setBounds(10, 480, 185, 25);
+		fold.setBounds(10, 470, 185, 25);
 		fold.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

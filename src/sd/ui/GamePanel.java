@@ -57,6 +57,7 @@ public class GamePanel extends BGPanel {
 					"images/starts/off/"+Constants.COLOR[i]+".png", "images/starts/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, 0));
 			this.cellsButton[i][0] = buttonPosition;
+			this.pawnsOnBoard[i][0] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -69,6 +70,7 @@ public class GamePanel extends BGPanel {
 						"images/box/off/"+Constants.BLANK+".png", "images/box/on/"+Constants.BLANK+".png", 
 						this.coreGame.getGameBoard().getCell(i, j+1));
 				this.cellsButton[i][j+1] = buttonPosition;
+				this.pawnsOnBoard[i][j+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -79,6 +81,7 @@ public class GamePanel extends BGPanel {
 					"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
 			this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
+			this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -91,6 +94,7 @@ public class GamePanel extends BGPanel {
 						"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
 						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
 				this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
+				this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -123,6 +127,7 @@ public class GamePanel extends BGPanel {
 					Constants.STARTS_BENCH_COLORS[i][0], Constants.STARTS_BENCH_COLORS[i][1],
 					"images/box/off/"+Constants.COLOR[i]+".png", "images/box/on/"+Constants.COLOR[i]+".png", null);
 			this.cellsButton[0][Constants.COLUMNS] = buttonPosition;
+			this.pawnsOnBoard[0][Constants.COLUMNS] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -134,6 +139,7 @@ public class GamePanel extends BGPanel {
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						"images/box/off/"+Constants.COLOR[i]+".png", "images/box/on/"+Constants.COLOR[i]+".png", null);
 				this.cellsButton[i][j+Constants.COLUMNS+1] = buttonPosition;
+				this.pawnsOnBoard[i][j+Constants.COLUMNS+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -209,20 +215,29 @@ public class GamePanel extends BGPanel {
 		Cell cellDestination = new Cell(null, row, column);
 		for (int i=0; i<this.possibleMoves.size(); i++) {
 			if (this.possibleMoves.get(i).getDestination().getRow() == row && this.possibleMoves.get(i).getDestination().getColumn() == column) {
-				cellStart = new Cell(null, this.possibleMoves.get(i).getStart().getRow(), this.possibleMoves.get(i).getStart().getColumn());
+				// if start cell is equal to null it means that pawn is in the bench
+				if (this.possibleMoves.get(i).getStart() == null) {
+					cellStart = null;
+				} else {
+					cellStart = new Cell(null, this.possibleMoves.get(i).getStart().getRow(), this.possibleMoves.get(i).getStart().getColumn());
+				}
 				break;
 			}
 		}
 		Move chosenMove = new Move(cellStart, cellDestination);
+		// if start cell is equal to null the core game decrement the pawns in bench
+		if (cellStart == null) {
+			this.coreGame.getMyPartecipant().removePawnsInBench();
+		}
 		// result is the color of the eaten pawn
 		String result = this.coreGame.handleTurn(chosenMove);
 		/* update GUI here */
 		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
-		Cell cellStartGUI = this.getPawnPositionGUI(indexColorMover, cellStart);
-		Cell cellDestinationGUI = this.getPawnPositionGUI(indexColorMover, cellDestination);
+		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
+		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
 			int indexColorEaten = this.getIndexColor(result);
-			Cell eatenPawnPosition = getPawnPositionGUI(indexColorEaten, cellDestination);
+			Cell eatenPawnPosition = getPositionGUI(indexColorEaten, cellDestination);
 			Cell freeBenchPosition = getFreePositionBenchGUI(indexColorEaten);
 			this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
 		}
@@ -241,7 +256,8 @@ public class GamePanel extends BGPanel {
 			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
 			for (ActionListener a: this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].getActionListeners()) {
 				this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].removeActionListener(a);
-			};
+			}
+			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].removeAll();
 		}
 	}
 
@@ -287,16 +303,33 @@ public class GamePanel extends BGPanel {
 	}
 	
 	/**
-	 * return the corrisponding ui cell for that pawn
+	 * return the corrisponding ui cell
 	 * @param colorBenchIndex, the color of the pawn
 	 * @param cellPosition, the cell in memory
-	 * @return Cell, the corrisponding ui cell for that pawn
+	 * @return Cell, the corrisponding ui cell
 	 */
-	private Cell getPawnPositionGUI(int colorBenchIndex, Cell cellPosition) {
-		for (int j=0; j<Constants.COLUMNS+Constants.BENCH_DIMENSION; j++) {
-			if (this.pawnsOnBoard[colorBenchIndex][j].getRowOnGameBoard() == cellPosition.getRow() &&
-					this.pawnsOnBoard[colorBenchIndex][j].getColOnGameBoard() == cellPosition.getColumn()) {
-				return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, j);
+	private Cell getPositionGUI(int colorBenchIndex, Cell cellPosition) {
+		// find pawn position in bench
+		if (cellPosition == null) {
+			for (int g=0; g<Constants.BENCH_DIMENSION; g++) {
+				for (int j=0; j<Constants.BENCH_DIMENSION; j++) {
+					if (this.pawnsOnBoard[colorBenchIndex][j] != null) {
+						if (this.cellsButton[colorBenchIndex][Constants.COLUMNS+g].getRow() == this.pawnsOnBoard[colorBenchIndex][j].getRow() && 
+								this.cellsButton[colorBenchIndex][Constants.COLUMNS+g].getCol() == this.pawnsOnBoard[colorBenchIndex][j].getCol()) {
+							return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, j);
+						}
+					}
+				}
+			}
+		// find pawn position in the whole game board
+		} else {
+			for (int i=0; i<Constants.ROWS; i++) {
+				for (int j=0; j<Constants.COLUMNS+Constants.BENCH_DIMENSION; j++) {
+					if (this.cellsButton[i][j].getRowOnGameBoard() == cellPosition.getRow() &&
+							this.cellsButton[i][j].getColOnGameBoard() == cellPosition.getColumn()) {
+						return new Cell(Constants.COLOR[i], i, j);
+					}
+				}
 			}
 		}
 		return null;

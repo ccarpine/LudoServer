@@ -56,7 +56,7 @@ public class GameBoard implements Serializable{
 				}
 		}
 		// rules for other values: if 6 the it can move on of 12 or 6 cells
-		if (cellsOccupiedByPartecipant.size() != 0) {
+		if (cellsOccupiedByPartecipant.size() > 0) {
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
 				Move move = getMoveByDie(startCell, die, partecipant.getColor());
@@ -64,7 +64,7 @@ public class GameBoard implements Serializable{
 					moves.add(move);
 				}
 				if (die == 6) {
-					Move secondMove = getMoveByDie(startCell, die, partecipant.getColor());
+					Move secondMove = getMoveByDie(startCell, die*2, partecipant.getColor());
 					if (secondMove != null) {
 						moves.add(secondMove);
 					}
@@ -82,8 +82,10 @@ public class GameBoard implements Serializable{
 		List<Cell> cells = new ArrayList<Cell>();
 		for (int r = 0; r < Constants.ROWS; r++) {
 			for (int c = 0; c < Constants.COLUMNS; c++) {
-				if (this.cells[r][c].getColor().equals(color)) {
-					cells.add(this.cells[r][c]);
+				if (this.cells[r][c].getPawns().size() > 0) {
+					if (this.cells[r][c].getPawns().get(0).equals(color)) {
+						cells.add(this.cells[r][c]);
+					}
 				}
 			}
 		}
@@ -149,8 +151,10 @@ public class GameBoard implements Serializable{
 		Cell destinationCell = move.getDestination();
 		int result = this.cells[destinationCell.getRow()][destinationCell
 				.getColumn()].tryAddPawn(partecipant.getColor());
-		this.cells[startingCell.getRow()][startingCell.getColumn()].getPawns()
-				.remove(0);
+		if (startingCell != null) {
+			this.cells[startingCell.getRow()][startingCell.getColumn()].getPawns()
+					.remove(0);
+		}
 		if (result == Constants.EATEN) {
 			String eaten = this.cells[destinationCell.getRow()][destinationCell
 					.getColumn()].getPawns().get(0);

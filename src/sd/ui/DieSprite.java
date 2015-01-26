@@ -1,7 +1,6 @@
 package sd.ui;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -12,7 +11,7 @@ public class DieSprite {
 
     public static BufferedImage getSprite(int xGrid, int yGrid) {
     	try {
-        	BufferedImage sprite = ImageIO.read(new File("src/sd/ui/images/diceSprite.png"));
+    		BufferedImage sprite = ImageIO.read(ClassLoader.getSystemResourceAsStream("sd/ui/images/diceSprite.png"));
         	return sprite.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
