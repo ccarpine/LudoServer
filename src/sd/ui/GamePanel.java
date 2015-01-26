@@ -213,7 +213,6 @@ public class GamePanel extends BGPanel {
 		// update GUI here
 		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
 		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
-		System.out.println(cellStart.getRow()+" "+cellStart.getColumn());
 		System.out.println(cellStartGUI.getRow()+" "+cellStartGUI.getColumn());
 		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
