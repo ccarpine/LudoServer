@@ -18,18 +18,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sd.core.CoreGame;
+import sd.core.player.UserPlayer;
 import sd.util.Constants;
 
 public class ControlBoardPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
-	private GamePanel gamePanel;
+	private UserPlayer userPlayer;
 	private CoreGame coreGame;
 	private List<JButton> currentPlayer;
 	private JLabel timeOfTurn;
 	private JLabel round;
 	private long countdown;
-	private Thread thread;
 	private BufferedImage[][] exactDieFaces; /* faces with the exact result of the die faces
 											 */
 	private BufferedImage[] animationBuffer; /* faces to use during the rolling of the die
@@ -41,20 +41,17 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param gamePanel
 	 * @param coreGame
 	 */
-	public ControlBoardPanel(GamePanel gamePanel, CoreGame coreGame) {
+	public ControlBoardPanel(CoreGame coreGame, UserPlayer userPlayer) {
 		super("images/desk.jpg");
-		// this.setOpaque(true);
 		this.setLayout(null);
-		this.gamePanel = gamePanel;
 		this.coreGame = coreGame;
+		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
-		
 		JLabel colorIntro = new JLabel("Your color:");
 		colorIntro.setBounds(10, 20, 185, 25);
 		colorIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
-		
 		JButton color = new JButton();
 		color.setBounds(10, 45, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
@@ -64,48 +61,40 @@ public class ControlBoardPanel extends BGPanel {
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-
 		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
 		timeOfTurnIntro.setBounds(10, 80, 185, 25);
 		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		timeOfTurnIntro.setForeground(Color.WHITE);
 		this.add(timeOfTurnIntro);
-
 		timeOfTurn = new JLabel();
 		timeOfTurn.setBounds(10, 110, 185, 25);
 		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
 		this.setTimer();
-
 		JLabel roundIntro = new JLabel("Round:");
 		roundIntro.setBounds(10, 140, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
-
 		round = new JLabel(String.valueOf(this.coreGame.getRound()));
 		round.setBounds(10, 170, 185, 25);
 		round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
-
 		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 200, 185, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD,
 				18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
-
 		this.initRound();
 		this.setPlayerConnected();
-
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
 		containerDie.setBounds(10, 280, 185, 150);
 		this.add(containerDie);
-
 		die = new JButton("Launch die");
 		die.setBounds(10, 440, 185, 25);
 		die.addActionListener(new ActionListener() {
@@ -116,14 +105,13 @@ public class ControlBoardPanel extends BGPanel {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						startAnimationDie(containerDie);
+						startAnimationDie();
 					}
 				}).start();
 			}
 		});
 		die.setEnabled(false);
 		this.add(die);
-
 		JButton fold = new JButton("Fold");
 		fold.setBounds(10, 470, 185, 25);
 		fold.addActionListener(new ActionListener() {
@@ -133,7 +121,6 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		this.add(fold);
-
 		this.animationBuffer = this.initAnimationBuffer();
 		this.exactDieFaces = this.initExactDieFaces();
 	}
@@ -199,7 +186,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * possible destination for the result in the game panel
 	 * @param Jpanel, the container for the die animation 
 	 */
-	private void startAnimationDie(JPanel container) {
+	private void startAnimationDie() {
 		int animationSpeed = 40;
 		// These are animation states
 		AnimationSprite move = new AnimationSprite(this.animationBuffer,animationSpeed);
@@ -208,7 +195,8 @@ public class ControlBoardPanel extends BGPanel {
 		animation.start();
 		for (int counter = 0; counter < animationSpeed * 100; counter++) {
 			animation.update();
-			paint(container.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
+			// TODO check here
+			//paint(getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		int launchResult = coreGame.launchDie();
 		System.out.println(launchResult);
@@ -216,10 +204,10 @@ public class ControlBoardPanel extends BGPanel {
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult - 1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
-		paint(container.getGraphics(), resultAnimation.getSprite(),
+		paint(getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
-		this.gamePanel.makePossibleMoveFlash(launchResult);
+		this.userPlayer.getGamePanel().makePossibleMoveFlash(launchResult);
 	}
 
 	/**
@@ -258,7 +246,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * When timer end the turn pass to the next player
 	 */
 	private void setTimer() {
-		thread = new Thread(new Runnable() {
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (countdown > 0) {
@@ -274,11 +262,17 @@ public class ControlBoardPanel extends BGPanel {
 							+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
-				// TODO chiamata al prossimo
 				setPlayerConnected();
+				if (coreGame.isTurnActive()) {
+					coreGame.setTurnActive(false);
+					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp());
+				}
 			}
-		});
-		thread.start();
+		}).start();
+	}
+	
+	public void stopCountdown() {
+		countdown = 0;
 	}
 
 }

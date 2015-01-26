@@ -15,6 +15,7 @@ public class CoreGame implements Serializable{
 	private String winner;
 	private boolean isDoubleTurn;
 	private int turn; /*increase each time a player play*/ 
+	private boolean turnActive;
 
 	/**  Create a new empty cell
 	 *   @param ipGamers, IP list of all player
@@ -25,6 +26,7 @@ public class CoreGame implements Serializable{
 		this.partecipants = new ArrayList<Partecipant>();
 		this.isDoubleTurn = false;
 		this.turn = 0;
+		this.turnActive = false;
 
 		// generate the partecipants giving them a color according to their
 		// registration order
@@ -140,6 +142,7 @@ public class CoreGame implements Serializable{
 	 * @return List<Move>, all the possibile for partecipant 
 	 */
 	public List<Move> initTurn(int resultDie) {
+		this.turnActive = false;
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		System.out.println("result die: "+ resultDie);
@@ -165,6 +168,7 @@ public class CoreGame implements Serializable{
 		if (this.gameBoard.isVictory(partecipant)) {
 			this.winner = partecipant.getColor();
 		}
+		this.turnActive = false;
 		return result;
 	}
 	
@@ -193,5 +197,19 @@ public class CoreGame implements Serializable{
 			this.gameBoard = gameBoard;
 			return Constants.UPDATE_NEXT;
 		}
+	}
+
+	/**
+	 * @return the possibility to play
+	 */
+	public boolean isTurnActive() {
+		return turnActive;
+	}
+
+	/** set the possibility to play
+	 * @param turnActive, the possibility to play
+	 */
+	public void setTurnActive(boolean turnActive) {
+		this.turnActive = turnActive;
 	}
 }

@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
 import sd.core.GameBoard;
-import sd.core.Move;
 import sd.core.Partecipant;
 import sd.ui.ControlBoardPanel;
 import sd.ui.GamePanel;
@@ -41,9 +40,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public UserPlayer(String ServerIp) throws RemoteException {
 		this.isPlaying = false;
-		System.out.println("costruisco lo user player");
 		this.mainFrame = new MainFrame();
-		System.out.println("main frame creato");
+		System.out.println("Main frame creato");
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
 	}
 
@@ -60,7 +58,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 		if (!this.isPlaying) {
 			this.isPlaying = true;
-			
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
@@ -68,15 +65,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 				//System.out.println("Sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward();
 			}
-			
-			try {
+			/*try {
 				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress());
 			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-			
-			
+			}*/
 		}
 
 	}
@@ -107,13 +100,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							mainFrame.resetFrame();
-							mainFrame.setSize(775, 532);
-							gamePanel = new GamePanel(coreGame);
-							gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
-							mainFrame.addPanel(gamePanel, BorderLayout.WEST);
-							controlBoardPanel = new ControlBoardPanel(gamePanel, coreGame);
-							mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
+							initInterface();
 						}
 					});
 				} catch (Exception ex) {
@@ -130,6 +117,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 		t.start();
 	}
 	
+	/** init the main interface
+	 */
+	private void initInterface() {
+		mainFrame.resetFrame();
+		mainFrame.setSize(775, 532);
+		gamePanel = new GamePanel(coreGame, this);
+		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
+		controlBoardPanel = new ControlBoardPanel(coreGame, this);
+		mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
+	}
+	
 	@Override
 	/** this method is invoked by a client when he has finished his turn so that all the other partecipants
 	 * can update the status of the match and its game board.
@@ -144,13 +143,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		
 		/* the internal memory status of the game is updated */
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 		/* update GUI here */
 		System.out.println("3 UPDATE RECEIVED -->");
 		/* END update GUI here */
-		
 		/* according to the previous update, there are several possible consequences*/
 		switch (result) {
 		/* sending the update to the next player */
@@ -158,24 +155,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 			System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
 			this.updateNext(partecipants, gameBoard, ipCurrentPartecipant);
 			break;
-
 		/* giving the next player the permission to play*/
 		case Constants.PLAY_NEXT:
 			System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
 			this.playNext();
 			break;
-
 		/* */
 		case Constants.PLAY_AGAIN:
 			this.initTurn();
 			break;
-			
 		default:
 			// result could be END_GAME
 			break;
-
 		}
-
 	}
 
 	/**
@@ -197,7 +189,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	private void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant){
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant){
 			try {
 				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
@@ -217,18 +209,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 		controlBoardPanel.enableTurn();
 	}
 
-	/** It causes the chosen move to be performed by applying the game rules
-	 * 
-	 * @param chosenMove, the move a player has decided to perform
+	/**
+	 * @return the game panel
 	 */
-	public void applyMove(Move chosenMove) {
-		this.coreGame.handleTurn(chosenMove);
-		/* update GUI here */
-		System.out.println("MAKE MOVE");
-		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
-		this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
+	public GamePanel getGamePanel() {
+		return gamePanel;
 	}
-	
+
+	/**
+	 * @return the control board panel
+	 */
+	public ControlBoardPanel getControlBoardPanel() {
+		return controlBoardPanel;
+	}
+
 	public static void main(String[] args) {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(args[0]);

@@ -97,7 +97,7 @@ public class Constants {
 	public static final int[][] STARTS_BENCH_COLORS = {START_PATH_BENCH_RED, START_PATH_BENCH_GREEN, START_PATH_BENCH_VIOLET, START_PATH_BENCH_YELLOW, START_PATH_BENCH_BLACK, START_PATH_BENCH_BLUE};
 	
 	/* number of times the die rotates when launched */
-	public static final int ROTATIONS = 15;
+	public static final int ROTATIONS = 5/*15*/;
 	
 	
 	

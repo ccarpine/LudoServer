@@ -100,26 +100,23 @@ public class CellButton extends JButton implements Runnable {
 	@Override
 	public void run() {
 		Timer timer = new Timer(500, new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!flashing) {
 					setIcon(new javax.swing.ImageIcon(getClass().getResource(
 							pathOn)));
 					flashing = true;
-				}
-
-				else {
+				} else {
 					setIcon(new javax.swing.ImageIcon(getClass().getResource(
 							pathOff)));
 					flashing = false;
 				}
-
 			}
 		});
-		while (this.isOn) {
-
+		timer.start();
+		while (isOn) {
 			timer.start();
 		}
+		timer.stop();
 	}
 }
