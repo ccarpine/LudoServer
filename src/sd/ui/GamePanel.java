@@ -52,37 +52,23 @@ public class GamePanel extends BGPanel {
 		CellButton buttonPosition = null;
 		int[] currentPosition = new int[2];
 		for (int i = 0; i < Constants.COLOR.length; i++) { /* loop in colors */
-			final int colorIndex = i;
 			/* creating starting cells for current color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
 					"images/starts/off/"+Constants.COLOR[i]+".png", "images/starts/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, 0));
 			this.cellsButton[i][0] = buttonPosition;
-			this.cellsButton[i][0].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					applyMove(cellsButton[colorIndex][0].getRowOnGameBoard(), cellsButton[colorIndex][0].getColOnGameBoard());
-				}
-			});
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
 
 			/* creating remaining cells for current color */
 			for (int j = 0; j < Constants.PATHS_COLORS[i].length; j++) {
-				final int pathIndex = j;
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						"images/box/off/"+Constants.BLANK+".png", "images/box/on/"+Constants.BLANK+".png", 
 						this.coreGame.getGameBoard().getCell(i, j+1));
 				this.cellsButton[i][j+1] = buttonPosition;
-				this.cellsButton[i][j+1].addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						applyMove(cellsButton[colorIndex][pathIndex+1].getRowOnGameBoard(), cellsButton[colorIndex][pathIndex+1].getColOnGameBoard());
-					}
-				});
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -93,31 +79,18 @@ public class GamePanel extends BGPanel {
 					"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
 			this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
-			this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					applyMove(cellsButton[colorIndex][Constants.COLUMNS - Constants.BENCH_DIMENSION].getRowOnGameBoard(), cellsButton[colorIndex][Constants.COLUMNS - Constants.BENCH_DIMENSION].getColOnGameBoard());
-				}
-			});
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
 			
 			/* creating remaning cell for the win path for current color */
 			for (int j = 0; j < Constants.PATHS_WIN_COLORS[i].length; j++) {
-				final int pathIndex = j;
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
 						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
 				this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
-				this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1].addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						applyMove(cellsButton[colorIndex][Constants.COLUMNS - Constants.BENCH_DIMENSION + pathIndex + 1].getRowOnGameBoard(), cellsButton[colorIndex][Constants.COLUMNS - Constants.BENCH_DIMENSION + pathIndex + 1].getColOnGameBoard());
-					}
-				});
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -243,6 +216,7 @@ public class GamePanel extends BGPanel {
 		Move chosenMove = new Move(cellStart, cellDestination);
 		// result is the color of the eaten pawn
 		String result = this.coreGame.handleTurn(chosenMove);
+		/* update GUI here */
 		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
 		Cell cellStartGUI = this.getPawnPositionGUI(indexColorMover, cellStart);
 		Cell cellDestinationGUI = this.getPawnPositionGUI(indexColorMover, cellDestination);
@@ -253,8 +227,6 @@ public class GamePanel extends BGPanel {
 			this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
 		}
 		this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
-		//TODO
-		/* update GUI here */
 		System.out.println("MAKE MOVE");
 		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
 		//TODO
@@ -267,6 +239,9 @@ public class GamePanel extends BGPanel {
 	private void makePossibleMoveDisable() {
 		for (int i=0; i<possibleMoves.size(); i++) {
 			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
+			for (ActionListener a: this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].getActionListeners()) {
+				this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].removeActionListener(a);
+			};
 		}
 	}
 
@@ -278,7 +253,14 @@ public class GamePanel extends BGPanel {
 	public void makePossibleMoveFlash(int resultDie) {
 		possibleMoves = coreGame.initTurn(resultDie);
 		for (int i=0; i<possibleMoves.size(); i++) {
+			final int moveIndex = i;
 			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
+			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					applyMove(possibleMoves.get(moveIndex).getDestination().getRow(), possibleMoves.get(moveIndex).getDestination().getColumn());
+				}
+			});
 		}
 	}
 	
