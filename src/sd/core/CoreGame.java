@@ -3,7 +3,6 @@ package sd.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import sd.util.Constants;
 
@@ -155,8 +154,9 @@ public class CoreGame implements Serializable{
 	/**
 	 * make move choosen and check if the partecipant win
 	 * @param chosenMove, Move choosen by partecipant
+	 * @return String, the color of eatean pawn if present
 	 */
-	public void handleTurn(Move chosenMove) {
+	public String handleTurn(Move chosenMove) {
 		String result = this.gameBoard.makeMove(chosenMove,this.getMyPartecipant());
 		if (result != null) {
 			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
@@ -165,7 +165,7 @@ public class CoreGame implements Serializable{
 		if (this.gameBoard.isVictory(partecipant)) {
 			this.winner = partecipant.getColor();
 		}
-
+		return result;
 	}
 	
 	/**

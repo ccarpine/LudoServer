@@ -32,19 +32,19 @@ public class IntroPanel extends BGPanel {
 		this.setLayout(null);
 		JLabel ludo1 = new JLabel();
 		ludo1.setBounds(260, 30, 150, 220);
-		ludo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry1.png")));
+		ludo1.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/angry1.png")));
 		this.add(ludo1);
 		JLabel ludo2 = new JLabel();
 		ludo2.setBounds(440, 30, 150, 220);
-		ludo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry2.png")));
+		ludo2.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/angry2.png")));
 		this.add(ludo2);
 		JLabel ludo3 = new JLabel();
 		ludo3.setBounds(10, 280, 200, 200);
-		ludo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/angry3.png")));
+		ludo3.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/angry3.png")));
 		this.add(ludo3);
 		final JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 250, 180, 60);
-		goOnMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/start.jpg")));
+		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/start.jpg")));
 		goOnMatch.addActionListener(new ActionListener() {
 			// listener of the start button
 			@Override
@@ -60,7 +60,7 @@ public class IntroPanel extends BGPanel {
 		JButton exit = new javax.swing.JButton();
 		exit.setBounds(380, 320, 180, 60);
 		exit.setIcon(new
-		javax.swing.ImageIcon(getClass().getResource("images/exit.jpg")));
+		javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 		exit.addActionListener(new ActionListener() {
 			// listener of the exit button
 			@Override

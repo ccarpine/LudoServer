@@ -43,14 +43,12 @@ public class CellButton extends JButton implements Runnable {
 			this.rowOnGameBoard = -1;
 			this.colOnGameBoard = -1;
 		}
-		this.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				this.pathOff)));
+		this.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
+				"sd/ui/"+this.pathOff)));
 		this.setBorder(null);
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
-		
-
 	}
 
 	public int getRow() {

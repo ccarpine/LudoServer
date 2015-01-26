@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sd.core.CoreGame;
-import sd.core.Move;
 import sd.util.Constants;
 
 public class ControlBoardPanel extends BGPanel {
@@ -31,13 +30,9 @@ public class ControlBoardPanel extends BGPanel {
 	private JLabel round;
 	private long countdown;
 	private Thread thread;
-	private BufferedImage[][] exactDieFaces; /*
-											 * facce col risultato esatto del
-											 * dado
+	private BufferedImage[][] exactDieFaces; /* faces with the exact result of the die faces
 											 */
-	private BufferedImage[] animationBuffer; /*
-											 * facce da mostrare durante la
-											 * rotazione del dado
+	private BufferedImage[] animationBuffer; /* faces to use during the rolling of the die
 											 */
 	private JButton die;
 
@@ -62,8 +57,8 @@ public class ControlBoardPanel extends BGPanel {
 		
 		JButton color = new JButton();
 		color.setBounds(10, 45, 30, 30);
-		color.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"images/box/on/" + this.coreGame.getMyPartecipant().getColor() + ".png")));
+		color.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
+				"sd/ui/images/box/on/" + this.coreGame.getMyPartecipant().getColor() + ".png")));
 		color.setBorder(null);
 		color.setFocusPainted(false);
 		color.setBorderPainted(false);
@@ -251,9 +246,9 @@ public class ControlBoardPanel extends BGPanel {
 	private void setPlayerConnected() {
 		for (int i = 0; i < currentPlayer.size(); i++) {
 			if (i != ((this.coreGame.getRound()-1)) % Constants.COLOR.length) {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("images/box/off/" + Constants.COLOR[i] + ".png")));
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("images/box/on/" + Constants.COLOR[i] + ".png")));
+				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
 	}
