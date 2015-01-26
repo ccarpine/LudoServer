@@ -18,20 +18,15 @@ public class Partecipant implements Serializable {
 	 * Creates a user game player taking part into the game and setting his
 	 * bench as full
 	 * 
-	 * @param ip
-	 *            , the ip address of that game player
-	 * @param color
-	 *            , the color of the pawns assigned to that game player
-	 * @param colorPosition
-	 *            , the position of the color in the relative array
+	 * @param ip, the ip address of that game player
+	 * @param color, the color of the pawns assigned to that game player
+	 * @param colorPosition, the position of the color in the relative array
 	 */
 	public Partecipant(String ip, String color, int colorPosition) {
-
 		this.ip = ip;
 		this.color = color;
 		this.pawnsInBench = Constants.BENCH_DIMENSION;
 		this.colorPosition = colorPosition;
-
 	}
 
 	public int getPawnsInBench() {

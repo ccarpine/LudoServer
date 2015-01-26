@@ -12,16 +12,14 @@ public class BGPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 	private Image image;
   
-	/* */
-    public BGPanel(String path) {
+	public BGPanel(String path) {
     	super(null);
         this.setOpaque(false);
         this.setImageFromResource(path);
         this.setOpaque(true);
     }
-
     
-    public final void setImageFromResource(String path) {
+    private final void setImageFromResource(String path) {
     	URL resource = BGPanel.class.getResource(path);
         this.image = Toolkit.getDefaultToolkit().getImage(resource);
     }

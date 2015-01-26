@@ -5,14 +5,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class DieSprite {
+import sd.util.Constants;
 
-    private static final int TILE_SIZE = 37;
+public class DieSprite {
 
     public static BufferedImage getSprite(int xGrid, int yGrid) {
     	try {
     		BufferedImage sprite = ImageIO.read(ClassLoader.getSystemResourceAsStream("sd/ui/images/diceSprite.png"));
-        	return sprite.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        	return sprite.getSubimage(xGrid * Constants.DIE_SIZE, yGrid * Constants.DIE_SIZE, Constants.DIE_SIZE, Constants.DIE_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
         }

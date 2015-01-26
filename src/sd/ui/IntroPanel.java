@@ -20,7 +20,6 @@ public class IntroPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel waitingLabel;
-	private JLabel timer;
 	private JLabel countdown;
 	private long timeToStart;
 
@@ -50,7 +49,6 @@ public class IntroPanel extends BGPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				goOnMatch.setEnabled(false);
-				timer.setVisible(true);
 				startCountdown();
 				// try the connection to the server
 				startConnection(serverIP);
@@ -69,14 +67,8 @@ public class IntroPanel extends BGPanel {
 			}
 		});
 		this.add(exit);
-		timer = new JLabel("Start in:");
-		timer.setBounds(330, 405, 100, 30);
-		timer.setFont(new java.awt.Font("Helvetica", 0, 18));
-		timer.setForeground(Color.BLACK);
-		timer.setVisible(false);
-		this.add(timer);
 		countdown = new JLabel();
-		countdown.setBounds(410, 405, 100, 30);
+		countdown.setBounds(330, 405, 100, 30);
 		countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
 		countdown.setForeground(Color.BLACK);
 		countdown.setVisible(false);
@@ -96,7 +88,6 @@ public class IntroPanel extends BGPanel {
 		try {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
 			timeToStart = server.register(Inet4Address.getLocalHost().getHostAddress());
-			System.out.println("0 REGISTER --> ");
 			return true;
 		} catch ( RemoteException | MalformedURLException | NotBoundException | UnknownHostException e) {
 			e.printStackTrace();
@@ -107,14 +98,14 @@ public class IntroPanel extends BGPanel {
 	/** launch a thread to show the countdown related to the start of the match
 	 */
 	private void startCountdown() {
+		countdown.setVisible(true);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				countdown.setVisible(true);
 				while (timeToStart > 0) {
 					int seconds = (int) (timeToStart / 1000) % 60;
 					int minutes = (int) ((timeToStart / 60000) % 60);
-					countdown.setText(String.format("%02d", minutes)+":"+String.format("%02d", seconds));
+					countdown.setText("Start in: "+String.format("%02d", minutes)+":"+String.format("%02d", seconds));
 					try {
 						Thread.sleep(1000);
 						timeToStart -= 1000;

@@ -81,11 +81,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI() throws RemoteException {
-		if (!coreGame.amItheCurrentPartecipant()) {
+		if (coreGame.amItheCurrentPartecipant()) {
+			this.initTurn();
+		} else {
 			//System.out.println("Non sono il primo e creo l'interfaccia");
 			this.buildGUIAndForward();
-		} else {
-			this.initTurn();
 		}
 	}
 	
@@ -120,13 +120,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	/** init the main interface
 	 */
 	private void initInterface() {
-		mainFrame.resetFrame();
-		mainFrame.setSize(775, 532);
-		gamePanel = new GamePanel(coreGame, this);
-		gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
-		mainFrame.addPanel(gamePanel, BorderLayout.WEST);
-		controlBoardPanel = new ControlBoardPanel(coreGame, this);
-		mainFrame.addPanel(controlBoardPanel, BorderLayout.CENTER);
+		this.mainFrame.resetFrame();
+		this.mainFrame.setSize(775, 532);
+		this.gamePanel = new GamePanel(this.coreGame, this);
+		this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+		this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
+		this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
+		this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
 	}
 	
 	@Override
@@ -147,26 +147,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 		/* update GUI here */
 		System.out.println("3 UPDATE RECEIVED -->");
+		// TODO aggiornare gui
 		/* END update GUI here */
 		/* according to the previous update, there are several possible consequences*/
 		switch (result) {
-		/* sending the update to the next player */
-		case Constants.UPDATE_NEXT:
-			System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
-			this.updateNext(partecipants, gameBoard, ipCurrentPartecipant);
-			break;
-		/* giving the next player the permission to play*/
-		case Constants.PLAY_NEXT:
-			System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
-			this.playNext();
-			break;
-		/* */
-		case Constants.PLAY_AGAIN:
-			this.initTurn();
-			break;
-		default:
-			// result could be END_GAME
-			break;
+			/* sending the update to the next player */
+			case Constants.UPDATE_NEXT:
+				System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
+				this.updateNext(partecipants, gameBoard, ipCurrentPartecipant);
+				break;
+			/* giving the next player the permission to play*/
+			case Constants.PLAY_NEXT:
+				System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
+				this.playNext();
+				break;
+			/* */
+			case Constants.PLAY_AGAIN:
+				this.initTurn();
+				break;
+			default:
+				// result could be END_GAME
+				break;
 		}
 	}
 
@@ -204,8 +205,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		
-		System.out.println("2 INIT TURN RECEIVED -->" );
 		controlBoardPanel.enableTurn();
 	}
 
@@ -229,7 +228,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-			
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {

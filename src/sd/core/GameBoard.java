@@ -14,10 +14,11 @@ public class GameBoard implements Serializable{
 	/** create an empty game board
 	 */
 	public GameBoard() {
+		int victory = Constants.COLUMNS - Constants.BENCH_DIMENSION;
 		this.cells = new Cell[Constants.ROWS][Constants.COLUMNS];
 		for (int r = 0; r < Constants.ROWS; r++) {
 			for (int c = 0; c < Constants.COLUMNS; c++) {
-				if (c < (Constants.COLUMNS - Constants.BENCH_DIMENSION)) {
+				if (c < victory) {
 					this.cells[r][c] = new Cell(Constants.BLANK, r, c);
 				} else {
 					this.cells[r][c] = new Cell(Constants.COLOR[(r + 1)
@@ -27,7 +28,6 @@ public class GameBoard implements Serializable{
 		}
 	}
 
-	
 	public Cell getCell(int row, int col) {
 		return this.cells[row][col];
 	}
@@ -64,6 +64,7 @@ public class GameBoard implements Serializable{
 					moves.add(move);
 				}
 				if (die == 6) {
+					// TODO più destinazioni uguali?
 					Move secondMove = getMoveByDie(startCell, die*2, partecipant.getColor());
 					if (secondMove != null) {
 						moves.add(secondMove);

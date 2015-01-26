@@ -9,7 +9,6 @@ import sd.core.Cell;
 import sd.core.CoreGame;
 import sd.core.Move;
 import sd.core.player.UserPlayer;
-import sd.core.player.UserPlayerInterface;
 import sd.util.Constants;
 import layout.TableLayout;
 
@@ -213,7 +212,6 @@ public class GamePanel extends BGPanel {
 		// update GUI here
 		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
 		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
-		System.out.println(cellStartGUI.getRow()+" "+cellStartGUI.getColumn());
 		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
 			int indexColorEaten = this.getIndexColor(result);
@@ -222,9 +220,7 @@ public class GamePanel extends BGPanel {
 			this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
 		}
 		this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
-		System.out.println("MAKE MOVE");
 		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
-		this.userPlayer.getControlBoardPanel().stopCountdown();
 		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
 	}
 	
@@ -267,7 +263,6 @@ public class GamePanel extends BGPanel {
 	 * @return Cell, the cell of the first free position in the bench of that color
 	 */
 	private Cell getFreePositionBenchGUI(int colorBenchIndex) {
-		Cell freeCell = null;
 		for (int g=0; g<Constants.BENCH_DIMENSION; g++) {
 			for (int j=0; j<Constants.BENCH_DIMENSION; j++) {
 				if (this.pawnsOnBoard[colorBenchIndex][j] != null) {
@@ -275,18 +270,18 @@ public class GamePanel extends BGPanel {
 							this.cellsButton[colorBenchIndex][Constants.COLUMNS+g].getCol() == this.pawnsOnBoard[colorBenchIndex][j].getCol()) {
 						break;
 					} else if (j == Constants.BENCH_DIMENSION - 1) {
-						freeCell = new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+g);
+						return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+g);
 					}
 				}
 			}
 		}
-		return freeCell;
+		return null;
 	}
 	
 	/**
 	 * return the corrisponding ui cell
 	 * @param colorBenchIndex, the color of the pawn
-	 * @param cellPosition, the cell in memory
+	 * @param cellPosition, the cell in core game
 	 * @return Cell, the corrisponding ui cell
 	 */
 	private Cell getPositionGUI(int colorBenchIndex, Cell cellPosition) {
@@ -361,13 +356,6 @@ public class GamePanel extends BGPanel {
 					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexDestinationColor]+"_"+Constants.COLOR[indexColorPawn]+".png")));
 		}
 		this.updateUI();
-	}
-	
-	/**
-	 * @return the user player interface
-	 */
-	public UserPlayerInterface getUserPlayer() {
-		return this.userPlayer;
 	}
 	
 }

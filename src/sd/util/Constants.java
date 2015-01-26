@@ -3,7 +3,7 @@ package sd.util;
 public class Constants {
 
 	public static final int MAX_PLAYER = 1;
-	public static final long MAX_WAIT_FOR_MATCH = 60000000000L;
+	public static final long MAX_WAIT_FOR_MATCH = 300000000L;
 	public static final int MAX_WAIT_FOR_TURN = 30;
 	public static final int BENCH_DIMENSION = 4;
 	public static final int SUCCESS = 0;
@@ -23,6 +23,7 @@ public class Constants {
 	public static final int GUI_ROWS = 17;
 	public static final int GUI_COLS = 19;
 	public static final int CELL_SIZE = 30;
+	public static final int DIE_SIZE = 37;
 	
 	public static final String RIGHT = "RIGHT";
 	public static final String LEFT = "LEFT";
@@ -97,7 +98,7 @@ public class Constants {
 	public static final int[][] STARTS_BENCH_COLORS = {START_PATH_BENCH_RED, START_PATH_BENCH_GREEN, START_PATH_BENCH_VIOLET, START_PATH_BENCH_YELLOW, START_PATH_BENCH_BLACK, START_PATH_BENCH_BLUE};
 	
 	/* number of times the die rotates when launched */
-	public static final int ROTATIONS = 5/*15*/;
+	public static final int ROTATIONS = 5;
 	
 	
 	

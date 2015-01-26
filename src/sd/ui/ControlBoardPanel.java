@@ -30,10 +30,8 @@ public class ControlBoardPanel extends BGPanel {
 	private JLabel timeOfTurn;
 	private JLabel round;
 	private long countdown;
-	private BufferedImage[][] exactDieFaces; /* faces with the exact result of the die faces
-											 */
-	private BufferedImage[] animationBuffer; /* faces to use during the rolling of the die
-											 */
+	private BufferedImage[][] exactDieFaces; // faces with the exact result of the die faces
+	private BufferedImage[] animationBuffer; // faces to use during the rolling of the die
 	private JButton die;
 
 	/**
@@ -188,20 +186,16 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void startAnimationDie(JPanel panel) {
 		int animationSpeed = 40;
-		// These are animation states
-		AnimationSprite move = new AnimationSprite(this.animationBuffer,animationSpeed);
 		// This is the actual animation
-		AnimationSprite animation = move;
+		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
 		animation.start();
-		for (int counter = 0; counter < animationSpeed * 100; counter++) {
+		for (int counter=0; counter<animationSpeed*100; counter++) {
 			animation.update();
-			// TODO check here
 			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		int launchResult = coreGame.launchDie();
-		System.out.println(launchResult);
 		/* showing final face of the die, according to the launch result */
-		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult - 1], 6);
+		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
 		paint(panel.getGraphics(), resultAnimation.getSprite(),
@@ -249,7 +243,7 @@ public class ControlBoardPanel extends BGPanel {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (countdown > 0) {
+				while (countdown > 0 && coreGame.isTurnActive()) {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -270,10 +264,6 @@ public class ControlBoardPanel extends BGPanel {
 				}
 			}
 		}).start();
-	}
-	
-	public void stopCountdown() {
-		countdown = 0;
 	}
 
 }

@@ -14,23 +14,21 @@ public class CoreGame implements Serializable{
 	private String ipCurrentPartecipant;
 	private String winner;
 	private boolean isDoubleTurn;
-	private int turn; /*increase each time a player play*/ 
+	private int turn; 
 	private boolean turnActive;
 
 	/**  Create a new empty cell
 	 *   @param ipGamers, IP list of all player
 	 */
 	public CoreGame(List<String> ipGamers) {
-
 		this.winner = null;
 		this.partecipants = new ArrayList<Partecipant>();
 		this.isDoubleTurn = false;
 		this.turn = 0;
 		this.turnActive = false;
-
 		// generate the partecipants giving them a color according to their
 		// registration order
-		for (int i = 0; i < ipGamers.size(); i++) {
+		for (int i=0; i<ipGamers.size(); i++) {
 			Partecipant partecipant = new Partecipant(ipGamers.get(i),
 					Constants.COLOR[i], i);
 			this.partecipants.add(partecipant);
@@ -71,6 +69,7 @@ public class CoreGame implements Serializable{
 	 * @return int represent the current turn
 	 * 
 	 */
+	// TODO non è uguale all'indice del current player?
 	public int getRound() {
 		return (this.turn % (this.partecipants.size())) + 1;
 	}
@@ -80,14 +79,12 @@ public class CoreGame implements Serializable{
 	 * @return partecipant of client that invoke
 	 */
 	public Partecipant getMyPartecipant() {
-		Partecipant myPartecipant = null;
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).isMine()) {
-				myPartecipant = this.partecipants.get(i);
-				break;
+				return this.partecipants.get(i);
 			}
 		}
-		return myPartecipant;
+		return null;
 	}
 
 	/**
@@ -96,14 +93,12 @@ public class CoreGame implements Serializable{
 	 * @return partecipant, the next player
 	 */
 	public Partecipant getNextPartecipant(String ip) {
-		Partecipant partecipant = null;
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (ip.equals(this.partecipants.get(i).getIp())) {
-				partecipant = this.partecipants.get( (i +1) % this.partecipants.size());
-				break;
+				return this.partecipants.get( (i +1) % this.partecipants.size());
 			}
 		}
-		return partecipant;
+		return null;
 	}
 
 	/**
@@ -121,21 +116,6 @@ public class CoreGame implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @return partecipant, current partecipant
-	 */
-	public Partecipant getCurrentPartecipant() {
-		Partecipant partecipant = null;
-		for (int i=0; i<this.partecipants.size(); i++) {
-			if (this.partecipants.get(i).getIp().equals(ipCurrentPartecipant)) {
-				partecipant = this.partecipants.get(i);
-				break;
-			}
-		}
-		return partecipant;
-	}
-	
-	/**
 	 * Prepares the turn by setting the current player and returning his list of possible moves, setting
 	 * isDoubleTurn to true if the launch die result is equal to 6
 	 * @param resultDie, int the result of launch die
@@ -145,7 +125,6 @@ public class CoreGame implements Serializable{
 		this.turnActive = true;
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		System.out.println("result die: "+ resultDie);
 		if (resultDie == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {
@@ -164,9 +143,8 @@ public class CoreGame implements Serializable{
 		if (result != null) {
 			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
 		}
-		Partecipant partecipant = this.getMyPartecipant();
-		if (this.gameBoard.isVictory(partecipant)) {
-			this.winner = partecipant.getColor();
+		if (this.gameBoard.isVictory(this.getMyPartecipant())) {
+			this.winner = this.getMyPartecipant().getColor();
 		}
 		this.turnActive = false;
 		return result;
@@ -183,16 +161,14 @@ public class CoreGame implements Serializable{
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
 		/* check if my ip is equals to the last that has just played,
 		 * means that you received the message that you have send */
-		String myIP = this.getMyPartecipant().getIp();
-		if (myIP.equals(this.ipCurrentPartecipant)) {
+		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
 				return Constants.END_GAME;
 			} else if(this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
 			else
 				return Constants.PLAY_NEXT;
-		}
-		else {
+		} else {
 			this.partecipants = partecipant;
 			this.gameBoard = gameBoard;
 			return Constants.UPDATE_NEXT;

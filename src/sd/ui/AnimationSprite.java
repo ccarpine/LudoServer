@@ -12,7 +12,6 @@ public class AnimationSprite {
     private int animationDirection;        
     private int totalFrames;               
     private boolean stopped;               
-
     private List<BufferedImage> frames;
 
     public AnimationSprite(BufferedImage[] frames, int frameDelay) {

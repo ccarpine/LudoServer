@@ -16,7 +16,7 @@ public class CellButton extends JButton implements Runnable {
 	private int rowOnGameBoard;
 	private int colOnGameBoard;
 	private boolean isOn;
-	private boolean flashing = false;
+	private boolean flashing;
 	private String pathOn;
 	private String pathOff;
 
@@ -32,6 +32,7 @@ public class CellButton extends JButton implements Runnable {
 			Cell cell) {
 		super("");
 		this.isOn = false;
+		this.flashing = false;
 		this.pathOn = pathOn;
 		this.pathOff = pathOff;
 		this.row = pRow;
@@ -76,7 +77,7 @@ public class CellButton extends JButton implements Runnable {
 	}
 
 	/**
-	 * If this GUI  cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
+	 * If this GUI cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
 	 */
 	public void changeState() {
 		if (isOn) {
@@ -88,14 +89,6 @@ public class CellButton extends JButton implements Runnable {
 			new Thread(this).start();
 		}
 	}
-
-	/*
-	 * @Override public void run() { while (this.isOn) { try { this.setIcon(new
-	 * javax.swing.ImageIcon(getClass().getResource(this.pathOn)));
-	 * Thread.sleep(500); this.setIcon(new
-	 * javax.swing.ImageIcon(getClass().getResource(this.pathOff))); } catch
-	 * (InterruptedException e) { e.printStackTrace(); } } }
-	 */
 
 	@Override
 	public void run() {
