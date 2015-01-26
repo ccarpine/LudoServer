@@ -3,7 +3,7 @@ package sd.util;
 public class Constants {
 
 	public static final int MAX_PLAYER = 1;
-	public static final long MAX_WAIT_FOR_MATCH = 3000000000L;
+	public static final long MAX_WAIT_FOR_MATCH = 30000000000L;
 	public static final int MAX_WAIT_FOR_TURN = 30;
 	public static final int BENCH_DIMENSION = 4;
 	public static final int SUCCESS = 0;

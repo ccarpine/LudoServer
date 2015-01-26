@@ -118,7 +118,7 @@ public class GamePanel extends BGPanel {
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						"images/box/off/"+colorPawn+".png", "images/box/on/"+colorPawn+".png", null);
 				this.cellsButton[i][j+Constants.COLUMNS+1] = buttonPosition;
-				this.cellsButton[i][j+Constants.COLUMNS+1] = buttonPosition;
+				this.pawnsOnBoard[i][j+Constants.COLUMNS+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -213,6 +213,8 @@ public class GamePanel extends BGPanel {
 		// update GUI here
 		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
 		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
+		System.out.println(cellStart.getRow()+" "+cellStart.getColumn());
+		System.out.println(cellStartGUI.getRow()+" "+cellStartGUI.getColumn());
 		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
 			int indexColorEaten = this.getIndexColor(result);
@@ -230,7 +232,7 @@ public class GamePanel extends BGPanel {
 	/**
 	 * set all the destination cell of possibile move disabled, the partecipant have already choose
 	 */
-	private void makePossibleMoveDisable() {
+	public void makePossibleMoveDisable() {
 		for (int i=0; i<possibleMoves.size(); i++) {
 			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
 			for (ActionListener a: this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].getActionListeners()) {
@@ -296,7 +298,7 @@ public class GamePanel extends BGPanel {
 					if (this.pawnsOnBoard[colorBenchIndex][Constants.COLUMNS+j] != null) {
 						if (this.cellsButton[colorBenchIndex][Constants.COLUMNS+g].getRow() == this.pawnsOnBoard[colorBenchIndex][Constants.COLUMNS+j].getRow() && 
 								this.cellsButton[colorBenchIndex][Constants.COLUMNS+g].getCol() == this.pawnsOnBoard[colorBenchIndex][Constants.COLUMNS+j].getCol()) {
-							return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+j);
+							return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+g);
 						}
 					}
 				}

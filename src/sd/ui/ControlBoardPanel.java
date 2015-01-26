@@ -105,7 +105,7 @@ public class ControlBoardPanel extends BGPanel {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						startAnimationDie();
+						startAnimationDie(containerDie);
 					}
 				}).start();
 			}
@@ -186,7 +186,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * possible destination for the result in the game panel
 	 * @param Jpanel, the container for the die animation 
 	 */
-	private void startAnimationDie() {
+	private void startAnimationDie(JPanel panel) {
 		int animationSpeed = 40;
 		// These are animation states
 		AnimationSprite move = new AnimationSprite(this.animationBuffer,animationSpeed);
@@ -196,7 +196,7 @@ public class ControlBoardPanel extends BGPanel {
 		for (int counter = 0; counter < animationSpeed * 100; counter++) {
 			animation.update();
 			// TODO check here
-			//paint(getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
+			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		int launchResult = coreGame.launchDie();
 		System.out.println(launchResult);
@@ -204,7 +204,7 @@ public class ControlBoardPanel extends BGPanel {
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult - 1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
-		paint(getGraphics(), resultAnimation.getSprite(),
+		paint(panel.getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
 		this.userPlayer.getGamePanel().makePossibleMoveFlash(launchResult);
@@ -265,6 +265,7 @@ public class ControlBoardPanel extends BGPanel {
 				setPlayerConnected();
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
+					userPlayer.getGamePanel().makePossibleMoveDisable();
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp());
 				}
 			}

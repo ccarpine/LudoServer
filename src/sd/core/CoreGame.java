@@ -142,7 +142,7 @@ public class CoreGame implements Serializable{
 	 * @return List<Move>, all the possibile for partecipant 
 	 */
 	public List<Move> initTurn(int resultDie) {
-		this.turnActive = false;
+		this.turnActive = true;
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		System.out.println("result die: "+ resultDie);
