@@ -86,7 +86,6 @@ public class ControlBoardPanel extends BGPanel {
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		this.initRound();
-		this.setPlayerConnected();
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
@@ -227,7 +226,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void setPlayerConnected() {
 		for (int i=0; i<this.currentPlayer.size(); i++) {
-			if (i+1 != ((this.coreGame.getRound()-1)) % Constants.COLOR.length) {
+			if (Constants.COLOR[i] != this.coreGame.getMyPartecipant().getColor()) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/" + Constants.COLOR[i] + ".png")));
