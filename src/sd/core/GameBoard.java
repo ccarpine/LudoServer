@@ -168,6 +168,7 @@ public class GameBoard implements Serializable{
 		} else {
 			this.cells[destinationCell.getRow()][destinationCell.getColumn()]
 					.addPawn(partecipant.getColor());
+			System.out.println("numero di pawns   "+this.cells[destinationCell.getRow()][destinationCell.getColumn()].getPawns().size());
 			return null;
 		}
 	}
