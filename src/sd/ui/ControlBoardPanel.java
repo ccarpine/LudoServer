@@ -69,7 +69,6 @@ public class ControlBoardPanel extends BGPanel {
 		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
-		this.setTimer();
 		JLabel roundIntro = new JLabel("Round:");
 		roundIntro.setBounds(10, 140, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
@@ -128,6 +127,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	public void enableTurn() {
 		die.setEnabled(true);
+		this.setTimer();
 	}
 
 	/**
