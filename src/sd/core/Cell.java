@@ -74,7 +74,7 @@ public class Cell implements Serializable{
 			return Constants.FAIL;
 		// rules if it is your goal
 		else if (this.color.equals(colorPawn)) {
-			if (this.pawns.size() == 0)
+			if (this.pawns.size() == 0 || (this.pawns.size() < 2 && this.column == 0))
 				return Constants.SUCCESS;
 			else
 				return Constants.FAIL;
