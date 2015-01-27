@@ -313,7 +313,7 @@ public class GamePanel extends BGPanel {
 			System.out.println("colonna   "+ cellPosition.getColumn());
 			
 			for (int i=0; i<Constants.ROWS; i++) {
-				for (int j=0; j<Constants.COLUMNS+Constants.BENCH_DIMENSION; j++) {
+				for (int j=0; j<Constants.COLUMNS; j++) {
 					System.out.println(this.cellsButton[i][j].getCell().getRow()+" "+this.cellsButton[i][j].getCell().getColumn());
 					if (this.cellsButton[i][j].getCell().getRow() == cellPosition.getRow() &&
 							this.cellsButton[i][j].getCell().getColumn() == cellPosition.getColumn()) {
