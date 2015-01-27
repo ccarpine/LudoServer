@@ -345,9 +345,10 @@ public class GamePanel extends BGPanel {
 			return 3;
 		} else if (color.equals(Constants.COLOR[4])) {
 			return 4;
-		} else {
+		} else if (color.equals(Constants.COLOR[5])){
 			return 5;
-		}
+		} else
+			return -1;
 	}
 	
 	/** move the pawn from a gui cell to another 
@@ -358,21 +359,29 @@ public class GamePanel extends BGPanel {
 	private void movePawn(Cell startPosition, Cell destinationPosition, int indexColorPawn) {
 		int indexStartColor = this.getIndexColor(startPosition.getColor());
 		int indexDestinationColor = this.getIndexColor(destinationPosition.getColor());
+		String iconStartPath = Constants.COLOR[indexStartColor];
+		if (indexStartColor<0) { 
+			iconStartPath = "WHITE";
+		}
+		String iconDestinationPath = Constants.COLOR[indexDestinationColor];
+		if (indexDestinationColor<0){
+			iconDestinationPath = "WHITE";
+		}
 		if (startPosition.getPawns().size() == 2) {
 			this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
 					new javax.swing.ImageIcon(
-							ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexStartColor]+"_"+Constants.COLOR[indexColorPawn]+".png")));
+							ClassLoader.getSystemResource("sd/ui/images/box/on/"+ iconStartPath +"_"+Constants.COLOR[indexColorPawn]+".png")));
 		} else {
 			this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
 					new javax.swing.ImageIcon(
-							ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexStartColor]+".png")));
+							ClassLoader.getSystemResource("sd/ui/images/box/on/"+ iconStartPath +".png")));
 		}
 		if (destinationPosition.getPawns().size() == 1) {
 			this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexDestinationColor]+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
+					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
 		} else {
 			this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexDestinationColor]+"_"+Constants.COLOR[indexColorPawn]+".png")));
+					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_"+Constants.COLOR[indexColorPawn]+".png")));
 		}
 		this.updateUI();
 	}
