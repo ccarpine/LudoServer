@@ -117,6 +117,9 @@ public class GamePanel extends BGPanel {
 					if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1 ) {
 						colorPawn = Constants.COLOR[i]+"_"+Constants.COLOR[i];
 					}
+					else {
+						colorPawn = Constants.COLOR[i];
+					}
 				}
 				else {
 					colorPawn = Constants.COLOR[i];
