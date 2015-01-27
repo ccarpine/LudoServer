@@ -3,6 +3,7 @@ package sd.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import sd.util.Constants;
 
@@ -59,9 +60,7 @@ public class CoreGame implements Serializable{
 	 * @return random int from 0 to 6
 	 */
 	public int launchDie() {
-		//TODO 
-		//return 1 + new Random().nextInt(6);
-		return 5;
+		return 1 + new Random().nextInt(6);
 	}
 	
 	/**

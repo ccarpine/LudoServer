@@ -167,8 +167,10 @@ public class GameBoard implements Serializable{
 		if (result == Constants.EATEN) {
 			String eaten = this.cells[destinationCell.getRow()][destinationCell
 					.getColumn()].getPawns().get(0);
+			System.out.println("Eaten: "+eaten);
 			this.cells[destinationCell.getRow()][destinationCell.getColumn()]
 					.addPawn(partecipant.getColor());
+			System.out.println("Part: "+partecipant.getColor());
 			return eaten;
 		} else {
 			this.cells[destinationCell.getRow()][destinationCell.getColumn()]
