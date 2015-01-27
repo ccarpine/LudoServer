@@ -4,7 +4,7 @@ public class Constants {
 
 	public static final int MAX_PLAYER = 2;
 	public static final long MAX_WAIT_FOR_MATCH = 1200000L;
-	public static final int MAX_WAIT_FOR_TURN = /*90*/15;
+	public static final int MAX_WAIT_FOR_TURN = 90;
 	public static final int BENCH_DIMENSION = 4;
 	public static final int SUCCESS = 0;
 	public static final int WALL = 1;
