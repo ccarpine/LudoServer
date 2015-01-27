@@ -126,6 +126,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
+		System.out.println("Abilito il tasto per tirare il dado");
 		die.setEnabled(true);
 		this.setTimer();
 	}

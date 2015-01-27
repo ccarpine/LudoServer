@@ -61,8 +61,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			/* init GUI here */
-			if (coreGame.amItheCurrentPartecipant()) {
-				//System.out.println("Sono il primo e creo l'interfaccia");
+			if (this.coreGame.amItheCurrentPartecipant()) {
+				System.out.println("Primo giocatore della partita");
 				this.buildGUIAndForward();
 			}
 			/*try {
@@ -81,10 +81,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI() throws RemoteException {
-		if (coreGame.amItheCurrentPartecipant()) {
+		if (this.coreGame.amItheCurrentPartecipant()) {
+			System.out.println("Sono il primo e gioco");
 			this.initTurn();
 		} else {
-			//System.out.println("Non sono il primo e creo l'interfaccia");
+			System.out.println("Non sono il primo e creo l'interfaccia");
 			this.buildGUIAndForward();
 		}
 	}
@@ -108,6 +109,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				try {
 					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+					System.out.println("Invoco build gui su next client");
 					nextInTurn.buildGUI();
 				} catch (MalformedURLException | RemoteException | NotBoundException e) {
 					e.printStackTrace();
@@ -205,21 +207,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		controlBoardPanel.enableTurn();
+		this.controlBoardPanel.enableTurn();
 	}
 
 	/**
 	 * @return the game panel
 	 */
 	public GamePanel getGamePanel() {
-		return gamePanel;
+		return this.gamePanel;
 	}
 
 	/**
 	 * @return the control board panel
 	 */
 	public ControlBoardPanel getControlBoardPanel() {
-		return controlBoardPanel;
+		return this.controlBoardPanel;
 	}
 
 	public static void main(String[] args) {
