@@ -95,14 +95,24 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * in the list of the partecipants for that match.
 	 */
 	private void buildGUIAndForward() {
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					initInterface();
+		Thread t = new Thread() {
+			public void run() {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							initInterface();
+						}
+					});
+				} catch (Exception ex) {
 				}
-			});
-		} catch (Exception ex) {
+			}
+		};
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
 		}
 		try {
 			String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
