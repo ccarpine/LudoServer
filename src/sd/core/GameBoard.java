@@ -76,7 +76,8 @@ public class GameBoard implements Serializable{
 		}
 		for (int j = 0; j<moves.size();j++){
 			System.out.println
-			("M" + j + "--da:" + moves.get(j).getStart()+ "--a:" +moves.get(j).getDestination() );
+			("Mosa" + j + " --da: {" + moves.get(j).getStart().getRow() + ","+ moves.get(j).getStart().getColumn()
+					+ "} --a: {" +moves.get(j).getDestination().getRow() + "," + moves.get(j).getDestination().getColumn() +"}");
 		}
 		
 		return moves;
