@@ -57,20 +57,13 @@ public class GameBoard implements Serializable{
 					break;
 				}
 		}
-		// rules for other values: if 6 the it can move on of 12 or 6 cells
+		// rules for other values
 		if (cellsOccupiedByPartecipant.size() > 0) {
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
 				Move move = getMoveByDie(startCell, die, partecipant.getColor());
 				if (move != null) {
 					moves.add(move);
-				}
-				if (die == 6) {
-					// TODO più destinazioni uguali?
-					Move secondMove = getMoveByDie(startCell, die*2, partecipant.getColor());
-					if (secondMove != null) {
-						moves.add(secondMove);
-					}
 				}
 			}
 		}
