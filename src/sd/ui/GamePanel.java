@@ -53,6 +53,8 @@ public class GamePanel extends BGPanel {
 	}
 	
 	public void drawGUI() {
+		this.removeAll();
+		this.updateUI();
 		/* create all cell and button in the panel */
 		System.out.println("Inizio a disegnare la gui");
 		CellButton buttonPosition = null;
