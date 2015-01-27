@@ -224,7 +224,7 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for the current player as on, the other as off
 	 */
-	private void setPlayerConnected() {
+	public void setPlayerConnected() {
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (Constants.COLOR[i] != this.coreGame.getMyPartecipant().getColor()) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));

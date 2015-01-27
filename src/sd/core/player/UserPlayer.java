@@ -140,17 +140,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		/* the internal memory status of the game is updated */
+		/* the internal memory status and the gui of the game is updated */
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
-		/* update GUI here */
-		System.out.println("3 UPDATE RECEIVED -->");
-		// TODO aggiornare gui
-		/* END update GUI here */
+		this.gamePanel.drawGUI();
+		this.controlBoardPanel.setPlayerConnected();
 		/* according to the previous update, there are several possible consequences*/
 		switch (result) {
 			/* sending the update to the next player */

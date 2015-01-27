@@ -49,13 +49,17 @@ public class GamePanel extends BGPanel {
 		for (int i = 0; i < Constants.GUI_ROWS; i++)
 			size[1][i] = Constants.CELL_SIZE;
 		this.setLayout(new TableLayout(size));
+		this.drawGUI();
+	}
+	
+	public void drawGUI() {
 		/* create all cell and button in the panel */
 		CellButton buttonPosition = null;
 		int[] currentPosition = new int[2];
 		for (int i = 0; i < Constants.COLOR.length; i++) { /* loop in colors */
 			/* creating starting cells for current color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
-					"images/starts/on/"+Constants.COLOR[i]+".png", 
+					getPathIcon(this.coreGame.getGameBoard().getCell(i, 0)), 
 					this.coreGame.getGameBoard().getCell(i, 0));
 			this.cellsButton[i][0] = buttonPosition;
 			this.pawnsOnBoard[i][0] = buttonPosition;
@@ -67,7 +71,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						"images/box/on/"+Constants.BLANK+".png", 
+						getPathIcon(this.coreGame.getGameBoard().getCell(i, j+1)), 
 						this.coreGame.getGameBoard().getCell(i, j+1));
 				this.cellsButton[i][j+1] = buttonPosition;
 				this.pawnsOnBoard[i][j+1] = buttonPosition;
@@ -77,7 +81,7 @@ public class GamePanel extends BGPanel {
 			}
 			/* creating starting cell for the win path for current color */
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
-					"images/victory/on/"+Constants.COLOR[i]+".png", 
+					getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
 					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
 			this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
@@ -89,7 +93,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						"images/victory/on/"+Constants.COLOR[i]+".png", 
+						getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
 						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
 				this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
@@ -123,6 +127,27 @@ public class GamePanel extends BGPanel {
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
 		}
+	}
+	
+	private String getPathIcon(Cell cell) {
+		int sizeCell = cell.getPawns().size();
+		switch (sizeCell) {
+			case 0:
+				if (cell.getColumn() == 0) {
+					return "images/starts/on/"+cell.getColor()+".png";
+				} else if (cell.getColumn() >= 8) {
+					return "images/victory/on/"+cell.getColor()+".png";
+				} else {
+					return "images/box/on/"+cell.getColor()+".png";
+				}
+			case 1:
+				return "images/box/on/"+cell.getColor()+"_"+cell.getPawns().get(0)+".png";
+			case 2:
+				return "images/box/on/"+cell.getColor()+"_WALL_"+cell.getPawns().get(0)+".png";
+			default:
+				break;
+		}
+		return null;
 	}
 
 	/**
@@ -356,6 +381,10 @@ public class GamePanel extends BGPanel {
 					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexDestinationColor]+"_"+Constants.COLOR[indexColorPawn]+".png")));
 		}
 		this.updateUI();
+	}
+	
+	public void updateGUIBoard() {
+		
 	}
 	
 }
