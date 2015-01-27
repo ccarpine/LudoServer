@@ -309,6 +309,8 @@ public class GamePanel extends BGPanel {
 			return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS-1+this.coreGame.getMyPartecipant().getPawnsInBench());
 		// find pawn position in the whole game board
 		} else {
+			System.out.println("colonna   "+ cellPosition.getColumn());
+			System.out.println("riga   "+ cellPosition.getRow());
 			for (int i=0; i<Constants.ROWS; i++) {
 				for (int j=0; j<Constants.COLUMNS+Constants.BENCH_DIMENSION; j++) {
 					if (this.cellsButton[i][j].getCell().getRow() == cellPosition.getRow() &&
