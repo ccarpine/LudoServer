@@ -43,7 +43,8 @@ public class GameBoard implements Serializable{
 		List<Move> moves = new ArrayList<Move>();
 		List<Cell> cellsOccupiedByPartecipant = this.getPawnsPositionByColor(partecipant.getColor());
 		// rules for the value 5 of the die: a new pawn can enter
-		if (die == 5 && partecipant.getPawnsInBench() > 0) {
+		//TODO correggi
+		if (die > 3 && partecipant.getPawnsInBench() > 0) {
 			Cell startingCell = this.cells[partecipant.getColorPosition()][0];
 			int result = startingCell.tryAddPawn(partecipant.getColor());
 			switch (result) {
