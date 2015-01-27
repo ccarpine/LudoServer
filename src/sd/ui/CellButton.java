@@ -80,7 +80,7 @@ public class CellButton extends JButton implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 				if (cell.getPawns().size() == 1) {
 					setIcon(new javax.swing.ImageIcon(
-									ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_WALL_"+cell.getColor()+".png")));
+									ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png")));
 				} else {
 					setIcon(new javax.swing.ImageIcon(
 									ClassLoader.getSystemResource("sd/ui/"+basePath)));
