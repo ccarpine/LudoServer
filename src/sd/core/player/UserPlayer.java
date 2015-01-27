@@ -106,22 +106,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
+				try {
+					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
+					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+					System.out.println("Invoco build gui su next client");
+					nextInTurn.buildGUI();
+				} catch (MalformedURLException | RemoteException | NotBoundException e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
-			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-			System.out.println("Invoco build gui su next client");
-			nextInTurn.buildGUI();
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/** init the main interface
@@ -145,6 +140,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/* the internal memory status and the gui of the game is updated */
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 		this.gamePanel.drawGUI();
