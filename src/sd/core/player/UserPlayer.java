@@ -95,7 +95,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * in the list of the partecipants for that match.
 	 */
 	private void buildGUIAndForward() {
-		Thread t = new Thread() {
+		/*Thread t = new Thread() {
 			public void run() {
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
@@ -105,8 +105,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 					});
 				} catch (Exception ex) {
-				}
+				}*/
+				boolean initGUI = false;
+				this.mainFrame.resetFrame();
+				this.mainFrame.setSize(775, 532);
+				this.gamePanel = new GamePanel(this.coreGame, this);
+				this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+				this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
+				this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
+				this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
+				initGUI = true;
+				
 				try {
+					while (!initGUI) {
+						
+					}
 					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
 					System.out.println("Invoco build gui su next client");
@@ -114,9 +127,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 				} catch (MalformedURLException | RemoteException | NotBoundException e) {
 					e.printStackTrace();
 				}
-			}
+		/*	}
 		};
-		t.start();
+		t.start();*/
 	}
 	
 	/** init the main interface
