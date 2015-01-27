@@ -127,7 +127,7 @@ public class GamePanel extends BGPanel {
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
-			System.out.println("Finisco di disegnare la gui");
+			this.updateUI();
 		}
 	}
 	
@@ -383,10 +383,6 @@ public class GamePanel extends BGPanel {
 					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+Constants.COLOR[indexDestinationColor]+"_"+Constants.COLOR[indexColorPawn]+".png")));
 		}
 		this.updateUI();
-	}
-	
-	public void updateGUIBoard() {
-		
 	}
 	
 }

@@ -239,6 +239,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * When timer end the turn pass to the next player
 	 */
 	private void setTimer() {
+		this.countdown = Constants.MAX_WAIT_FOR_TURN;
 		System.out.println("Abilito il timer");
 		new Thread(new Runnable() {
 			@Override
