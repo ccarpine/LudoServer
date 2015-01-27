@@ -62,7 +62,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			this.gamePanel = new GamePanel(this.coreGame, this);
-			this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			/* init GUI here */
 			if (this.coreGame.amItheCurrentPartecipant()) {

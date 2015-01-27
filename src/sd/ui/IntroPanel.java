@@ -67,11 +67,11 @@ public class IntroPanel extends BGPanel {
 			}
 		});
 		this.add(exit);
-		countdown = new JLabel();
-		countdown.setBounds(330, 405, 100, 30);
-		countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
-		countdown.setForeground(Color.BLACK);
-		countdown.setVisible(false);
+		this.countdown = new JLabel();
+		this.countdown.setBounds(330, 405, 100, 30);
+		this.countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
+		this.countdown.setForeground(Color.BLACK);
+		this.countdown.setVisible(false);
 		this.add(countdown);
 		this.waitingLabel = new JLabel("Wait other players...");
 		this.waitingLabel.setFont(new java.awt.Font("Helvetica", 0, 18));
@@ -87,7 +87,7 @@ public class IntroPanel extends BGPanel {
 	private boolean startConnection(String serverIP) {
 		try {
 			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" +serverIP + "/RMILudoServer");
-			timeToStart = server.register(Inet4Address.getLocalHost().getHostAddress());
+			this.timeToStart = server.register(Inet4Address.getLocalHost().getHostAddress());
 			return true;
 		} catch ( RemoteException | MalformedURLException | NotBoundException | UnknownHostException e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class IntroPanel extends BGPanel {
 	/** launch a thread to show the countdown related to the start of the match
 	 */
 	private void startCountdown() {
-		countdown.setVisible(true);
+		this.countdown.setVisible(true);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

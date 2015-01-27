@@ -42,6 +42,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	public ControlBoardPanel(CoreGame coreGame, UserPlayer userPlayer) {
 		super("images/desk.jpg");
+		this.setOpaque(true);
 		this.setLayout(null);
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
@@ -53,12 +54,12 @@ public class ControlBoardPanel extends BGPanel {
 		this.removeAll();
 		this.updateUI();
 		JLabel colorIntro = new JLabel("Your color:");
-		colorIntro.setBounds(10, 20, 185, 25);
+		colorIntro.setBounds(10, 10, 185, 25);
 		colorIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
 		JButton color = new JButton();
-		color.setBounds(10, 45, 30, 30);
+		color.setBounds(10, 35, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
 				"sd/ui/images/box/on/" + this.coreGame.getMyPartecipant().getColor() + ".png")));
 		color.setBorder(null);
@@ -67,39 +68,41 @@ public class ControlBoardPanel extends BGPanel {
 		color.setContentAreaFilled(false);
 		this.add(color);
 		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
-		timeOfTurnIntro.setBounds(10, 80, 185, 25);
+		timeOfTurnIntro.setBounds(10, 70, 185, 25);
 		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		timeOfTurnIntro.setForeground(Color.WHITE);
 		this.add(timeOfTurnIntro);
 		this.timeOfTurn = new JLabel();
-		this.timeOfTurn.setBounds(10, 110, 185, 25);
+		this.timeOfTurn.setBounds(10, 95, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
 		JLabel roundIntro = new JLabel("Round:");
-		roundIntro.setBounds(10, 140, 185, 25);
+		roundIntro.setBounds(10, 125, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
 		this.round = new JLabel(String.valueOf(this.coreGame.getRound()));
-		this.round.setBounds(10, 170, 185, 25);
+		this.round.setBounds(10, 150, 185, 25);
 		this.round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
+		this.initRound();
 		JLabel playerConnectedIntro = new JLabel("Current player:");
-		playerConnectedIntro.setBounds(10, 200, 185, 25);
+		playerConnectedIntro.setBounds(10, 180, 185, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD,
 				18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
-		this.initRound();
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
-		containerDie.setBounds(10, 280, 185, 150);
+		containerDie.setBounds(10, 245, 170, 130);
 		this.add(containerDie);
 		this.die = new JButton("Launch die");
-		this.die.setBounds(10, 440, 185, 25);
+		this.die.setBounds(12, 385, 180, 50);
+		this.die.setIcon(new
+				javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/launch.png")));
 		this.die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -115,7 +118,8 @@ public class ControlBoardPanel extends BGPanel {
 		this.die.setEnabled(false);
 		this.add(die);
 		JButton fold = new JButton("Fold");
-		fold.setBounds(10, 470, 185, 25);
+		fold.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
+		fold.setBounds(12, 440, 180, 50);
 		fold.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -125,8 +129,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(fold);
 		this.animationBuffer = this.initAnimationBuffer();
 		this.exactDieFaces = this.initExactDieFaces();
-		this.initRound();
-		this.setPlayerConnected();
+		//this.setPlayerConnected();
 		// this.updateUI();
 	}
 	
@@ -220,7 +223,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.currentPlayer = new ArrayList<JButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
 			JButton button = new JButton();
-			button.setBounds(5 + (i * 33), 230, 30, 30);
+			button.setBounds(5 + (i * 33), 205, 30, 30);
 			button.setOpaque(true);
 			button.setBorder(null);
 			button.setFocusPainted(false);
