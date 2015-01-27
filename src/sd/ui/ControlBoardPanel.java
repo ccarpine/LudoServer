@@ -229,9 +229,9 @@ public class ControlBoardPanel extends BGPanel {
 	public void setPlayerConnected() {
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (Constants.COLOR[i] != this.coreGame.getCurrentPartecipant().getColor()) {
-				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));
+				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/" + Constants.COLOR[i] + ".png")));
+				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
 	}
