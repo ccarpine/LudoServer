@@ -70,8 +70,8 @@ public class Cell implements Serializable{
 	 */
 	public int tryAddPawn(String colorPawn) {
 		// rules if it is a goal of another
-		if (!this.color.equals(colorPawn) && !this.color.equals(Constants.BLANK))
-			return Constants.FAIL;
+		if (!this.color.equals(colorPawn) && !this.color.equals(Constants.BLANK) && this.column!=0)
+				return Constants.FAIL;
 		// rules if it is your goal
 		else if (this.color.equals(colorPawn)) {
 			if (this.pawns.size() == 0 || (this.pawns.size() < 2 && this.column == 0))
