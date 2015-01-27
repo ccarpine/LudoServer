@@ -33,6 +33,7 @@ public class CellButton extends JButton implements Runnable {
 		this.row = pRow;
 		this.col = pCol;
 		this.cell = cell;
+		System.out.println("sd/ui/"+this.basePath);
 		this.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
 				"sd/ui/"+this.basePath)));
 		this.setBorder(null);
