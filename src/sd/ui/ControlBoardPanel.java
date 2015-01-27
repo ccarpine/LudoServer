@@ -92,13 +92,12 @@ public class ControlBoardPanel extends BGPanel {
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
 		containerDie.setBounds(10, 280, 185, 150);
 		this.add(containerDie);
-		die = new JButton("Launch die");
-		die.setBounds(10, 440, 185, 25);
-		die.addActionListener(new ActionListener() {
+		this.die = new JButton("Launch die");
+		this.die.setBounds(10, 440, 185, 25);
+		this.die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				die.setEnabled(false);
-				
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -107,7 +106,7 @@ public class ControlBoardPanel extends BGPanel {
 				}).start();
 			}
 		});
-		die.setEnabled(false);
+		this.die.setEnabled(false);
 		this.add(die);
 		JButton fold = new JButton("Fold");
 		fold.setBounds(10, 470, 185, 25);
@@ -127,7 +126,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	public void enableTurn() {
 		System.out.println("Abilito il tasto per tirare il dado");
-		die.setEnabled(true);
+		this.die.setEnabled(true);
 		this.setTimer();
 	}
 
@@ -169,7 +168,7 @@ public class ControlBoardPanel extends BGPanel {
 		BufferedImage[] result = new BufferedImage[Constants.ROTATIONS];
 		int rowSprite, colSprite;
 		Random random = new Random();
-		for (int i = 0; i < Constants.ROTATIONS; i++) {
+		for (int i=0; i<Constants.ROTATIONS; i++) {
 			rowSprite = random.nextInt(9);
 			if (rowSprite == 0 || rowSprite == 8)
 				colSprite = 0;
@@ -210,7 +209,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void initRound() {
 		currentPlayer = new ArrayList<JButton>();
-		for (int i = 0; i < Constants.COLOR.length; i++) {
+		for (int i=0; i<Constants.COLOR.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(5 + (i * 33), 230, 30, 30);
 			button.setOpaque(true);
@@ -227,11 +226,11 @@ public class ControlBoardPanel extends BGPanel {
 	 * set the icon for the current player as on, the other as off
 	 */
 	private void setPlayerConnected() {
-		for (int i = 0; i < currentPlayer.size(); i++) {
+		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (i != ((this.coreGame.getRound()-1)) % Constants.COLOR.length) {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));
+				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/" + Constants.COLOR[i] + ".png")));
+				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
 	}
@@ -241,6 +240,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * When timer end the turn pass to the next player
 	 */
 	private void setTimer() {
+		System.out.println("Abilito il timer");
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

@@ -107,7 +107,7 @@ public class CoreGame implements Serializable{
 	 * @return int, index in partecipant list 
 	 */
 	public int getIDPartecipantByColor(String color) {
-		for (int i = 0; i < this.partecipants.size(); i++) {
+		for (int i=0; i<this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).getColor().equals(color)) {
 				return i;
 			}
@@ -122,7 +122,6 @@ public class CoreGame implements Serializable{
 	 * @return List<Move>, all the possibile for partecipant 
 	 */
 	public List<Move> initTurn(int resultDie) {
-		this.turnActive = true;
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		if (resultDie == 6 && !this.isDoubleTurn) {
