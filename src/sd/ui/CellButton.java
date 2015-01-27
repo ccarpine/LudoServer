@@ -86,10 +86,10 @@ public class CellButton extends JButton implements Runnable {
 				}
 				if (folder.equals("off")) {
 					folder = "on";
-					basePath.replace("/off/", "/on/");
+					basePath.replace("off", "on");
 				} else {
 					folder = "off";
-					basePath.replace("/on/", "/off/");
+					basePath.replace("on", "off");
 				}
 			}
 		});
