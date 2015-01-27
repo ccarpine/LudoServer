@@ -64,7 +64,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
-			this.controlBoardPanel.setPlayerConnected();
 			/* init GUI here */
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Primo giocatore della partita");
@@ -150,7 +149,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							/* the internal memory status and the gui of the game is updated */
 							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 							gamePanel.drawGUI();
-							controlBoardPanel.setPlayerConnected();
+							controlBoardPanel.drawControlBoardGUI();
 						}
 					});
 				} catch (Exception ex) {

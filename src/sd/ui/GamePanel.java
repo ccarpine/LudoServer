@@ -361,29 +361,21 @@ public class GamePanel extends BGPanel {
 		int indexStartColor = this.getIndexColor(startPosition.getColor());
 		int indexDestinationColor = this.getIndexColor(destinationPosition.getColor());
 		String iconStartPath = Constants.COLOR[indexStartColor];
-		if (indexStartColor < 0) { 
+		if (indexStartColor < 0)
 			iconStartPath = Constants.BLANK;
-		}
+		if (startPosition.getPawns().size() == 2)
+			iconStartPath += "_"+Constants.COLOR[indexColorPawn];
 		String iconDestinationPath = Constants.COLOR[indexDestinationColor];
-		if (indexDestinationColor < 0){
+		if (indexDestinationColor < 0)
 			iconDestinationPath = Constants.BLANK;
-		}
-		if (startPosition.getPawns().size() == 2) {
-			this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(
-							ClassLoader.getSystemResource("sd/ui/images/box/on/"+ iconStartPath +"_"+Constants.COLOR[indexColorPawn]+".png")));
-		} else {
-			this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(
-							ClassLoader.getSystemResource("sd/ui/images/box/on/"+ iconStartPath +".png")));
-		}
-		if (destinationPosition.getPawns().size() == 1) {
-			this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
-		} else {
-			this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
-					new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_"+Constants.COLOR[indexColorPawn]+".png")));
-		}
+		if (destinationPosition.getPawns().size() == 1)
+			iconDestinationPath += "_WALL";
+		iconDestinationPath += "_"+Constants.COLOR[indexColorPawn];
+		this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
+				new javax.swing.ImageIcon(
+						ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconStartPath+".png")));
+		this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
+				new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
 		this.updateUI();
 	}
 	

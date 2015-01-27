@@ -46,6 +46,12 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
+		this.drawControlBoardGUI();
+	}
+	
+	public void drawControlBoardGUI() {
+		this.removeAll();
+		this.updateUI();
 		JLabel colorIntro = new JLabel("Your color:");
 		colorIntro.setBounds(10, 20, 185, 25);
 		colorIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
@@ -65,20 +71,20 @@ public class ControlBoardPanel extends BGPanel {
 		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		timeOfTurnIntro.setForeground(Color.WHITE);
 		this.add(timeOfTurnIntro);
-		timeOfTurn = new JLabel();
-		timeOfTurn.setBounds(10, 110, 185, 25);
-		timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
-		timeOfTurn.setForeground(Color.LIGHT_GRAY);
+		this.timeOfTurn = new JLabel();
+		this.timeOfTurn.setBounds(10, 110, 185, 25);
+		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
+		this.timeOfTurn.setForeground(Color.LIGHT_GRAY);
 		this.add(timeOfTurn);
 		JLabel roundIntro = new JLabel("Round:");
 		roundIntro.setBounds(10, 140, 185, 25);
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
-		round = new JLabel(String.valueOf(this.coreGame.getRound()));
-		round.setBounds(10, 170, 185, 25);
-		round.setFont(new java.awt.Font("Helvetica", 0, 18));
-		round.setForeground(Color.LIGHT_GRAY);
+		this.round = new JLabel(String.valueOf(this.coreGame.getRound()));
+		this.round.setBounds(10, 170, 185, 25);
+		this.round.setFont(new java.awt.Font("Helvetica", 0, 18));
+		this.round.setForeground(Color.LIGHT_GRAY);
 		this.add(round);
 		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 200, 185, 25);
@@ -119,13 +125,15 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(fold);
 		this.animationBuffer = this.initAnimationBuffer();
 		this.exactDieFaces = this.initExactDieFaces();
+		this.initRound();
+		this.setPlayerConnected();
+		// this.updateUI();
 	}
 	
 	/**
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
-		System.out.println("Abilito il tasto per tirare il dado");
 		this.die.setEnabled(true);
 		this.setTimer();
 	}
@@ -209,7 +217,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * set the icon for all the player
 	 */
 	private void initRound() {
-		currentPlayer = new ArrayList<JButton>();
+		this.currentPlayer = new ArrayList<JButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(5 + (i * 33), 230, 30, 30);
@@ -218,7 +226,7 @@ public class ControlBoardPanel extends BGPanel {
 			button.setFocusPainted(false);
 			button.setBorderPainted(false);
 			button.setContentAreaFilled(false);
-			currentPlayer.add(button);
+			this.currentPlayer.add(button);
 			this.add(button);
 		}
 	}
@@ -226,7 +234,7 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for the current player as on, the other as off
 	 */
-	public void setPlayerConnected() {
+	private void setPlayerConnected() {
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (Constants.COLOR[i] != this.coreGame.getCurrentPartecipant().getColor()) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
