@@ -136,7 +136,7 @@ public class GamePanel extends BGPanel {
 				if (cell.getColumn() == 0) {
 					return "images/starts/on/"+cell.getColor()+".png";
 				} else if (cell.getColumn() >= 8) {
-					return "images/victory/on/"+cell.getColor()+".png";
+					return "images/victory/on/"+(getIndexColor(cell.getColor())+1)%Constants.COLOR.length+".png";
 				} else {
 					return "images/box/on/"+cell.getColor()+".png";
 				}
