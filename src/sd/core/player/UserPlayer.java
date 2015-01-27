@@ -95,28 +95,23 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * in the list of the partecipants for that match.
 	 */
 	private void buildGUIAndForward() {
-		Thread t = new Thread() {
-			public void run() {
-				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override
-						public void run() {
-							initInterface();
-						}
-					});
-				} catch (Exception ex) {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					initInterface();
 				}
-				try {
-					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
-					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-					System.out.println("Invoco build gui su next client");
-					nextInTurn.buildGUI();
-				} catch (MalformedURLException | RemoteException | NotBoundException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		t.start();
+			});
+		} catch (Exception ex) {
+		}
+		try {
+			String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+			System.out.println("Invoco build gui su next client");
+			nextInTurn.buildGUI();
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/** init the main interface
