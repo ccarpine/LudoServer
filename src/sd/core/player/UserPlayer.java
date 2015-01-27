@@ -60,6 +60,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.isPlaying = true;
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
+			this.gamePanel = new GamePanel(this.coreGame, this);
+			this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
+			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			/* init GUI here */
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Primo giocatore della partita");
@@ -95,7 +98,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * in the list of the partecipants for that match.
 	 */
 	private void buildGUIAndForward() {
-		/*Thread t = new Thread() {
+		Thread t = new Thread() {
 			public void run() {
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
@@ -105,21 +108,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 					});
 				} catch (Exception ex) {
-				}*/
-				boolean initGUI = false;
-				this.mainFrame.resetFrame();
-				this.mainFrame.setSize(775, 532);
-				this.gamePanel = new GamePanel(this.coreGame, this);
-				this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
-				this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
-				this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
-				this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
-				initGUI = true;
-				
+				}
 				try {
-					while (!initGUI) {
-						
-					}
 					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
 					System.out.println("Invoco build gui su next client");
@@ -127,9 +117,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 				} catch (MalformedURLException | RemoteException | NotBoundException e) {
 					e.printStackTrace();
 				}
-		/*	}
+			}
 		};
-		t.start();*/
+		t.start();
 	}
 	
 	/** init the main interface
@@ -137,10 +127,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private void initInterface() {
 		this.mainFrame.resetFrame();
 		this.mainFrame.setSize(775, 532);
-		this.gamePanel = new GamePanel(this.coreGame, this);
-		this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 		this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
-		this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 		this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
 	}
 	
@@ -153,12 +140,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
 	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		/* the internal memory status and the gui of the game is updated */
 		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 		this.gamePanel.drawGUI();
