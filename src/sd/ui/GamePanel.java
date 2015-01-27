@@ -99,13 +99,11 @@ public class GamePanel extends BGPanel {
 			}
 			/* creating starting cell for the bench path for current color */
 			String colorPawn = Constants.COLOR[i];
-			if (i < this.coreGame.getPartecipants().size()) {
+			
+			if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > 0 && i < this.coreGame.getPartecipants().size() ) {
 				colorPawn += "_"+Constants.COLOR[i];
 			}
-			
-			buttonPosition = new CellButton(
-					Constants.STARTS_BENCH_COLORS[i][0], Constants.STARTS_BENCH_COLORS[i][1],
-					"images/box/on/"+colorPawn+".png", null);
+			buttonPosition = new CellButton(Constants.STARTS_BENCH_COLORS[i][0], Constants.STARTS_BENCH_COLORS[i][1],"images/box/on/"+colorPawn+".png", null);
 			this.cellsButton[i][Constants.COLUMNS] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
@@ -114,6 +112,11 @@ public class GamePanel extends BGPanel {
 			for (int j = 0; j < Constants.PATH_BENCH.length; j++) {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATH_BENCH[j]);
+				if (this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1 && i < this.coreGame.getPartecipants().size() ) {
+					colorPawn += "_"+Constants.COLOR[i];
+				}else {
+					colorPawn = Constants.COLOR[i];
+				}
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						"images/box/on/"+colorPawn+".png", null);
 				this.cellsButton[i][j+Constants.COLUMNS+1] = buttonPosition;
