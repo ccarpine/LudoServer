@@ -15,6 +15,7 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sd.core.CoreGame;
@@ -184,7 +185,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param Jpanel, the container for the die animation 
 	 */
 	private void startAnimationDie(JPanel panel) {
-		int animationSpeed = 40;
+		/*int animationSpeed = 40;
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
 		animation.start();
@@ -193,13 +194,14 @@ public class ControlBoardPanel extends BGPanel {
 			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		int launchResult = coreGame.launchDie();
-		/* showing final face of the die, according to the launch result */
+		// showing final face of the die, according to the launch result 
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
 		paint(panel.getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
-						.getSprite().getHeight());
+						.getSprite().getHeight());*/
+		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));
 		this.userPlayer.getGamePanel().makePossibleMoveFlash(launchResult);
 	}
 
