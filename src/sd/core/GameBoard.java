@@ -122,9 +122,9 @@ public class GameBoard implements Serializable{
 	 * @return Move, return the Move obtained by a launch of die in according to the current cell
 	 */
 	private Move getMoveByDie(Cell startCell, int die, String partecipantColor) {
+		Cell newStartCell = startCell;
 		for (int d = 1; d <= die; d++) {
-			Cell nextCell = this.getNextCell(startCell.getRow(),
-					startCell.getColumn(), startCell.getColor());
+			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), newStartCell.getColor());
 			if (nextCell != null) {
 				int result = nextCell.walkAhead(partecipantColor);
 				if (d != die) {
@@ -137,6 +137,7 @@ public class GameBoard implements Serializable{
 					}
 				}
 			}
+			newStartCell = nextCell;
 		}
 		return null;
 	}
