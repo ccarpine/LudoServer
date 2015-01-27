@@ -18,7 +18,9 @@ public class GameBoard implements Serializable{
 		this.cells = new Cell[Constants.ROWS][Constants.COLUMNS];
 		for (int r = 0; r < Constants.ROWS; r++) {
 			for (int c = 0; c < Constants.COLUMNS; c++) {
-				if (c < victory) {
+				if (c == 0) {
+					this.cells[r][c] = new Cell(Constants.COLOR[r], r, c);
+				} else if (c < victory) {
 					this.cells[r][c] = new Cell(Constants.BLANK, r, c);
 				} else {
 					this.cells[r][c] = new Cell(Constants.COLOR[(r + 1)
