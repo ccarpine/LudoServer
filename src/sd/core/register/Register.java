@@ -74,7 +74,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		// send the request of start to all gamers
 		for (int i=this.gamersIp.size()-1; i>=0; i--) {
 			try {
-				System.out.println("call for the start for the IP"+ UsersPlayer.get(i));
+				System.out.println("call for the start for the IP"+ this.gamersIp.get(i));
 				UsersPlayer.get(i).start(this.gamersIp);
 			} catch (RemoteException e) {
 				e.printStackTrace();
