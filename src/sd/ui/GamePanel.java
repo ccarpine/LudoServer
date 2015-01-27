@@ -248,9 +248,10 @@ public class GamePanel extends BGPanel {
 			int indexColorEaten = this.getIndexColor(result);
 			Cell eatenPawnPosition = getPositionGUI(indexColorEaten, cellDestination);
 			Cell freeBenchPosition = getFreePositionBenchGUI(indexColorEaten);
-			this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
+			//this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
 		}
-		this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
+		this.drawGUI();
+		//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
 		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
 		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
 	}
@@ -360,12 +361,12 @@ public class GamePanel extends BGPanel {
 		int indexStartColor = this.getIndexColor(startPosition.getColor());
 		int indexDestinationColor = this.getIndexColor(destinationPosition.getColor());
 		String iconStartPath = Constants.COLOR[indexStartColor];
-		if (indexStartColor<0) { 
-			iconStartPath = "WHITE";
+		if (indexStartColor < 0) { 
+			iconStartPath = Constants.BLANK;
 		}
 		String iconDestinationPath = Constants.COLOR[indexDestinationColor];
-		if (indexDestinationColor<0){
-			iconDestinationPath = "WHITE";
+		if (indexDestinationColor < 0){
+			iconDestinationPath = Constants.BLANK;
 		}
 		if (startPosition.getPawns().size() == 2) {
 			this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
