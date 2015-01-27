@@ -275,16 +275,21 @@ public class GamePanel extends BGPanel {
 	 */
 	public void makePossibleMoveFlash(int resultDie) {
 		possibleMoves = coreGame.initTurn(resultDie);
-		for (int i=0; i<possibleMoves.size(); i++) {
-			final int moveIndex = i;
-			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
-			this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (coreGame.isTurnActive())
-						applyMove(possibleMoves.get(moveIndex).getDestination().getRow(), possibleMoves.get(moveIndex).getDestination().getColumn());
-				}
-			});
+		if (possibleMoves.size() == 0) {
+			this.coreGame.setTurnActive(false);
+			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
+		} else {
+			for (int i=0; i<possibleMoves.size(); i++) {
+				final int moveIndex = i;
+				this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].changeState();
+				this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (coreGame.isTurnActive())
+							applyMove(possibleMoves.get(moveIndex).getDestination().getRow(), possibleMoves.get(moveIndex).getDestination().getColumn());
+					}
+				});
+			}
 		}
 	}
 	
