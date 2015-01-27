@@ -32,6 +32,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private ControlBoardPanel controlBoardPanel;
 	private CoreGame coreGame;
 	private boolean isPlaying;
+	private int result;
 	
 	/** when launched, it creates a future game player giving him the possibility to register at the server
 	 * 
@@ -63,6 +64,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.gamePanel.setPreferredSize(new java.awt.Dimension(570, 532));
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
+			this.controlBoardPanel.setPlayerConnected();
 			/* init GUI here */
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Primo giocatore della partita");
@@ -98,7 +100,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * in the list of the partecipants for that match.
 	 */
 	private void buildGUIAndForward() {
-		Thread t = new Thread() {
+		new Thread() {
 			public void run() {
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
@@ -118,8 +120,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					e.printStackTrace();
 				}
 			}
-		};
-		t.start();
+		}.start();
 	}
 	
 	/** init the main interface
@@ -139,31 +140,47 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the game board and the status of the partecipant that has just played
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
-	public void updateStatus(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) throws RemoteException {
-		/* the internal memory status and the gui of the game is updated */
-		int result = this.coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
-		this.gamePanel.drawGUI();
-		this.controlBoardPanel.setPlayerConnected();
-		/* according to the previous update, there are several possible consequences*/
-		switch (result) {
-			/* sending the update to the next player */
-			case Constants.UPDATE_NEXT:
-				System.out.println("4 UPDATE SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() );
-				this.updateNext(partecipants, gameBoard, ipCurrentPartecipant);
-				break;
-			/* giving the next player the permission to play*/
-			case Constants.PLAY_NEXT:
-				System.out.println("5 INIT TURN SEND ("+ result +")-->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
-				this.playNext();
-				break;
-			/* */
-			case Constants.PLAY_AGAIN:
-				this.initTurn();
-				break;
-			default:
-				// result could be END_GAME
-				break;
-		}
+	public void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant) throws RemoteException {
+		new Thread() {
+			public void run() {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							/* the internal memory status and the gui of the game is updated */
+							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
+							gamePanel.drawGUI();
+							controlBoardPanel.setPlayerConnected();
+						}
+					});
+				} catch (Exception ex) {
+				}
+				/* according to the previous update, there are several possible consequences*/
+				switch (result) {
+					/* sending the update to the next player */
+					case Constants.UPDATE_NEXT:
+						System.out.println("4 UPDATE SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp());
+						updateNext(partecipants, gameBoard, ipCurrentPartecipant);
+						break;
+					/* giving the next player the permission to play*/
+					case Constants.PLAY_NEXT:
+						System.out.println("5 INIT TURN SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
+						playNext();
+						break;
+					/* */
+					case Constants.PLAY_AGAIN:
+					try {
+						initTurn();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+						break;
+					default:
+						// result could be END_GAME
+						break;
+				}
+			}
+		}.start();
 	}
 
 	/**
