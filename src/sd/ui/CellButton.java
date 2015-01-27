@@ -57,6 +57,7 @@ public class CellButton extends JButton implements Runnable {
 	 * If this GUI cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
 	 */
 	public void changeState() {
+		System.out.println("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png");
 		if (isOn) {
 			this.isOn = false;
 			if (cell.getPawns().size() == 1) {
@@ -64,7 +65,7 @@ public class CellButton extends JButton implements Runnable {
 								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png")));
 			} else {
 				setIcon(new javax.swing.ImageIcon(
-								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+".png")));
+								ClassLoader.getSystemResource("sd/ui/"+basePath)));
 			}
 		} else {
 			this.isOn = true;
@@ -87,11 +88,9 @@ public class CellButton extends JButton implements Runnable {
 				if (folder.equals("off")) {
 					folder = "on";
 					basePath = basePath.replace("off", "on");
-					System.out.println("Folder off, diventa on: "+basePath);
 				} else {
 					folder = "off";
 					basePath = basePath.replace("on", "off");
-					System.out.println("Folder on, diventa off: "+basePath);
 				}
 			}
 		});
