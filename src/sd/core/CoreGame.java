@@ -85,6 +85,19 @@ public class CoreGame implements Serializable{
 		}
 		return null;
 	}
+	
+	/**
+	 *  get the current partecipant
+	 * @return the current partecipant in according to the current ip
+	 */
+	public Partecipant getCurrentPartecipant() {
+		for (int i = 0; i < this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).getIp().equals(ipCurrentPartecipant)) {
+				return this.partecipants.get(i);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 

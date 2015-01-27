@@ -54,6 +54,7 @@ public class GamePanel extends BGPanel {
 	
 	public void drawGUI() {
 		/* create all cell and button in the panel */
+		System.out.println("Inizio a disegnare la gui");
 		CellButton buttonPosition = null;
 		int[] currentPosition = new int[2];
 		for (int i = 0; i < Constants.COLOR.length; i++) { /* loop in colors */
@@ -126,6 +127,7 @@ public class GamePanel extends BGPanel {
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
+			System.out.println("Finisco di disegnare la gui");
 		}
 	}
 	
