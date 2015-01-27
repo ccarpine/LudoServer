@@ -113,7 +113,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATH_BENCH[j]);
 				if (this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1 && i < this.coreGame.getPartecipants().size() ) {
-					colorPawn += "_"+Constants.COLOR[i];
+					colorPawn = Constants.COLOR[i]+"_"+Constants.COLOR[i];
 				}else {
 					colorPawn = Constants.COLOR[i];
 				}
