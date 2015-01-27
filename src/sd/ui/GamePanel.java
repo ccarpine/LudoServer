@@ -140,15 +140,7 @@ public class GamePanel extends BGPanel {
 		switch (sizeCell) {
 			case 0:
 				if (cell.getColumn() == 0) {
-					switch (cell.getPawns().size()){
-					case 0:
-						return "images/starts/on/"+cell.getColor()+".png";
-					case 1:
-						return "images/box/on/" + cell.getColor()+ "_" +cell.getPawns().get(0) + ".png";
-					case 2:
-						return "images/box/on/" + cell.getColor()+ "_WALL_" +cell.getPawns().get(0) + ".png";
-					}
-					
+					return "images/starts/on/"+cell.getColor()+".png";
 				} else if (cell.getColumn() >= 8) {
 					return "images/victory/on/"+Constants.COLOR[(getIndexColor(cell.getColor())+5)%Constants.ROWS]+".png";
 				} else {
