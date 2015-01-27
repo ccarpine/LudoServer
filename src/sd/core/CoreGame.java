@@ -69,7 +69,6 @@ public class CoreGame implements Serializable{
 	 * @return int represent the current turn
 	 * 
 	 */
-	// TODO non è uguale all'indice del current player?
 	public int getRound() {
 		return (this.turn % (this.partecipants.size())) + 1;
 	}

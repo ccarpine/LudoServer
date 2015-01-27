@@ -13,39 +13,28 @@ public class CellButton extends JButton implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int row;
 	private int col;
-	private int rowOnGameBoard;
-	private int colOnGameBoard;
+	private Cell cell;
 	private boolean isOn;
-	private boolean flashing;
-	private String pathOn;
-	private String pathOff;
+	private String folder;
+	private String basePath;
 
 	/** it creates a graphical cel and associates it to the corresponding one in memory
 	 * 
 	 * @param pRow, the row of the GUI in which the cell will be inserted
 	 * @param pCol, the col of the GUI in which the cell will be inserted
-	 * @param pathOn, path to an icon representing the cell as on
-	 * @param pathOff, path to an icon representing the cell as turned off
+	 * @param basePath, path to an icon representing the cell as on
 	 * @param cell, the cell in memory to which the GUI cell will be associated
 	 */
-	public CellButton(int pRow, int pCol, String pathOn, String pathOff,
-			Cell cell) {
+	public CellButton(int pRow, int pCol, String basePath, Cell cell) {
 		super("");
 		this.isOn = false;
-		this.flashing = false;
-		this.pathOn = pathOn;
-		this.pathOff = pathOff;
+		this.folder = "off";
+		this.basePath = basePath;
 		this.row = pRow;
 		this.col = pCol;
-		if (cell != null) {
-			this.rowOnGameBoard = cell.getRow();
-			this.colOnGameBoard = cell.getColumn();
-		} else {
-			this.rowOnGameBoard = -1;
-			this.colOnGameBoard = -1;
-		}
+		this.cell = cell;
 		this.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
-				"sd/ui/"+this.pathOff)));
+				"sd/ui/"+this.basePath)));
 		this.setBorder(null);
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
@@ -53,27 +42,15 @@ public class CellButton extends JButton implements Runnable {
 	}
 
 	public int getRow() {
-		return row;
+		return this.row;
 	}
 
 	public int getCol() {
-		return col;
+		return this.col;
 	}
-
-	public int getRowOnGameBoard() {
-		return rowOnGameBoard;
-	}
-
-	public void setRowOnGameBoard(int rowOnGameBoard) {
-		this.rowOnGameBoard = rowOnGameBoard;
-	}
-
-	public int getColOnGameBoard() {
-		return colOnGameBoard;
-	}
-
-	public void setColOnGameBoard(int colOnGameBoard) {
-		this.colOnGameBoard = colOnGameBoard;
+	
+	public Cell getCell() {
+		return this.cell;
 	}
 
 	/**
@@ -82,8 +59,13 @@ public class CellButton extends JButton implements Runnable {
 	public void changeState() {
 		if (isOn) {
 			this.isOn = false;
-			this.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-					this.pathOff)));
+			if (cell.getPawns().size() == 1) {
+				setIcon(new javax.swing.ImageIcon(
+								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png")));
+			} else {
+				setIcon(new javax.swing.ImageIcon(
+								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+".png")));
+			}
 		} else {
 			this.isOn = true;
 			new Thread(this).start();
@@ -95,14 +77,19 @@ public class CellButton extends JButton implements Runnable {
 		Timer timer = new Timer(500, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!flashing) {
-					setIcon(new javax.swing.ImageIcon(getClass().getResource(
-							pathOn)));
-					flashing = true;
+				if (cell.getPawns().size() == 1) {
+					setIcon(new javax.swing.ImageIcon(
+									ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png")));
 				} else {
-					setIcon(new javax.swing.ImageIcon(getClass().getResource(
-							pathOff)));
-					flashing = false;
+					setIcon(new javax.swing.ImageIcon(
+									ClassLoader.getSystemResource("sd/ui/"+basePath+".png")));
+				}
+				if (folder.equals("off")) {
+					folder = "on";
+					basePath.replace("/off/", "/on/");
+				} else {
+					folder = "off";
+					basePath.replace("/on/", "/off/");
 				}
 			}
 		});

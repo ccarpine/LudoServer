@@ -55,7 +55,7 @@ public class GamePanel extends BGPanel {
 		for (int i = 0; i < Constants.COLOR.length; i++) { /* loop in colors */
 			/* creating starting cells for current color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
-					"images/starts/off/"+Constants.COLOR[i]+".png", "images/starts/on/"+Constants.COLOR[i]+".png", 
+					"images/starts/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, 0));
 			this.cellsButton[i][0] = buttonPosition;
 			this.pawnsOnBoard[i][0] = buttonPosition;
@@ -67,7 +67,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						"images/box/off/"+Constants.BLANK+".png", "images/box/on/"+Constants.BLANK+".png", 
+						"images/box/on/"+Constants.BLANK+".png", 
 						this.coreGame.getGameBoard().getCell(i, j+1));
 				this.cellsButton[i][j+1] = buttonPosition;
 				this.pawnsOnBoard[i][j+1] = buttonPosition;
@@ -77,7 +77,7 @@ public class GamePanel extends BGPanel {
 			}
 			/* creating starting cell for the win path for current color */
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
-					"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
+					"images/victory/on/"+Constants.COLOR[i]+".png", 
 					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
 			this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
@@ -89,7 +89,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						"images/victory/off/"+Constants.COLOR[i]+".png", "images/victory/on/"+Constants.COLOR[i]+".png", 
+						"images/victory/on/"+Constants.COLOR[i]+".png", 
 						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
 				this.cellsButton[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				this.pawnsOnBoard[i][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
@@ -104,7 +104,7 @@ public class GamePanel extends BGPanel {
 			}
 			buttonPosition = new CellButton(
 					Constants.STARTS_BENCH_COLORS[i][0], Constants.STARTS_BENCH_COLORS[i][1],
-					"images/box/off/"+colorPawn+".png", "images/box/on/"+colorPawn+".png", null);
+					"images/box/on/"+colorPawn+".png", null);
 			this.cellsButton[i][Constants.COLUMNS] = buttonPosition;
 			this.pawnsOnBoard[i][Constants.COLUMNS] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_BENCH_COLORS[i][0];
@@ -115,7 +115,7 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATH_BENCH[j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						"images/box/off/"+colorPawn+".png", "images/box/on/"+colorPawn+".png", null);
+						"images/box/on/"+colorPawn+".png", null);
 				this.cellsButton[i][j+Constants.COLUMNS+1] = buttonPosition;
 				this.pawnsOnBoard[i][j+Constants.COLUMNS+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
@@ -301,8 +301,8 @@ public class GamePanel extends BGPanel {
 		} else {
 			for (int i=0; i<Constants.ROWS; i++) {
 				for (int j=0; j<Constants.COLUMNS+Constants.BENCH_DIMENSION; j++) {
-					if (this.cellsButton[i][j].getRowOnGameBoard() == cellPosition.getRow() &&
-							this.cellsButton[i][j].getColOnGameBoard() == cellPosition.getColumn()) {
+					if (this.cellsButton[i][j].getCell().getRow() == cellPosition.getRow() &&
+							this.cellsButton[i][j].getCell().getColumn() == cellPosition.getColumn()) {
 						return new Cell(Constants.COLOR[i], i, j);
 					}
 				}
