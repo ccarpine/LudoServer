@@ -82,14 +82,16 @@ public class CellButton extends JButton implements Runnable {
 									ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png")));
 				} else {
 					setIcon(new javax.swing.ImageIcon(
-									ClassLoader.getSystemResource("sd/ui/"+basePath+".png")));
+									ClassLoader.getSystemResource("sd/ui/"+basePath)));
 				}
 				if (folder.equals("off")) {
 					folder = "on";
-					basePath.replace("off", "on");
+					basePath = basePath.replace("off", "on");
+					System.out.println("Folder off, diventa on: "+basePath);
 				} else {
 					folder = "off";
-					basePath.replace("on", "off");
+					basePath = basePath.replace("on", "off");
+					System.out.println("Folder on, diventa off: "+basePath);
 				}
 			}
 		});
