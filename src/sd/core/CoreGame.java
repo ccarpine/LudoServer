@@ -22,7 +22,7 @@ public class CoreGame implements Serializable{
 	 *   @param ipGamers, IP list of all player
 	 */
 	public CoreGame(List<String> ipGamers) {
-		this.winner = null;
+		this.winner = "";
 		this.partecipants = new ArrayList<Partecipant>();
 		this.isDoubleTurn = false;
 		this.turn = 0;
@@ -39,6 +39,10 @@ public class CoreGame implements Serializable{
 		this.gameBoard = new GameBoard();
 	}
 
+	public String getWinner(){
+		return this.winner;
+	}
+	
 	public int getTurn(){
 		return this.turn;
 	}
@@ -177,6 +181,7 @@ public class CoreGame implements Serializable{
 		 * means that you received the message that you have send */
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
+				System.out.println("Il vincitore e':" + this.winner);
 				return Constants.END_GAME;
 			} else if(this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
