@@ -58,7 +58,7 @@ public class GameBoard implements Serializable{
 					break;
 				}
 		}
-		// rules for other values
+		// rules for other die values
 		if (cellsOccupiedByPartecipant.size() > 0) {
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
@@ -112,10 +112,14 @@ public class GameBoard implements Serializable{
 			System.out.println("___________sei in riga" + currentRow + "e colonna _"+ currentColumn +"____________________");
 			System.out.println("secondo if. next e' riga: "+ this.cells[currentRow][currentColumn + 1].getRow() +
 					"colonna: " +  this.cells[currentRow][currentColumn + 1].getColumn());
+			System.out.println("color cell "+ this.cells[currentRow][currentColumn +1].getColor());
+			System.out.println("______________________________________________________________________");
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
 			System.out.println("terzo else. next e' riga: "+ this.cells[(currentRow + 1) % Constants.ROWS][0].getRow()
 					+ "colonna: " + this.cells[(currentRow + 1) % Constants.ROWS][0].getColumn());
+			System.out.println("color cell "+ this.cells[currentRow][currentColumn +1].getColor());
+			System.out.println("______________________________________________________________________");
 			return this.cells[(currentRow + 1) % Constants.ROWS][0];
 		}
 	}
