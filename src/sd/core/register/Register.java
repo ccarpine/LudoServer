@@ -99,12 +99,11 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			System.out.println("------------------------");
 			/* partecipant limit reached, start the game */
 			if (this.gamersIp.size() == Constants.MAX_PLAYER) {
-				this.endTimer();
-				this.startGame();
-				this.initVariable();
-				return 0;
+				//this.endTimer();
+				this.counter= Constants.MAX_WAIT_FOR_MATCH;
 			}
 		}
+		System.out.println("Time to start"+ (Constants.MAX_WAIT_FOR_MATCH - this.counter));
 		return (Constants.MAX_WAIT_FOR_MATCH - this.counter);
 	}
 	
