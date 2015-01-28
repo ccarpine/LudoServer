@@ -81,11 +81,11 @@ public class GamePanel extends BGPanel {
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
 			/* creating starting cell for the win path for current color */
-			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
-					getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
-					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
-			System.out.println(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION).getColor());
-			this.cellsButton[(i + Constants.COLOR.length - 1 )% Constants.COLOR.length][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
+			buttonPosition = new CellButton(
+					Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
+					getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.COLOR.length - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
+					this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION));
+			this.cellsButton[(i + Constants.ROWS - 1 )% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
@@ -94,10 +94,9 @@ public class GamePanel extends BGPanel {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
-						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
-				System.out.println(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION+j+1).getColor());
-				this.cellsButton[(i + Constants.COLOR.length - 1 )% Constants.COLOR.length][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
+						getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
+						this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
+				this.cellsButton[(i + Constants.ROWS - 1 )% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
@@ -147,7 +146,8 @@ public class GamePanel extends BGPanel {
 				if (cell.getColumn() == 0) {
 					return "images/starts/on/"+cell.getColor()+".png";
 				} else if (cell.getColumn() >= 8) {
-					return "images/victory/on/"+Constants.COLOR[(getIndexColor(cell.getColor())+5)%Constants.ROWS]+".png";
+					return "images/victory/on/"+cell.getColor()+".png";
+					//return "images/victory/on/"+Constants.COLOR[(getIndexColor(cell.getColor())+5)%Constants.ROWS]+".png";
 				} else {
 					return "images/box/on/"+cell.getColor()+".png";
 				}
