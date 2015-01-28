@@ -244,7 +244,7 @@ public class ControlBoardPanel extends BGPanel {
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				color = this.coreGame.getMyPartecipant().getColor();
 			} else {
-				color = this.coreGame.getPartecipants().get(0).getColor();
+				color = this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 			}
 		}
 		System.out.println("-----"+this.coreGame.getCurrentPartecipant().getIp());
