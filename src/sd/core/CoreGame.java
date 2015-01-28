@@ -39,6 +39,9 @@ public class CoreGame implements Serializable{
 		this.gameBoard = new GameBoard();
 	}
 
+	public int getTurn(){
+		return this.turn;
+	}
 	public List<Partecipant> getPartecipants() {
 		return this.partecipants;
 	}
@@ -135,6 +138,7 @@ public class CoreGame implements Serializable{
 	public List<Move> initTurn(int resultDie) {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
+		this.turn++;
 		if (resultDie == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {

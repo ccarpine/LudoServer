@@ -90,8 +90,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.initRound();
 		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 180, 185, 25);
-		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD,
-				18));
+		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
@@ -101,8 +100,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(containerDie);
 		this.die = new JButton("Launch die");
 		this.die.setBounds(12, 385, 180, 50);
-		this.die.setIcon(new
-				javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/launch.png")));
+		this.die.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/launch.png")));
 		this.die.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -238,8 +236,12 @@ public class ControlBoardPanel extends BGPanel {
 	 * set the icon for the current player as on, the other as off
 	 */
 	private void setPlayerConnected() {
+		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
+		if( this.coreGame.getTurn() == 1) {
+			color = Constants.COLOR[0];
+		}
 		for (int i=0; i<this.currentPlayer.size(); i++) {
-			if (Constants.COLOR[i] != this.coreGame.getCurrentPartecipant().getColor()) {
+			if (!Constants.COLOR[i].equals(color)) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
 			} else {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/on/" + Constants.COLOR[i] + ".png")));
@@ -270,7 +272,6 @@ public class ControlBoardPanel extends BGPanel {
 							+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
-				setPlayerConnected();
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
