@@ -66,7 +66,7 @@ public class ControlBoardPanel extends BGPanel {
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-		this.timeOfTurn = new JLabel("1:90");
+		this.timeOfTurn = new JLabel("Attendere...");
 		this.timeOfTurn.setBounds(120, 20, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.WHITE);
