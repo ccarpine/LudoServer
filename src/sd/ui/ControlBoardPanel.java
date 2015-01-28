@@ -240,8 +240,12 @@ public class ControlBoardPanel extends BGPanel {
 	private void setPlayerConnected() {		
 			
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
-		if(this.coreGame.getTurn() == 1) {
-			color = this.coreGame.getMyPartecipant().getColor();
+		if (this.coreGame.getTurn() == 0) {
+			if (this.coreGame.amItheCurrentPartecipant()) {
+				color = this.coreGame.getMyPartecipant().getColor();
+			} else {
+				color = this.coreGame.getPartecipants().get(0).getColor();
+			}
 		}
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (!Constants.COLOR[i].equals(color)) {
