@@ -109,11 +109,12 @@ public class GameBoard implements Serializable{
 		// return the next cell according to position and color of the pawn
 		else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
 				|| this.cells[currentRow][currentColumn + 1].getColor().equals(Constants.BLANK)) {
-			System.out.println("secondo if riga: "+ this.cells[currentRow][currentColumn + 1].getRow() +
+			System.out.println("___________sei in riga" + currentRow + "e colonna _"+ currentColumn +"____________________");
+			System.out.println("secondo if. next e' riga: "+ this.cells[currentRow][currentColumn + 1].getRow() +
 					"colonna: " +  this.cells[currentRow][currentColumn + 1].getColumn());
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
-			System.out.println("terzo else riga: "+ this.cells[(currentRow + 1) % Constants.ROWS][0].getRow()
+			System.out.println("terzo else. next e' riga: "+ this.cells[(currentRow + 1) % Constants.ROWS][0].getRow()
 					+ "colonna: " + this.cells[(currentRow + 1) % Constants.ROWS][0].getColumn());
 			return this.cells[(currentRow + 1) % Constants.ROWS][0];
 		}
