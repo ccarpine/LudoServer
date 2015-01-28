@@ -1,7 +1,6 @@
 package sd.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -208,7 +207,6 @@ public class ControlBoardPanel extends BGPanel {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
-			button.setWait(500);
 			button.setBounds(5 + (i * 33), 205, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
