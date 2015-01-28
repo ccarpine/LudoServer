@@ -135,12 +135,12 @@ public class GameBoard implements Serializable{
 		for (int d = 1; d <= die; d++) {
 			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), partecipantColor);
 			if (nextCell != null) {
-				int result = nextCell.walkAhead(partecipantColor);
 				if (d != die) {
-					if (result == Constants.WALL) {
+					if (nextCell.walkAhead(partecipantColor) == Constants.WALL) {
 						break;
 					}
 				} else {
+					int result = nextCell.tryAddPawn(partecipantColor);
 					if (result == Constants.SUCCESS || result == Constants.EATEN) {
 						return new Move(startCell, nextCell);
 					}
