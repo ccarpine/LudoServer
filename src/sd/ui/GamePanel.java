@@ -102,8 +102,6 @@ public class GamePanel extends BGPanel {
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
 			
-			this.printCellsButton();
-			
 			/* creating starting cell for the bench path for current color */
 			String colorPawn = Constants.COLOR[i];
 			
@@ -138,6 +136,8 @@ public class GamePanel extends BGPanel {
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
+			
+			this.printCellsButton();
 			this.updateUI();
 		}
 	}
