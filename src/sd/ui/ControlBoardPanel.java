@@ -72,9 +72,9 @@ public class ControlBoardPanel extends BGPanel {
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
-		JLabel playerConnectedIntro = new JLabel("Current player:");
+		JLabel playerConnectedIntro = new JLabel("Player");
 		playerConnectedIntro.setBounds(10, 180, 185, 25);
-		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 16));
+		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", 0, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
@@ -207,14 +207,9 @@ public class ControlBoardPanel extends BGPanel {
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
-			CellButton button = new CellButton(0, 0, "images/box/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
+			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
 			button.setWait(250);
-			button.setBounds(5 + (i * 33), 205, 30, 30);
-			button.setOpaque(true);
-			button.setBorder(null);
-			button.setFocusPainted(false);
-			button.setBorderPainted(false);
-			button.setContentAreaFilled(false);
+			button.setBounds(5 + (i * 33), 205, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 		}
