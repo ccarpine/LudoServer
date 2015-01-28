@@ -237,7 +237,10 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for the current player as on, the other as off
 	 */
-	private void setPlayerConnected() {		
+	private void setPlayerConnected() {	
+		
+		/* l'istruzione seguente illumina il giocatore corrente nel caso il turno sia maggiore di zero. Tale giocatore
+		 * è il seguente di quello che è arrivato con l'aggiornamento il quale proprio adesso sta giocando. */
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(0).getColor();
