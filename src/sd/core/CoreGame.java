@@ -142,11 +142,13 @@ public class CoreGame implements Serializable{
 	public List<Move> initTurn(int resultDie) {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		this.turn++;
 		if (resultDie == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {
 			this.isDoubleTurn = false;
+		}
+		if (resultDie != 6 || !this.isDoubleTurn) {
+			this.turn++;
 		}
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 	}
