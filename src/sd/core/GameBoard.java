@@ -109,10 +109,12 @@ public class GameBoard implements Serializable{
 		// return the next cell according to position and color of the pawn
 		else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
 				|| this.cells[currentRow][currentColumn + 1].getColor().equals(Constants.BLANK)) {
-			System.out.println("secondo if if "+ this.cells[currentRow][currentColumn + 1]);
+			System.out.println("secondo if riga: "+ this.cells[currentRow][currentColumn + 1].getRow() +
+					"colonna: " +  this.cells[currentRow][currentColumn + 1].getColumn());
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
-			System.out.println("terzo else "+ this.cells[(currentRow + 1) % Constants.ROWS][0]);
+			System.out.println("terzo else riga: "+ this.cells[(currentRow + 1) % Constants.ROWS][0].getRow()
+					+ "colonna: " + this.cells[(currentRow + 1) % Constants.ROWS][0].getColumn());
 			return this.cells[(currentRow + 1) % Constants.ROWS][0];
 		}
 	}
@@ -126,7 +128,7 @@ public class GameBoard implements Serializable{
 	private Move getMoveByDie(Cell startCell, int die, String partecipantColor) {
 		Cell newStartCell = startCell;
 		for (int d = 1; d <= die; d++) {
-			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), newStartCell.getColor());
+			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), partecipantColor);
 			if (nextCell != null) {
 				int result = nextCell.walkAhead(partecipantColor);
 				if (d != die) {
