@@ -42,7 +42,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 				startGame();
 				initVariable();
 			}
-		}).start();;
+		}).start();
 	}
 
 	/** init the variable used for the registration
