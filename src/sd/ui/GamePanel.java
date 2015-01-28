@@ -62,6 +62,7 @@ public class GamePanel extends BGPanel {
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
 					getPathIcon(this.coreGame.getGameBoard().getCell(i, 0)), 
 					this.coreGame.getGameBoard().getCell(i, 0));
+			System.out.println(this.coreGame.getGameBoard().getCell(i, 0).getColor());
 			this.cellsButton[i][0] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
@@ -73,6 +74,7 @@ public class GamePanel extends BGPanel {
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						getPathIcon(this.coreGame.getGameBoard().getCell(i, j+1)), 
 						this.coreGame.getGameBoard().getCell(i, j+1));
+				System.out.println(this.coreGame.getGameBoard().getCell(i, j+1).getColor());
 				this.cellsButton[i][j+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
@@ -82,6 +84,7 @@ public class GamePanel extends BGPanel {
 			buttonPosition = new CellButton(Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
 					getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
 					this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION));
+			System.out.println(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION).getColor());
 			this.cellsButton[(i + Constants.COLOR.length - 1 )% Constants.COLOR.length][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
@@ -93,6 +96,7 @@ public class GamePanel extends BGPanel {
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						getPathIcon(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
 						this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
+				System.out.println(this.coreGame.getGameBoard().getCell(i, Constants.COLUMNS - Constants.BENCH_DIMENSION+j+1).getColor());
 				this.cellsButton[(i + Constants.COLOR.length - 1 )% Constants.COLOR.length][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
