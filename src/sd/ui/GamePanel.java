@@ -31,7 +31,7 @@ public class GamePanel extends BGPanel {
 	 * @param coreGame
 	 */
 	public GamePanel(CoreGame coreGame, UserPlayer userPlayer) {
-		super("images/pattern.png");
+		super("images/carpet2.jpg");
 		this.setPreferredSize(new java.awt.Dimension(570, 532));
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
