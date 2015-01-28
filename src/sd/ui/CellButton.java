@@ -64,6 +64,9 @@ public class CellButton extends JButton implements Runnable {
 				setIcon(new javax.swing.ImageIcon(
 								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getPawns().get(0)+".png")));
 			} else {
+				if (this.cell.getColumn()>7){
+					System.out.println(basePath);
+				}
 				setIcon(new javax.swing.ImageIcon(
 								ClassLoader.getSystemResource("sd/ui/"+basePath)));
 			}
