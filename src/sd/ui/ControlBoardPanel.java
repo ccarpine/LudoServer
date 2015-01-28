@@ -129,8 +129,8 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(fold);
 		this.animationBuffer = this.initAnimationBuffer();
 		this.exactDieFaces = this.initExactDieFaces();
-		//this.setPlayerConnected();
-		// this.updateUI();
+		this.setPlayerConnected();
+		this.updateUI();
 	}
 	
 	/**
