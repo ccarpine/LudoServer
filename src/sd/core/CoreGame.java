@@ -43,9 +43,14 @@ public class CoreGame implements Serializable{
 		return this.winner;
 	}
 	
+	public void incrementTurn() {
+		this.turn++;
+	}
+	
 	public int getTurn(){
 		return this.turn;
 	}
+	
 	public List<Partecipant> getPartecipants() {
 		return this.partecipants;
 	}
@@ -137,9 +142,6 @@ public class CoreGame implements Serializable{
 			this.isDoubleTurn = true;
 		} else {
 			this.isDoubleTurn = false;
-		}
-		if (resultDie != 6 || !this.isDoubleTurn) {
-			this.turn++;
 		}
 		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
 	}

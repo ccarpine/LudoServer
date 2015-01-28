@@ -148,6 +148,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						public void run() {
 							/* the internal memory status and the gui of the game is updated */
 							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
+							coreGame.incrementTurn();
 							gamePanel.drawGUI();
 							controlBoardPanel.drawControlBoardGUI();
 						}
