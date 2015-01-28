@@ -135,7 +135,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
-		if (!this.coreGame.getWinner().isEmpty()) {
+		if (this.coreGame.getWinner().isEmpty()) {
 			this.die.setEnabled(true);
 			this.setTimer();
 		}
@@ -239,7 +239,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void setPlayerConnected() {
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
-		if( this.coreGame.getTurn() == 1) {
+		if( this.coreGame.getTurn() == 0) {
 			color = Constants.COLOR[0];
 		}
 		for (int i=0; i<this.currentPlayer.size(); i++) {
