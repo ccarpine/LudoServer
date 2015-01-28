@@ -237,7 +237,8 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for the current player as on, the other as off
 	 */
-	private void setPlayerConnected() {
+	private void setPlayerConnected() {		
+			
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if( this.coreGame.getTurn() == 0) {
 			color = Constants.COLOR[0];
@@ -249,6 +250,8 @@ public class ControlBoardPanel extends BGPanel {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/on/" + Constants.COLOR[i] + ".png")));
 			}
 		}
+		
+		System.out.println(this.coreGame.getTurn() + ": " + color);
 	}
 
 	/**
