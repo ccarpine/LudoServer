@@ -103,13 +103,16 @@ public class GameBoard implements Serializable{
 	private Cell getNextCell(int currentRow, int currentColumn, String currentColorPawn) {
 		// return null if no other moves are possible
 		if (currentColumn == Constants.COLUMNS - 1) {
+			System.out.println("primo if return null");
 			return null;
 		}
 		// return the next cell according to position and color of the pawn
 		else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
 				|| this.cells[currentRow][currentColumn + 1].getColor().equals(Constants.BLANK)) {
+			System.out.println("secondo if if "+ this.cells[currentRow][currentColumn + 1]);
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
+			System.out.println("terzo else "+ this.cells[(currentRow + 1) % Constants.ROWS][0]);
 			return this.cells[(currentRow + 1) % Constants.ROWS][0];
 		}
 	}
