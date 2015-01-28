@@ -69,15 +69,6 @@ public class CoreGame implements Serializable{
 	public int launchDie() {
 		return 1 + new Random().nextInt(6);
 	}
-	
-	/**
-	 * 
-	 * @return int represent the current turn
-	 * 
-	 */
-	public int getRound() {
-		return (this.turn % (this.partecipants.size())) + 1;
-	}
 
 	/**
 	 * 

@@ -82,7 +82,7 @@ public class ControlBoardPanel extends BGPanel {
 		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
 		roundIntro.setForeground(Color.WHITE);
 		this.add(roundIntro);
-		this.round = new JLabel(String.valueOf(this.coreGame.getRound()));
+		this.round = new JLabel(String.valueOf(this.coreGame.getTurn()));
 		this.round.setBounds(10, 150, 185, 25);
 		this.round.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.round.setForeground(Color.LIGHT_GRAY);
@@ -240,8 +240,8 @@ public class ControlBoardPanel extends BGPanel {
 	private void setPlayerConnected() {		
 			
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
-		if( this.coreGame.getRound() == 1 && this.coreGame.getCurrentPartecipant().getColor().equals(this.coreGame.getPartecipants().get(0).getColor())) {
-			color = Constants.COLOR[0];
+		if(this.coreGame.getTurn() == 0) {
+			color = this.coreGame.getMyPartecipant().getColor();
 		}
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (!Constants.COLOR[i].equals(color)) {
