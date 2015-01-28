@@ -181,7 +181,6 @@ public class CoreGame implements Serializable{
 		 * means that you received the message that you have send */
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
 			if (this.winner != null) {
-				System.out.println("Il vincitore e':" + this.winner);
 				return Constants.END_GAME;
 			} else if(this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;

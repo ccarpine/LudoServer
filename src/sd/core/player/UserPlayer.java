@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
@@ -173,8 +174,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 						e.printStackTrace();
 					}
 						break;
+					case Constants.END_GAME:
+						JOptionPane.showMessageDialog(null, "il vincitore e': "+ coreGame.getWinner());
 					default:
-						// result could be END_GAME
 						break;
 				}
 			}
