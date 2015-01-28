@@ -187,6 +187,9 @@ public class ControlBoardPanel extends BGPanel {
 			animation.update();
 			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
+		if (this.coreGame.amItheCurrentPartecipant()) {
+			// tiro il dato e esce this.coreGame.getCurrentDie();
+		}
 		int launchResult = coreGame.launchDie();
 		// showing final face of the die, according to the launch result 
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
