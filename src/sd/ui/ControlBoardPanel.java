@@ -247,6 +247,7 @@ public class ControlBoardPanel extends BGPanel {
 				color = this.coreGame.getPartecipants().get(0).getColor();
 			}
 		}
+		System.out.println("-----"+this.coreGame.getCurrentPartecipant().getIp());
 		for (int i=0; i<this.currentPlayer.size(); i++) {
 			if (!Constants.COLOR[i].equals(color)) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
