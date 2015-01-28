@@ -197,7 +197,8 @@ public class ControlBoardPanel extends BGPanel {
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());*/
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));
-		this.userPlayer.getGamePanel().makePossibleMoveFlash(launchResult);
+		this.coreGame.setCurrentDie(launchResult);
+		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
 	/**
@@ -265,7 +266,7 @@ public class ControlBoardPanel extends BGPanel {
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
-					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp());
+					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp(), coreGame.getCurrentDie());
 				}
 			}
 		}).start();

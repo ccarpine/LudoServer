@@ -17,6 +17,7 @@ public class CoreGame implements Serializable{
 	private boolean isDoubleTurn;
 	private int turn; 
 	private boolean turnActive;
+	private int currentDie;
 
 	/**  Create a new empty cell
 	 *   @param ipGamers, IP list of all player
@@ -78,7 +79,17 @@ public class CoreGame implements Serializable{
 	 * @return random int from 0 to 6
 	 */
 	public int launchDie() {
-		return 1 + new Random().nextInt(6);
+		this.currentDie = 1 + new Random().nextInt(6);
+		return this.currentDie;
+	}
+	
+	public int getCurrentDie() {
+		return this.currentDie;
+	}
+	
+	// TODO da rimuovere
+	public void setCurrentDie(int die) {
+		this.currentDie = die;
 	}
 
 	/**
@@ -141,15 +152,15 @@ public class CoreGame implements Serializable{
 	 * @param resultDie, int the result of launch die
 	 * @return List<Move>, all the possibile for partecipant 
 	 */
-	public List<Move> initTurn(int resultDie) {
+	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		if (resultDie == 6 && !this.isDoubleTurn) {
+		if (currentDie == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {
 			this.isDoubleTurn = false;
 		}
-		return this.gameBoard.suggestMoves(tempPartecipant, resultDie);
+		return this.gameBoard.suggestMoves(tempPartecipant, currentDie);
 	}
 	
 	/**
