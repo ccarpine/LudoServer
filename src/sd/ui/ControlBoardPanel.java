@@ -253,7 +253,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void setTimer() {
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
-		System.out.println("Abilito il timer");
+		//System.out.println("Abilito il timer");
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

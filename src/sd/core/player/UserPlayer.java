@@ -240,7 +240,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
 			System.out.println("CLIENT ---- Ip address:" + ipAddress);
-			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
 				exc.printStackTrace();
 		}

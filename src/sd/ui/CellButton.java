@@ -57,16 +57,12 @@ public class CellButton extends JButton implements Runnable {
 	 * If this GUI cell is selectable as a move to apply, this method changes its state by making it clickable and making it flash
 	 */
 	public void changeState() {
-		System.out.println("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getColor()+".png");
 		if (isOn) {
 			this.isOn = false;
 			if (cell.getPawns().size() == 1) {
 				setIcon(new javax.swing.ImageIcon(
 								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getPawns().get(0)+".png")));
 			} else {
-				if (this.cell.getColumn()>7){
-					System.out.println(basePath);
-				}
 				setIcon(new javax.swing.ImageIcon(
 								ClassLoader.getSystemResource("sd/ui/"+basePath)));
 			}
