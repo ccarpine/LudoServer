@@ -17,7 +17,6 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	private static final long serialVersionUID = 1L;
 	private List<String> gamersIp;
-	private long timerThread;
 	private long counter;
 
 	
@@ -36,7 +35,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			@Override
 			public void run() {
 				long startedAt = System.currentTimeMillis();
-				while (counter < timerThread) {
+				while (counter < Constants.MAX_WAIT_FOR_MATCH && gamersIp.size() < Constants.MAX_PLAYER) {
 					counter = System.currentTimeMillis() - startedAt;
 				}
 				startGame();
@@ -48,7 +47,6 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	/** init the variable used for the registration
 	 */
 	private void initVariable() {
-		this.timerThread = Constants.MAX_WAIT_FOR_MATCH;
 		this.counter = 0;
 		this.gamersIp = new ArrayList<String>();
 	}
@@ -92,10 +90,9 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
 			System.out.println("------------------------");
 			/* partecipant limit reached, start the game */
-			if (this.gamersIp.size() == Constants.MAX_PLAYER) {
+			//if (this.gamersIp.size() == Constants.MAX_PLAYER) {
 				//this.endTimer();
-				this.timerThread = 0;
-			}
+			//}
 		}
 		System.out.println("Time to start"+ (Constants.MAX_WAIT_FOR_MATCH - this.counter));
 		return (Constants.MAX_WAIT_FOR_MATCH - this.counter);
