@@ -62,7 +62,6 @@ public class GamePanel extends BGPanel {
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
 					getPathIcon(this.coreGame.getGameBoard().getCell(i, 0)), 
 					this.coreGame.getGameBoard().getCell(i, 0));
-			System.out.println(this.coreGame.getGameBoard().getCell(i, 0).getColor());
 			this.cellsButton[i][0] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
@@ -74,7 +73,6 @@ public class GamePanel extends BGPanel {
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
 						getPathIcon(this.coreGame.getGameBoard().getCell(i, j+1)), 
 						this.coreGame.getGameBoard().getCell(i, j+1));
-				System.out.println(this.coreGame.getGameBoard().getCell(i, j+1).getColor());
 				this.cellsButton[i][j+1] = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
@@ -136,10 +134,10 @@ public class GamePanel extends BGPanel {
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
-			
-			this.printCellsButton();
-			this.updateUI();
 		}
+		
+		this.printCellsButton();
+		this.updateUI();
 	}
 	
 	private String getPathIcon(Cell cell) {
@@ -390,7 +388,7 @@ public class GamePanel extends BGPanel {
 	private void printCellsButton() {
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<12; j++) {
-				//System.out.printf("%s ", this.cellsButton[i][j].getCell().getColor());
+				System.out.printf("%s ", this.cellsButton[i][j].getCell().getColor());
 			}
 			
 			System.out.println("___________________________________");
