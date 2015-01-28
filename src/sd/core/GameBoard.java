@@ -145,6 +145,8 @@ public class GameBoard implements Serializable{
 						return new Move(startCell, nextCell);
 					}
 				}
+			} else {
+				return null;
 			}
 			newStartCell = nextCell;
 		}
