@@ -59,6 +59,12 @@ public class CoreGame implements Serializable{
 		return this.gameBoard;
 	}
 	
+	public boolean iWin(){
+		if (this.getMyPartecipant().getColor().equals(this.getWinner()) || this.partecipants.size()==1)
+			return true;
+		return false;
+			
+	}
 	/**
 	 * 
 	 * @return boolean, TRUE if how invoke is the current partecipant
