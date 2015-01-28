@@ -389,7 +389,7 @@ public class GamePanel extends BGPanel {
 	
 	private void printCellsButton() {
 		for(int i=0; i<this.cellsButton.length; i++) {
-			for(int j=0; j<Constants.GUI_COLS; j++) {
+			for(int j=0; j<16; j++) {
 				System.out.printf("%s ", this.cellsButton[i][j].getCell().getColor());
 			}
 			
