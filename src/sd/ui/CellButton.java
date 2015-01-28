@@ -1,10 +1,6 @@
 package sd.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.Timer;
 
 import sd.core.Cell;
 
@@ -74,29 +70,26 @@ public class CellButton extends JButton implements Runnable {
 
 	@Override
 	public void run() {
-		Timer timer = new Timer(500, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (cell.getPawns().size() == 1) {
-					setIcon(new javax.swing.ImageIcon(
-									ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getPawns().get(0)+".png")));
-				} else {
-					setIcon(new javax.swing.ImageIcon(
-									ClassLoader.getSystemResource("sd/ui/"+basePath)));
-				}
-				if (folder.equals("off")) {
-					folder = "on";
-					basePath = basePath.replace("off", "on");
-				} else {
-					folder = "off";
-					basePath = basePath.replace("on", "off");
-				}
-			}
-		});
-		timer.start();
 		while (isOn) {
-			timer.start();
+			if (cell.getPawns().size() == 1) {
+				setIcon(new javax.swing.ImageIcon(
+								ClassLoader.getSystemResource("sd/ui/images/box/"+folder+"/"+cell.getColor()+"_"+cell.getPawns().get(0)+".png")));
+			} else {
+				setIcon(new javax.swing.ImageIcon(
+								ClassLoader.getSystemResource("sd/ui/"+basePath)));
+			}
+			if (folder.equals("off")) {
+				folder = "on";
+				basePath = basePath.replace("off", "on");
+			} else {
+				folder = "off";
+				basePath = basePath.replace("on", "off");
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		timer.stop();
 	}
 }
