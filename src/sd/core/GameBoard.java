@@ -68,11 +68,6 @@ public class GameBoard implements Serializable{
 				}
 			}
 		}
-		for (int j = 0; j<moves.size();j++){
-			System.out.println
-			("Mosa" + j+ " --a: {" +moves.get(j).getDestination().getRow() + "," + moves.get(j).getDestination().getColumn() +"}");
-		}
-		
 		return moves;
 	}
 
@@ -103,23 +98,13 @@ public class GameBoard implements Serializable{
 	private Cell getNextCell(int currentRow, int currentColumn, String currentColorPawn) {
 		// return null if no other moves are possible
 		if (currentColumn == Constants.COLUMNS - 1) {
-			System.out.println("primo if return null");
 			return null;
 		}
 		// return the next cell according to position and color of the pawn
 		else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
 				|| this.cells[currentRow][currentColumn + 1].getColor().equals(Constants.BLANK)) {
-			System.out.println("___________sei in riga" + currentRow + "e colonna _"+ currentColumn +"____________________");
-			System.out.println("secondo if. next e' riga: "+ this.cells[currentRow][currentColumn + 1].getRow() +
-					"colonna: " +  this.cells[currentRow][currentColumn + 1].getColumn());
-			System.out.println("color cell "+ this.cells[currentRow][currentColumn +1].getColor());
-			System.out.println("______________________________________________________________________");
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
-			System.out.println("terzo else. next e' riga: "+ this.cells[(currentRow + 1) % Constants.ROWS][0].getRow()
-					+ "colonna: " + this.cells[(currentRow + 1) % Constants.ROWS][0].getColumn());
-			System.out.println("color cell "+ this.cells[currentRow][currentColumn +1].getColor());
-			System.out.println("______________________________________________________________________");
 			return this.cells[(currentRow + 1) % Constants.ROWS][0];
 		}
 	}
@@ -173,15 +158,12 @@ public class GameBoard implements Serializable{
 		if (result == Constants.EATEN) {
 			String eaten = this.cells[destinationCell.getRow()][destinationCell
 					.getColumn()].getPawns().get(0);
-			System.out.println("Eaten: "+eaten);
 			this.cells[destinationCell.getRow()][destinationCell.getColumn()]
 					.addPawn(partecipant.getColor());
-			System.out.println("Part: "+partecipant.getColor());
 			return eaten;
 		} else {
 			this.cells[destinationCell.getRow()][destinationCell.getColumn()]
 					.addPawn(partecipant.getColor());
-			System.out.println("numero di pawns   "+this.cells[destinationCell.getRow()][destinationCell.getColumn()].getPawns().size());
 			return null;
 		}
 	}

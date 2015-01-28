@@ -320,12 +320,8 @@ public class GamePanel extends BGPanel {
 			return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS-1+this.coreGame.getMyPartecipant().getPawnsInBench());
 		// find pawn position in the whole game board
 		} else {
-			//System.out.println("riga   "+ cellPosition.getRow());
-			//System.out.println("colonna   "+ cellPosition.getColumn());
-			
 			for (int i=0; i<Constants.ROWS; i++) {
 				for (int j=0; j<Constants.COLUMNS; j++) {
-					//System.out.println(this.cellsButton[i][j].getCell().getRow()+" "+this.cellsButton[i][j].getCell().getColumn());
 					if (this.cellsButton[i][j].getCell().getRow() == cellPosition.getRow() &&
 							this.cellsButton[i][j].getCell().getColumn() == cellPosition.getColumn()) {
 						return new Cell(Constants.COLOR[i], i, j);
@@ -384,16 +380,13 @@ public class GamePanel extends BGPanel {
 		this.updateUI();
 	}
 	
-	private void printCellsButton() {
+	/*private void printCellsButton() {
 		for(int i=0; i<6; i++) {
 			for(int j=8; j<12; j++) {
-				
 				System.out.println(this.getPathIcon(this.cellsButton[i][j].getCell()));
-				
 			}
-			
 			System.out.println("___________________________________");
 		}
-	}
+	}*/
 	
 }
