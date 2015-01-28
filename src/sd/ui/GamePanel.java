@@ -101,6 +101,9 @@ public class GamePanel extends BGPanel {
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
+			
+			this.printCellsButton();
+			
 			/* creating starting cell for the bench path for current color */
 			String colorPawn = Constants.COLOR[i];
 			
@@ -382,6 +385,16 @@ public class GamePanel extends BGPanel {
 		this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
 				new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
 		this.updateUI();
+	}
+	
+	private void printCellsButton() {
+		for(int i=0; i<this.cellsButton.length; i++) {
+			for(int j=0; j<Constants.GUI_COLS; j++) {
+				System.out.printf("%s ", this.cellsButton[i][j].getCell().getColor());
+			}
+			
+			System.out.println("___________________________________");
+		}
 	}
 	
 }
