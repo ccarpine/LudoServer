@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sd.core.Cell;
 import sd.core.CoreGame;
 import sd.core.player.UserPlayer;
 import sd.util.Constants;
@@ -27,9 +28,8 @@ public class ControlBoardPanel extends BGPanel {
 	private static final long serialVersionUID = 1L;
 	private UserPlayer userPlayer;
 	private CoreGame coreGame;
-	private List<JButton> currentPlayer;
+	private List<CellButton> currentPlayer;
 	private JLabel timeOfTurn;
-	private JLabel round;
 	private long countdown;
 	private BufferedImage[][] exactDieFaces; // faces with the exact result of the die faces
 	private BufferedImage[] animationBuffer; // faces to use during the rolling of the die
@@ -53,44 +53,28 @@ public class ControlBoardPanel extends BGPanel {
 	public void drawControlBoardGUI() {
 		this.removeAll();
 		this.updateUI();
-		JLabel colorIntro = new JLabel("Your color:");
+		JLabel colorIntro = new JLabel("You");
 		colorIntro.setBounds(10, 10, 185, 25);
-		colorIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		colorIntro.setFont(new java.awt.Font("Helvetica", 0, 16));
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
 		JButton color = new JButton();
 		color.setBounds(10, 35, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
-				"sd/ui/images/box/on/" + this.coreGame.getMyPartecipant().getColor() + ".png")));
+				"sd/ui/images/turnMarkers/on/SMALL_" + this.coreGame.getMyPartecipant().getColor() + ".png")));
 		color.setBorder(null);
 		color.setFocusPainted(false);
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-		JLabel timeOfTurnIntro = new JLabel("Time of turn:");
-		timeOfTurnIntro.setBounds(10, 70, 185, 25);
-		timeOfTurnIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
-		timeOfTurnIntro.setForeground(Color.WHITE);
-		this.add(timeOfTurnIntro);
-		this.timeOfTurn = new JLabel();
-		this.timeOfTurn.setBounds(10, 95, 185, 25);
+		this.timeOfTurn = new JLabel("1:90");
+		this.timeOfTurn.setBounds(120, 20, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
-		this.timeOfTurn.setForeground(Color.LIGHT_GRAY);
+		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
-		JLabel roundIntro = new JLabel("Round:");
-		roundIntro.setBounds(10, 125, 185, 25);
-		roundIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
-		roundIntro.setForeground(Color.WHITE);
-		this.add(roundIntro);
-		this.round = new JLabel(String.valueOf(this.coreGame.getTurn()));
-		this.round.setBounds(10, 150, 185, 25);
-		this.round.setFont(new java.awt.Font("Helvetica", 0, 18));
-		this.round.setForeground(Color.LIGHT_GRAY);
-		this.add(round);
-		this.initRound();
 		JLabel playerConnectedIntro = new JLabel("Current player:");
 		playerConnectedIntro.setBounds(10, 180, 185, 25);
-		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 18));
+		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", Font.BOLD, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
@@ -220,9 +204,10 @@ public class ControlBoardPanel extends BGPanel {
 	 * set the icon for all the player
 	 */
 	private void initRound() {
-		this.currentPlayer = new ArrayList<JButton>();
+		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i=0; i<Constants.COLOR.length; i++) {
-			JButton button = new JButton();
+			CellButton button = new CellButton(0, 0, "images/box/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
+			button.setWait(250);
 			button.setBounds(5 + (i * 33), 205, 30, 30);
 			button.setOpaque(true);
 			button.setBorder(null);
@@ -238,7 +223,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * set the icon for the current player as on, the other as off
 	 */
 	private void setPlayerConnected() {	
-		
+		this.initRound();
 		/* l'istruzione seguente illumina il giocatore corrente nel caso il turno sia maggiore di zero. Tale giocatore
 		 * è il seguente di quello che è arrivato con l'aggiornamento il quale proprio adesso sta giocando. */
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
@@ -249,7 +234,8 @@ public class ControlBoardPanel extends BGPanel {
 			if (!Constants.COLOR[i].equals(color)) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
 			} else {
-				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/on/" + Constants.COLOR[i] + ".png")));
+				//this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/on/" + Constants.COLOR[i] + ".png")));
+				this.currentPlayer.get(i).changeState();
 			}
 		}
 	}

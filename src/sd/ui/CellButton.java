@@ -13,6 +13,7 @@ public class CellButton extends JButton implements Runnable {
 	private boolean isOn;
 	private String folder;
 	private String basePath;
+	private int wait;
 
 	/** it creates a graphical cel and associates it to the corresponding one in memory
 	 * 
@@ -29,6 +30,7 @@ public class CellButton extends JButton implements Runnable {
 		this.row = pRow;
 		this.col = pCol;
 		this.cell = cell;
+		this.wait = 500;
 		this.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource(
 				"sd/ui/"+this.basePath)));
 		this.setBorder(null);
@@ -67,6 +69,10 @@ public class CellButton extends JButton implements Runnable {
 			new Thread(this).start();
 		}
 	}
+	
+	public void setWait(int wait) {
+		this.wait = wait;
+	}
 
 	@Override
 	public void run() {
@@ -86,7 +92,7 @@ public class CellButton extends JButton implements Runnable {
 				basePath = basePath.replace("on", "off");
 			}
 			try {
-				Thread.sleep(500);
+				Thread.sleep(wait);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
