@@ -91,7 +91,7 @@ public class ControlBoardPanel extends BGPanel {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						startAnimationDie(containerDie, false);
+						startAnimationDie(containerDie);
 					}
 				}).start();
 			}
@@ -113,7 +113,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.setPlayerConnected();
 		this.updateUI();
 		if (makeDieRoll) {
-			startAnimationDie(containerDie, true);
+			startAnimationDie(containerDie);
 		}
 	}
 	
@@ -181,22 +181,20 @@ public class ControlBoardPanel extends BGPanel {
 	 * possible destination for the result in the game panel
 	 * @param Jpanel, the container for the die animation 
 	 */
-	private void startAnimationDie(JPanel panel, boolean makeDieRoll) {
-		int animationSpeed = 40;
+	private void startAnimationDie(JPanel panel) {
+		int animationSpeed = 20;
+		int launchResult = coreGame.getCurrentDie();
+		if (this.coreGame.amItheCurrentPartecipant()) {
+			animationSpeed = 40;
+			launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
+			// tiro il dato e esce this.coreGame.getCurrentDie();
+		}
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
 		animation.start();
 		for (int counter=0; counter<animationSpeed*100; counter++) {
 			animation.update();
 			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
-		}
-		if (this.coreGame.amItheCurrentPartecipant()) {
-			// tiro il dato e esce this.coreGame.getCurrentDie();
-		}
-		
-		int launchResult = coreGame.getCurrentDie();
-		if (!makeDieRoll) {
-			launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
 		}
 		// showing final face of the die, according to the launch result 
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
@@ -206,7 +204,8 @@ public class ControlBoardPanel extends BGPanel {
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
 		this.coreGame.setCurrentDie(launchResult);
-		this.userPlayer.getGamePanel().makePossibleMoveFlash();
+		if (this.coreGame.amItheCurrentPartecipant())
+			this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
 	/**
