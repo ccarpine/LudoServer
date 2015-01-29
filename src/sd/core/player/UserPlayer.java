@@ -146,6 +146,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
+		
+		System.out.println("turno ricevuto: " + currentTurn + " e turno del core: " + this.coreGame.getTurn());
 
 		if (currentTurn == this.coreGame.getTurn()) {
 
