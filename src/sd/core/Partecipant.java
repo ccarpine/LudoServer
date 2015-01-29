@@ -14,6 +14,7 @@ public class Partecipant implements Serializable {
 	private String color;
 	private int colorPosition;
 	private int lastLaunch;
+	private boolean statusActive;
 
 	/**
 	 * Creates a user game player taking part into the game and setting his
@@ -29,6 +30,7 @@ public class Partecipant implements Serializable {
 		this.pawnsInBench = Constants.BENCH_DIMENSION;
 		this.colorPosition = colorPosition;
 		this.lastLaunch = 0;
+		this.statusActive = true;
 	}
 
 	public int getPawnsInBench() {
@@ -69,6 +71,14 @@ public class Partecipant implements Serializable {
 
 	public void setLastLaunch(int lastLaunch) {
 		this.lastLaunch = lastLaunch;
+	}
+
+	public boolean isStatusActive() {
+		return statusActive;
+	}
+
+	public void setStatusActive(boolean status) {
+		this.statusActive = status;
 	}
 
 	/**

@@ -1,9 +1,6 @@
 package sd.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -196,12 +193,6 @@ public class ControlBoardPanel extends BGPanel {
 			panel.removeAll();
 			panel.updateUI();
 			// TODO start
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			JLabel resultDie = new JLabel(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 			panel.add(resultDie);
@@ -228,22 +219,20 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
-		for (int i=0; i<Constants.COLOR.length; i++) {
+		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
 			button.setBounds(5 + (i * 33), 205, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			JLabel lastDie = new JLabel();
 			lastDie.setBounds(5 + (i * 33), 230, 20, 20);
-			if (i < this.coreGame.getPartecipants().size()) {
-				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
-				if (lastLaunch > 0) {
-					lastDie.setIcon(new javax.swing.ImageIcon(
-							ClassLoader.getSystemResource("sd/ui/images/dice/"+
-									this.coreGame.getPartecipants().get(i).getColor()+"_"+lastLaunch+"launch.png")));
-					
-					this.add(lastDie);
-				}
+			int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
+			if (lastLaunch > 0) {
+				lastDie.setIcon(new javax.swing.ImageIcon(
+						ClassLoader.getSystemResource("sd/ui/images/dice/"+
+								this.coreGame.getPartecipants().get(i).getColor()+"_"+lastLaunch+"launch.png")));
+				
+				this.add(lastDie);
 			}
 		}
 	}
@@ -259,7 +248,7 @@ public class ControlBoardPanel extends BGPanel {
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(0).getColor();
 		}
-		for (int i=0; i<this.currentPlayer.size(); i++) {
+		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			if (!Constants.COLOR[i].equals(color)) {
 				this.currentPlayer.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/turnMarkers/off/" + Constants.COLOR[i] + ".png")));
 			} else {

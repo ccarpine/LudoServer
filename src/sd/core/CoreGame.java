@@ -62,10 +62,9 @@ public class CoreGame implements Serializable {
 		return this.gameBoard;
 	}
 
-	// TODO
 	public boolean iWin() {
 		if (this.getMyPartecipant().getColor().equals(this.winner)
-				|| this.partecipants.size() == 10)
+				|| this.partecipants.size() == 1)
 			return true;
 		return false;
 
@@ -123,9 +122,11 @@ public class CoreGame implements Serializable {
 	 */
 	public Partecipant getNextPartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
-			if (ip.equals(this.partecipants.get(i).getIp())) {
-				return this.partecipants
-						.get((i + 1) % this.partecipants.size());
+			if (this.partecipants.get(i).isStatusActive()) {
+				if (ip.equals(this.partecipants.get(i).getIp())) {
+					return this.partecipants
+							.get((i + 1) % this.partecipants.size());
+				}
 			}
 		}
 		return null;
