@@ -10,4 +10,7 @@ public interface RegisterInterface extends Remote {
 	 * @throws RemoteException
 	 */
 	long register(String clientIp) throws RemoteException;
+	
+	
+	void deletePartecipant(String ip) throws RemoteException;
 }

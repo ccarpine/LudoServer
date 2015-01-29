@@ -130,4 +130,15 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		}
 	}
 
+	@Override
+	public void deletePartecipant(String ip) throws RemoteException {
+		for(int i=0; i<this.gamersIp.size(); i++) {
+			if(this.gamersIp.get(i).equals(ip)) {
+				this.gamersIp.remove(i);
+				break;
+			}
+		}
+		
+	}
+
 }
