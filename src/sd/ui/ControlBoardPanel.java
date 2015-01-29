@@ -175,7 +175,7 @@ public class ControlBoardPanel extends BGPanel {
 		int animationSpeed = 40;
 		//int launchResult = coreGame.getCurrentDie();
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
-		this.coreGame.getCurrentPartecipant().setLastLaunch(launchResult);
+		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		System.out.println("current partecipant: " + this.coreGame.getCurrentPartecipant().getColor() + " e last launch " + this.coreGame.getCurrentPartecipant().getLastLaunch());
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(animationBuffer, animationSpeed);
