@@ -42,10 +42,10 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
-		this.drawControlBoardGUI();
+		this.drawControlBoardGUI(false);
 	}
 	
-	public void drawControlBoardGUI() {
+	public void drawControlBoardGUI(boolean isDoubleTurn) {
 		this.removeAll();
 		this.updateUI();
 		JLabel colorIntro = new JLabel("You");
@@ -104,7 +104,7 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		this.add(fold);
-		this.setPlayerConnected();
+		this.setPlayerConnected(isDoubleTurn);
 		this.updateUI();
 	}
 	
@@ -236,14 +236,14 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for the current player as on, the other as off
 	 */
-	private void setPlayerConnected() {	
+	private void setPlayerConnected(boolean isDoubleTurn) {	
 		this.initRound();
 		/* l'istruzione seguente illumina il giocatore corrente nel caso il turno sia maggiore di zero. Tale giocatore
 		 * è il seguente di quello che è arrivato con l'aggiornamento il quale proprio adesso sta giocando. */
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(0).getColor();
-		} else if (this.coreGame.isDoubleTurn()) {
+		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
@@ -280,7 +280,7 @@ public class ControlBoardPanel extends BGPanel {
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
-					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getCurrentPartecipant().getIp());
+					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getCurrentPartecipant().getIp(), coreGame.isDoubleTurn());
 				}
 			}
 		}).start();

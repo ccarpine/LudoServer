@@ -129,7 +129,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the game board and the status of the partecipant that has just played
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
-	public void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant) throws RemoteException {
+	public void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant, final boolean isDoubleTurn) throws RemoteException {
 		new Thread() {
 			public void run() {
 				try {
@@ -139,7 +139,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							/* the internal memory status and the gui of the game is updated */
 							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
 							coreGame.incrementTurn();
-							controlBoardPanel.drawControlBoardGUI();
+							controlBoardPanel.drawControlBoardGUI(isDoubleTurn);
 							gamePanel.drawGUI();
 						}
 					});
@@ -150,7 +150,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND ("+ result +")");
-						updateNext(partecipants, gameBoard, ipCurrentPartecipant);
+						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn);
 						break;
 					/* giving the next player the permission to play*/
 					case Constants.PLAY_NEXT:
@@ -194,11 +194,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant) {
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, boolean isDoubleTurn) {
 			try {
 				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-				nextInTurn.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
+				nextInTurn.updateStatus(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn);
 			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
 				e1.printStackTrace();
 			}
