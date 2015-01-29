@@ -190,6 +190,7 @@ public class ControlBoardPanel extends BGPanel {
 			JLabel resultDie = new JLabel(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 			panel.add(resultDie);
+			System.out.println("OK 1");
 			// TODO end
 			//paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
@@ -203,6 +204,7 @@ public class ControlBoardPanel extends BGPanel {
 		JLabel resultDie = new JLabel(new ImageIcon(exactDieFaces[launchResult-1][0]));
 		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		panel.add(resultDie);
+		System.out.println("OK 2");
 		// TODO end
 		//paint(panel.getGraphics(), resultAnimation.getSprite(), resultAnimation.getSprite().getWidth(), resultAnimation.getSprite().getHeight());
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
@@ -241,6 +243,8 @@ public class ControlBoardPanel extends BGPanel {
 		String color =  this.coreGame.getNextPartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(0).getColor();
+		} else if (this.coreGame.isDoubleTurn()) {
+			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			if (!Constants.COLOR[i].equals(color)) {

@@ -237,4 +237,8 @@ public class CoreGame implements Serializable {
 	public void setTurnActive(boolean turnActive) {
 		this.turnActive = turnActive;
 	}
+	
+	public boolean isDoubleTurn() {
+		return this.isDoubleTurn;
+	}
 }
