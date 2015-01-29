@@ -147,10 +147,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 						@Override
 						public void run() {
 							/* the internal memory status and the gui of the game is updated */
-							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
+							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant, currentDie);
 							coreGame.incrementTurn();
 							gamePanel.drawGUI();
-							controlBoardPanel.drawControlBoardGUI();
+							controlBoardPanel.drawControlBoardGUI(result == Constants.UPDATE_NEXT);
 						}
 					});
 				} catch (Exception ex) {
@@ -159,7 +159,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
-						
 						System.out.println("4 UPDATE SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp());
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, currentDie);
 						break;
@@ -205,7 +204,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, int currentDie){
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, int currentDie) {
 			try {
 				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");

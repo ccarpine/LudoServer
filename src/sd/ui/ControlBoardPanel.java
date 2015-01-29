@@ -46,10 +46,10 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
-		this.drawControlBoardGUI();
+		this.drawControlBoardGUI(false);
 	}
 	
-	public void drawControlBoardGUI() {
+	public void drawControlBoardGUI(boolean makeDieRoll) {
 		this.removeAll();
 		this.updateUI();
 		JLabel colorIntro = new JLabel("You");
@@ -91,7 +91,7 @@ public class ControlBoardPanel extends BGPanel {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						startAnimationDie(containerDie);
+						startAnimationDie(containerDie, false);
 					}
 				}).start();
 			}
@@ -112,6 +112,9 @@ public class ControlBoardPanel extends BGPanel {
 		this.exactDieFaces = this.initExactDieFaces();
 		this.setPlayerConnected();
 		this.updateUI();
+		if (makeDieRoll) {
+			startAnimationDie(containerDie, true);
+		}
 	}
 	
 	/**
@@ -178,8 +181,8 @@ public class ControlBoardPanel extends BGPanel {
 	 * possible destination for the result in the game panel
 	 * @param Jpanel, the container for the die animation 
 	 */
-	private void startAnimationDie(JPanel panel) {
-		/*int animationSpeed = 40;
+	private void startAnimationDie(JPanel panel, boolean makeDieRoll) {
+		int animationSpeed = 40;
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
 		animation.start();
@@ -190,15 +193,18 @@ public class ControlBoardPanel extends BGPanel {
 		if (this.coreGame.amItheCurrentPartecipant()) {
 			// tiro il dato e esce this.coreGame.getCurrentDie();
 		}
-		int launchResult = coreGame.launchDie();
+		
+		int launchResult = coreGame.getCurrentDie();
+		if (!makeDieRoll) {
+			launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
+		}
 		// showing final face of the die, according to the launch result 
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
 		paint(panel.getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
-						.getSprite().getHeight());*/
-		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));
+						.getSprite().getHeight());
 		this.coreGame.setCurrentDie(launchResult);
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
