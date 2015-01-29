@@ -224,7 +224,7 @@ public class ControlBoardPanel extends BGPanel {
 			if (lastLaunch > 0) {
 				lastDie.setIcon(new javax.swing.ImageIcon(
 						ClassLoader.getSystemResource("sd/ui/images/dice/"+
-								this.coreGame.getPartecipants().get(i).getColor()+"_"+lastLaunch+"launch.png")));
+								this.coreGame.getPartecipants().get(i).getColor()+"_"+lastLaunch+".png")));
 				
 				this.add(lastDie);
 			}
