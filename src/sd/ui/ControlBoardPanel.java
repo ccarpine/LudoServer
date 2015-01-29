@@ -188,19 +188,16 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param Jpanel, the container for the die animation 
 	 */
 	private void startAnimationDie(JPanel panel) {
-		int launchResult = coreGame.getCurrentDie();
-		if (this.coreGame.amItheCurrentPartecipant()) {
-			int animationSpeed = 40;
-			launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
-			this.coreGame.setCurrentDie(launchResult);
-			// This is the actual animation
-			AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
-			animation.start();
-			for (int counter=0; counter<animationSpeed*100; counter++) {
-				animation.update();
-				paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
-			}
-			this.userPlayer.getGamePanel().makePossibleMoveFlash();
+		int animationSpeed = 40;
+		//int launchResult = coreGame.getCurrentDie();
+		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
+		this.coreGame.setCurrentDie(launchResult);
+		// This is the actual animation
+		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
+		animation.start();
+		for (int counter=0; counter<animationSpeed*100; counter++) {
+			animation.update();
+			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		// showing final face of the die, according to the launch result 
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
@@ -209,6 +206,7 @@ public class ControlBoardPanel extends BGPanel {
 		paint(panel.getGraphics(), resultAnimation.getSprite(),
 				resultAnimation.getSprite().getWidth(), resultAnimation
 						.getSprite().getHeight());
+		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
 	/**
