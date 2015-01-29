@@ -106,12 +106,6 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(fold);
 		this.setPlayerConnected();
 		this.updateUI();
-		if (!this.coreGame.amItheCurrentPartecipant() && this.coreGame.getTurn() > 0) {
-			BufferedImage[][] dieFaces =  this.initExactDieFaces();
-			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentPartecipant().getLastLaunch()-1][0]));
-			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-			containerDie.add(resultDie);
-		}
 	}
 	
 	/**
