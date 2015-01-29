@@ -68,7 +68,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
 		JLabel playerConnectedIntro = new JLabel("Player");
-		playerConnectedIntro.setBounds(10, 180, 185, 25);
+		playerConnectedIntro.setBounds(10, 75, 185, 25);
 		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", 0, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
@@ -215,11 +215,11 @@ public class ControlBoardPanel extends BGPanel {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+Constants.COLOR[i]+".png", new Cell(Constants.COLOR[i], 0, 0));
-			button.setBounds(5 + (i * 33), 205, 20, 20);
+			button.setBounds(5 + (i * 33), 100, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			JLabel lastDie = new JLabel();
-			lastDie.setBounds(5 + (i * 33), 230, 20, 20);
+			lastDie.setBounds(5 + (i * 33), 125, 20, 20);
 			int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
 			if (lastLaunch > 0) {
 				lastDie.setIcon(new javax.swing.ImageIcon(
