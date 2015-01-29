@@ -164,6 +164,7 @@ public class CoreGame implements Serializable {
 		} else {
 			this.isDoubleTurn = false;
 		}
+		System.out.println("ultimo lancio:" + tempPartecipant.getLastLaunch());
 		return this.gameBoard.suggestMoves(tempPartecipant);
 	}
 

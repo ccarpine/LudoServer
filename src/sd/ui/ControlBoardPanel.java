@@ -139,12 +139,12 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private BufferedImage[][] initExactDieFaces() {
 		BufferedImage[][] result = new BufferedImage[6][1];
-		result[0][0] = DieSprite.getSprite(0, 4); /* die face 1 */
-		result[1][0] = DieSprite.getSprite(4, 4); /* die face 2 */
-		result[2][0] = DieSprite.getSprite(0, 8); /* die face 3 */
-		result[3][0] = DieSprite.getSprite(0, 0); /* die face 4 */
-		result[4][0] = DieSprite.getSprite(12, 4); /* die face 5 */
-		result[5][0] = DieSprite.getSprite(8, 4); /* die face 6 */
+		result[0][0] = DieSprite.getSprite(0,0); /* die face 1 */
+		result[1][0] = DieSprite.getSprite(1,1); /* die face 2 */
+		result[2][0] = DieSprite.getSprite(2,2); /* die face 3 */
+		result[3][0] = DieSprite.getSprite(3,3); /* die face 4 */
+		result[4][0] = DieSprite.getSprite(4,4); /* die face 5 */
+		result[5][0] = DieSprite.getSprite(5,5); /* die face 6 */
 		return result;
 	}
 
@@ -157,11 +157,8 @@ public class ControlBoardPanel extends BGPanel {
 		int rowSprite, colSprite;
 		Random random = new Random();
 		for (int i=0; i<Constants.ROTATIONS; i++) {
-			rowSprite = random.nextInt(9);
-			if (rowSprite == 0 || rowSprite == 8)
-				colSprite = 0;
-			else
-				colSprite = random.nextInt(16);
+			rowSprite = 1 + random.nextInt(5);
+			colSprite = 1 + random.nextInt(5);
 			result[i] = DieSprite.getSprite(colSprite, rowSprite);
 		}
 		return result;
