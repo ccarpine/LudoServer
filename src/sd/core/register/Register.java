@@ -139,6 +139,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			}
 		}
 		
+		System.out.println(ip + " exited");
+		
 	}
 
 }

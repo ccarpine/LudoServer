@@ -13,6 +13,8 @@ import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import sd.core.player.UserPlayerInterface;
+import sd.core.register.Register;
 import sd.core.register.RegisterInterface;
 
 public class IntroPanel extends BGPanel {
@@ -70,6 +72,13 @@ public class IntroPanel extends BGPanel {
 			// listener of the exit button
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
+					RegisterInterface server = (RegisterInterface) Naming
+							.lookup("rmi://" + serverIP + "/RMILudoServer");
+					server.deletePartecipant(Inet4Address.getLocalHost().getHostAddress());
+				} catch (RemoteException | MalformedURLException | UnknownHostException | NotBoundException exc) {
+					exc.printStackTrace();
+				}
 				System.exit(0);
 			}
 		});
