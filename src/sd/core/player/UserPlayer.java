@@ -43,7 +43,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public UserPlayer(String ServerIp) throws RemoteException {
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
-		System.out.println("Main frame creato");
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
 	}
 
@@ -56,24 +55,16 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void start(List<String> gamersIp) {
 
-		System.out.println("UserPlayer starts " + isPlaying);
-
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			// init core game
 			this.coreGame = new CoreGame(gamersIp);
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
-			/* init GUI here */
+			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				System.out.println("Primo giocatore della partita");
 				this.buildGUIAndForward();
 			}
-			/*try {
-				System.out.println("1 -->" +Inet4Address.getLocalHost().getHostAddress());
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-			}*/
 		}
 
 	}
@@ -113,7 +104,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				try {
 					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-					System.out.println("Invoco build gui su next client");
 					nextInTurn.buildGUI();
 				} catch (MalformedURLException | RemoteException | NotBoundException e) {
 					e.printStackTrace();
@@ -167,7 +157,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("5 INIT TURN SEND ("+ result +")");
 						playNext();
 						break;
-					/* */
+					// the client play again 
 					case Constants.PLAY_AGAIN:
 					try {
 						initTurn();
@@ -247,7 +237,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-			System.out.println("CLIENT ---- Ip address:" + ipAddress);
 		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
 				exc.printStackTrace();
 		}
