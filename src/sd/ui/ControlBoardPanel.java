@@ -192,8 +192,7 @@ public class ControlBoardPanel extends BGPanel {
 			animation.start();
 			for (int counter=0; counter<animationSpeed*100; counter++) {
 				animation.update();
-				panel.updateUI();
-				//paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
+				paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 			}
 			this.userPlayer.getGamePanel().makePossibleMoveFlash();
 		}
