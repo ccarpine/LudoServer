@@ -176,7 +176,7 @@ public class ControlBoardPanel extends BGPanel {
 		//int launchResult = coreGame.getCurrentDie();
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
 		this.coreGame.getCurrentPartecipant().setLastLaunch(launchResult);
-		System.out.println("current partecipant: " + this.coreGame.getCurrentPartecipant() + " e last launch " + this.coreGame.getCurrentPartecipant().getLastLaunch());
+		System.out.println("current partecipant: " + this.coreGame.getCurrentPartecipant().getColor() + " e last launch " + this.coreGame.getCurrentPartecipant().getLastLaunch());
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(animationBuffer, animationSpeed);
 		animation.start();
@@ -188,7 +188,7 @@ public class ControlBoardPanel extends BGPanel {
 			JLabel resultDie = new JLabel(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 			panel.add(resultDie);
-			System.out.println("OK 1");
+			//System.out.println("OK 1");
 			// TODO end
 			//paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
@@ -202,7 +202,7 @@ public class ControlBoardPanel extends BGPanel {
 		JLabel resultDie = new JLabel(new ImageIcon(exactDieFaces[launchResult-1][0]));
 		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		panel.add(resultDie);
-		System.out.println("OK 2");
+		//System.out.println("OK 2");
 		// TODO end
 		//paint(panel.getGraphics(), resultAnimation.getSprite(), resultAnimation.getSprite().getWidth(), resultAnimation.getSprite().getHeight());
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
