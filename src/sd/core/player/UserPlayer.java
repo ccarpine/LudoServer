@@ -180,7 +180,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (" + result + ")");
 						updateNext(partecipants, gameBoard,
-								ipCurrentPartecipant, isDoubleTurn);
+								ipCurrentPartecipant, isDoubleTurn, currentTurn);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
@@ -233,7 +233,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param ipCurrentPartecipant
 	 */
 	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard,
-			String ipCurrentPartecipant, boolean isDoubleTurn) {
+			String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn) {
 		try {
 			String nextInTurnId = this.coreGame.getNextPartecipant(
 					this.coreGame.getMyPartecipant().getIp()).getIp();
@@ -242,7 +242,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			nextInTurn
 					.updateStatus(partecipants, gameBoard,
 							ipCurrentPartecipant, isDoubleTurn,
-							this.coreGame.getTurn());
+							currentTurn);
 		} catch (MalformedURLException | NotBoundException | RemoteException e1) {
 			e1.printStackTrace();
 		}

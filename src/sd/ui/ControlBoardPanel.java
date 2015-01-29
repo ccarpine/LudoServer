@@ -321,7 +321,7 @@ public class ControlBoardPanel extends BGPanel {
 					userPlayer.getGamePanel().makePossibleMoveDisable();
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
-							.getIp(), coreGame.isDoubleTurn());
+							.getIp(), coreGame.isDoubleTurn(), coreGame.getTurn());
 				}
 			}
 		}).start();

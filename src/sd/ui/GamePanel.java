@@ -258,7 +258,7 @@ public class GamePanel extends BGPanel {
 		this.drawGUI();
 		//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
 		System.out.println("4 UPDATE SEND");
-		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn());
+		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn());
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class GamePanel extends BGPanel {
 		possibleMoves = coreGame.initTurn();
 		if (possibleMoves.size() == 0) {
 			this.coreGame.setTurnActive(false);
-			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn());
+			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn());
 		} else {
 			for (int i=0; i<possibleMoves.size(); i++) {
 				final int moveIndex = i;
