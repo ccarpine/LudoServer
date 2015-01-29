@@ -113,7 +113,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.exactDieFaces = this.initExactDieFaces();
 		this.setPlayerConnected();
 		this.updateUI();
-		if (!this.coreGame.amItheCurrentPartecipant()) {
+		if (!this.coreGame.amItheCurrentPartecipant() && this.coreGame.getTurn() > 0) {
 			BufferedImage[][] dieFaces =  this.initExactDieFaces();
 			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentDie()-1][0]));
 			//resultDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
