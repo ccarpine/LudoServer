@@ -34,10 +34,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	private int result;
-	
-	/** when launched, it creates a future game player giving him the possibility to register at the server
+
+	/**
+	 * when launched, it creates a future game player giving him the possibility
+	 * to register at the server
 	 * 
-	 * @param ServerIp, the ip address of the register server
+	 * @param ServerIp
+	 *            , the ip address of the register server
 	 * 
 	 */
 	public UserPlayer(String ServerIp) throws RemoteException {
@@ -46,12 +49,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
 	}
 
-	/** this method is invokated by the server on the client when a match can start, either if a maximum number 
-	 * of 6 players is has been reached or the waiting time out has expired. A user game player will build his GUI
-	 * as soon as received the permission from the one before him in the list. The first of the list (which is the first
-	 * to play) will be the last to build the GUI.
+	/**
+	 * this method is invokated by the server on the client when a match can
+	 * start, either if a maximum number of 6 players is has been reached or the
+	 * waiting time out has expired. A user game player will build his GUI as
+	 * soon as received the permission from the one before him in the list. The
+	 * first of the list (which is the first to play) will be the last to build
+	 * the GUI.
 	 * 
-	 * @param gamersIp, the list of all gamers that have been registered by the server for a match
+	 * @param gamersIp
+	 *            , the list of all gamers that have been registered by the
+	 *            server for a match
 	 */
 	public void start(List<String> gamersIp) {
 
@@ -84,10 +92,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.buildGUIAndForward();
 		}
 	}
-	
+
 	/**
-	 * it build the gui for the player that invokes this method and sends this permission to the one next to him
-	 * in the list of the partecipants for that match.
+	 * it build the gui for the player that invokes this method and sends this
+	 * permission to the one next to him in the list of the partecipants for
+	 * that match.
 	 */
 	private void buildGUIAndForward() {
 		new Thread() {
@@ -102,17 +111,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 				} catch (Exception ex) {
 				}
 				try {
-					String nextInTurnId = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp();
-					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
+					String nextInTurnId = coreGame.getNextPartecipant(
+							coreGame.getMyPartecipant().getIp()).getIp();
+					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+							.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
 					nextInTurn.buildGUI();
-				} catch (MalformedURLException | RemoteException | NotBoundException e) {
+				} catch (MalformedURLException | RemoteException
+						| NotBoundException e) {
 					e.printStackTrace();
 				}
 			}
 		}.start();
 	}
-	
-	/** init the main interface
+
+	/**
+	 * init the main interface
 	 */
 	private void initInterface() {
 		this.mainFrame.resetFrame();
@@ -120,7 +133,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
 		this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
 	}
-	
+
 	@Override
 	/** this method is invoked by a client when he has finished his turn so that all the other partecipants
 	 * can update the status of the match and its game board.
@@ -129,81 +142,111 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param gameBoard, the game board and the status of the partecipant that has just played
 	 * @param ipCurrentPartecipant, the ip address of the player that has just played
 	 */
-	public void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant, final boolean isDoubleTurn) throws RemoteException {
-		new Thread() {
-			public void run() {
-				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override
-						public void run() {
-							/* the internal memory status and the gui of the game is updated */
-							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant);
-							coreGame.incrementTurn();
-							controlBoardPanel.drawControlBoardGUI(isDoubleTurn);
-							gamePanel.drawGUI();
-						}
-					});
-				} catch (Exception ex) {
-				}
-				/* according to the previous update, there are several possible consequences*/
-				switch (result) {
+	public void updateStatus(final List<Partecipant> partecipants,
+			final GameBoard gameBoard, final String ipCurrentPartecipant,
+			final boolean isDoubleTurn, final int currentTurn)
+			throws RemoteException {
+
+		if (currentTurn == this.coreGame.getTurn()) {
+
+			new Thread() {
+				public void run() {
+					try {
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+								/*
+								 * the internal memory status and the gui of the
+								 * game is updated
+								 */
+								result = coreGame.updateStatus(partecipants,
+										gameBoard, ipCurrentPartecipant);
+								coreGame.incrementTurn();
+								controlBoardPanel
+										.drawControlBoardGUI(isDoubleTurn);
+								gamePanel.drawGUI();
+							}
+						});
+					} catch (Exception ex) {
+					}
+					/*
+					 * according to the previous update, there are several
+					 * possible consequences
+					 */
+					switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
-						System.out.println("4 UPDATE SEND ("+ result +")");
-						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn);
+						System.out.println("4 UPDATE SEND (" + result + ")");
+						updateNext(partecipants, gameBoard,
+								ipCurrentPartecipant, isDoubleTurn);
 						break;
-					/* giving the next player the permission to play*/
+					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
-						System.out.println("5 INIT TURN SEND ("+ result +")");
+						System.out.println("5 INIT TURN SEND (" + result + ")");
 						playNext();
 						break;
-					// the client play again 
+					// the client play again
 					case Constants.PLAY_AGAIN:
-					try {
-						initTurn();
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
+						try {
+							initTurn();
+						} catch (RemoteException e) {
+							e.printStackTrace();
+						}
 						break;
 					case Constants.END_GAME:
-						JOptionPane.showMessageDialog(null, "il vincitore e': "+ coreGame.getWinner());
+						JOptionPane.showMessageDialog(null, "il vincitore e': "
+								+ coreGame.getWinner());
 						break;
 					default:
 						break;
+					}
 				}
-			}
-		}.start();
+			}.start();
+		}
 	}
 
 	/**
-	 * this method is invoked by a user player when he can allow the next to play
+	 * this method is invoked by a user player when he can allow the next to
+	 * play
 	 */
 	private void playNext() {
-			try {
-				String nextPartecipantId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextPartecipantId + "/RMIGameClient");
-				nextPlayer.initTurn();
-			} catch (RemoteException |MalformedURLException |NotBoundException e) {
-				e.printStackTrace();
-			} 
+		try {
+			String nextPartecipantId = this.coreGame.getNextPartecipant(
+					this.coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+					.lookup("rmi://" + nextPartecipantId + "/RMIGameClient");
+			nextPlayer.initTurn();
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * 
-	 * @param partecipants, partecipants still taking part into a match (in case of crash)
-	 * @param gameBoard, the current state of the game board in the current match
+	 * @param partecipants
+	 *            , partecipants still taking part into a match (in case of
+	 *            crash)
+	 * @param gameBoard
+	 *            , the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, boolean isDoubleTurn) {
-			try {
-				String nextInTurnId = this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
-				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId + "/RMIGameClient");
-				nextInTurn.updateStatus(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn);
-			} catch (MalformedURLException | NotBoundException |RemoteException e1) {
-				e1.printStackTrace();
-			}
-			
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard,
+			String ipCurrentPartecipant, boolean isDoubleTurn) {
+		try {
+			String nextInTurnId = this.coreGame.getNextPartecipant(
+					this.coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+					.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
+			nextInTurn
+					.updateStatus(partecipants, gameBoard,
+							ipCurrentPartecipant, isDoubleTurn,
+							this.coreGame.getTurn());
+		} catch (MalformedURLException | NotBoundException | RemoteException e1) {
+			e1.printStackTrace();
+		}
+
 	}
+
 	@Override
 	/**
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
@@ -212,7 +255,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.coreGame.iWin()) {
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
-		} else { 
+		} else {
 			JOptionPane.showMessageDialog(null, "You Win!!!!");
 		}
 	}
@@ -233,12 +276,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	public static void main(String[] args) {
 		try {
-			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(args[0]);
+			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(
+					args[0]);
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
 		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
-				exc.printStackTrace();
+			exc.printStackTrace();
 		}
 	}
 

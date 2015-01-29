@@ -41,7 +41,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.setLayout(null);
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
-		this.countdown = Constants.MAX_WAIT_FOR_TURN;
+		this.countdown = Constants.MAX_TIME_FOR_TURN;
 		this.drawControlBoardGUI(false);
 	}
 
@@ -299,7 +299,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * to the next player
 	 */
 	private void setTimer() {
-		this.countdown = Constants.MAX_WAIT_FOR_TURN;
+		this.countdown = Constants.MAX_TIME_FOR_TURN;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

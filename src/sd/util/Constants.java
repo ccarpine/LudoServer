@@ -4,8 +4,15 @@ public class Constants {
 
 	public static final int MAX_PLAYER = 3;
 	public static final long MAX_WAIT_FOR_MATCH = 100000L;
-	public static final int MAX_WAIT_FOR_TURN = 90;
 	public static final int BENCH_DIMENSION = 4;
+	
+	/* the following constants are used to manage crashes according to the phase in which the
+	 * crash happens plus the latency */
+	public static final int MAX_TIME_TO_BUILD_GUI = 20;
+	public static final int MAX_TIME_FOR_TURN = 90;
+	public static final int LATENCY = 2;
+	public static final int MAX_TIME_FOR_UPDATE = 20; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
+	
 	public static final int SUCCESS = 0;
 	public static final int WALL = 1;
 	public static final int EATEN = 2;
