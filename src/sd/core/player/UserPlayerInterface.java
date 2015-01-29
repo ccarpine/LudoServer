@@ -27,7 +27,7 @@ public interface UserPlayerInterface extends Remote {
 	 * @param gameBoard, the game board visibile by the current player
 	 * @param ipCurrentPartecipant
 	 */
-	void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant, final int currentDie) throws RemoteException;
+	void updateStatus(final List<Partecipant> partecipants, final GameBoard gameBoard, final String ipCurrentPartecipant) throws RemoteException;
 	
 	/** it allows partcipant to start a turn
 	 * @throws RemoteException

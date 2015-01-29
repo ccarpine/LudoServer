@@ -7,7 +7,7 @@ import java.util.Random;
 
 import sd.util.Constants;
 
-public class CoreGame implements Serializable{
+public class CoreGame implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<Partecipant> partecipants;
@@ -15,12 +15,14 @@ public class CoreGame implements Serializable{
 	private String ipCurrentPartecipant;
 	private String winner;
 	private boolean isDoubleTurn;
-	private int turn; 
+	private int turn;
 	private boolean turnActive;
-	private int currentDie;
 
-	/**  Create a new empty cell
-	 *   @param ipGamers, IP list of all player
+	/**
+	 * Create a new empty cell
+	 * 
+	 * @param ipGamers
+	 *            , IP list of all player
 	 */
 	public CoreGame(List<String> ipGamers) {
 		this.winner = "";
@@ -30,7 +32,7 @@ public class CoreGame implements Serializable{
 		this.turnActive = false;
 		// generate the partecipants giving them a color according to their
 		// registration order
-		for (int i=0; i<ipGamers.size(); i++) {
+		for (int i = 0; i < ipGamers.size(); i++) {
 			Partecipant partecipant = new Partecipant(ipGamers.get(i),
 					Constants.COLOR[i], i);
 			this.partecipants.add(partecipant);
@@ -40,56 +42,49 @@ public class CoreGame implements Serializable{
 		this.gameBoard = new GameBoard();
 	}
 
-	public String getWinner(){
+	public String getWinner() {
 		return this.winner;
 	}
-	
+
 	public void incrementTurn() {
 		this.turn++;
 	}
-	
-	public int getTurn(){
+
+	public int getTurn() {
 		return this.turn;
 	}
-	
+
 	public List<Partecipant> getPartecipants() {
 		return this.partecipants;
 	}
-	
+
 	public GameBoard getGameBoard() {
 		return this.gameBoard;
 	}
-	
-	public boolean iWin(){
-		if (this.getMyPartecipant().getColor().equals(this.getWinner()) || this.partecipants.size()==1)
+
+	public boolean iWin() {
+		if (this.getMyPartecipant().getColor().equals(this.getWinner())
+				|| this.partecipants.size() == 1)
 			return true;
 		return false;
-			
+
 	}
+
 	/**
 	 * 
 	 * @return boolean, TRUE if how invoke is the current partecipant
 	 */
-	public boolean amItheCurrentPartecipant( ){
-		return this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp());
+	public boolean amItheCurrentPartecipant() {
+		return this.ipCurrentPartecipant
+				.equals(this.getMyPartecipant().getIp());
 	}
-	
+
 	/**
 	 * 
 	 * @return random int from 0 to 6
 	 */
 	public int launchDie() {
-		this.currentDie = 1 + new Random().nextInt(6);
-		return this.currentDie;
-	}
-	
-	public int getCurrentDie() {
-		return this.currentDie;
-	}
-	
-	// TODO da rimuovere
-	public void setCurrentDie(int die) {
-		this.currentDie = die;
+		return 1 + new Random().nextInt(6);
 	}
 
 	/**
@@ -104,9 +99,10 @@ public class CoreGame implements Serializable{
 		}
 		return null;
 	}
-	
+
 	/**
-	 *  get the current partecipant
+	 * get the current partecipant
+	 * 
 	 * @return the current partecipant in according to the current ip
 	 */
 	public Partecipant getCurrentPartecipant() {
@@ -120,13 +116,15 @@ public class CoreGame implements Serializable{
 
 	/**
 	 * 
-	 * @param ip, String ip of a specific partecipant
+	 * @param ip
+	 *            , String ip of a specific partecipant
 	 * @return partecipant, the next player
 	 */
 	public Partecipant getNextPartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (ip.equals(this.partecipants.get(i).getIp())) {
-				return this.partecipants.get( (i +1) % this.partecipants.size());
+				return this.partecipants
+						.get((i + 1) % this.partecipants.size());
 			}
 		}
 		return null;
@@ -134,44 +132,52 @@ public class CoreGame implements Serializable{
 
 	/**
 	 * 
-	 * @param color of the partecipant
-	 * @return int, index in partecipant list 
+	 * @param color
+	 *            of the partecipant
+	 * @return int, index in partecipant list
 	 */
 	public int getIDPartecipantByColor(String color) {
-		for (int i=0; i<this.partecipants.size(); i++) {
+		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).getColor().equals(color)) {
 				return i;
 			}
 		}
 		return -1;
 	}
-	
+
 	/**
-	 * Prepares the turn by setting the current player and returning his list of possible moves, setting
-	 * isDoubleTurn to true if the launch die result is equal to 6
-	 * @param resultDie, int the result of launch die
-	 * @return List<Move>, all the possibile for partecipant 
+	 * Prepares the turn by setting the current player and returning his list of
+	 * possible moves, setting isDoubleTurn to true if the launch die result is
+	 * equal to 6
+	 * 
+	 * @param resultDie
+	 *            , int the result of launch die
+	 * @return List<Move>, all the possibile for partecipant
 	 */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
 		this.ipCurrentPartecipant = tempPartecipant.getIp();
-		if (currentDie == 6 && !this.isDoubleTurn) {
+		if (tempPartecipant.getLastLaunch() == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {
 			this.isDoubleTurn = false;
 		}
-		return this.gameBoard.suggestMoves(tempPartecipant, currentDie);
+		return this.gameBoard.suggestMoves(tempPartecipant);
 	}
-	
+
 	/**
 	 * make move choosen and check if the partecipant win
-	 * @param chosenMove, Move choosen by partecipant
+	 * 
+	 * @param chosenMove
+	 *            , Move choosen by partecipant
 	 * @return String, the color of eatean pawn if present
 	 */
 	public String handleTurn(Move chosenMove) {
-		String result = this.gameBoard.makeMove(chosenMove,this.getMyPartecipant());
+		String result = this.gameBoard.makeMove(chosenMove,
+				this.getMyPartecipant());
 		if (result != null) {
-			this.partecipants.get(this.getIDPartecipantByColor(result)).addPawnsInBench();
+			this.partecipants.get(this.getIDPartecipantByColor(result))
+					.addPawnsInBench();
 		}
 		if (this.gameBoard.isVictory(this.getMyPartecipant())) {
 			this.winner = this.getMyPartecipant().getColor();
@@ -179,23 +185,30 @@ public class CoreGame implements Serializable{
 		this.turnActive = false;
 		return result;
 	}
-	
+
 	/**
 	 * 
-	 * @param partecipant, list of all partecipant 
-	 * @param gameBoard, current game board of the match with pawn in correct position
-	 * @param ipCurrentPartecipant, IP of the new current partecipant
-	 * @return int the result of the updateStatus (tell if the player have to play again, send update to next partecipant...)
+	 * @param partecipant
+	 *            , list of all partecipant
+	 * @param gameBoard
+	 *            , current game board of the match with pawn in correct
+	 *            position
+	 * @param ipCurrentPartecipant
+	 *            , IP of the new current partecipant
+	 * @return int the result of the updateStatus (tell if the player have to
+	 *         play again, send update to next partecipant...)
 	 */
-	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard, String ipCurrentPartecipant, int currentDie) {
+	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard,
+			String ipCurrentPartecipant) {
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
-		this.currentDie = currentDie;
-		/* check if my ip is equals to the last that has just played,
-		 * means that you received the message that you have send */
+		/*
+		 * check if my ip is equals to the last that has just played, means that
+		 * you received the message that you have send
+		 */
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
 			if (!this.winner.isEmpty()) {
 				return Constants.END_GAME;
-			} else if(this.isDoubleTurn)
+			} else if (this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
 			else
 				return Constants.PLAY_NEXT;
@@ -213,8 +226,11 @@ public class CoreGame implements Serializable{
 		return turnActive;
 	}
 
-	/** set the possibility to play
-	 * @param turnActive, the possibility to play
+	/**
+	 * set the possibility to play
+	 * 
+	 * @param turnActive
+	 *            , the possibility to play
 	 */
 	public void setTurnActive(boolean turnActive) {
 		this.turnActive = turnActive;

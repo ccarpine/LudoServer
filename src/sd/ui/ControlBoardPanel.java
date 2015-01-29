@@ -115,7 +115,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.updateUI();
 		if (!this.coreGame.amItheCurrentPartecipant() && this.coreGame.getTurn() > 0) {
 			BufferedImage[][] dieFaces =  this.initExactDieFaces();
-			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentDie()-1][0]));
+			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentPartecipant().getLastLaunch()-1][0]));
 			//resultDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 			containerDie.add(resultDie);
@@ -191,7 +191,7 @@ public class ControlBoardPanel extends BGPanel {
 		int animationSpeed = 40;
 		//int launchResult = coreGame.getCurrentDie();
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null, "What's your name?"));//coreGame.launchDie();
-		this.coreGame.setCurrentDie(launchResult);
+		this.coreGame.getCurrentPartecipant().setLastLaunch(launchResult);
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(this.animationBuffer,animationSpeed);
 		animation.start();
@@ -272,7 +272,7 @@ public class ControlBoardPanel extends BGPanel {
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
-					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp(), coreGame.getCurrentDie());
+					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp());
 				}
 			}
 		}).start();

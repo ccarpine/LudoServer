@@ -39,12 +39,12 @@ public class GameBoard implements Serializable{
 	 * @param die, the number of the die
 	 * @return the list of possible moves
 	 */
-	public List<Move> suggestMoves(Partecipant partecipant, int die) {
+	public List<Move> suggestMoves(Partecipant partecipant) {
 		List<Move> moves = new ArrayList<Move>();
 		List<Cell> cellsOccupiedByPartecipant = this.getPawnsPositionByColor(partecipant.getColor());
 		// rules for the value 5 of the die: a new pawn can enter
 		//TODO correggi
-		if (die == 5 && partecipant.getPawnsInBench() > 0) {
+		if (partecipant.getLastLaunch() == 5 && partecipant.getPawnsInBench() > 0) {
 			Cell startingCell = this.cells[partecipant.getColorPosition()][0];
 			int result = startingCell.tryAddPawn(partecipant.getColor());
 			switch (result) {
@@ -62,7 +62,7 @@ public class GameBoard implements Serializable{
 		if (cellsOccupiedByPartecipant.size() > 0) {
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
-				Move move = getMoveByDie(startCell, die, partecipant.getColor());
+				Move move = getMoveByDie(startCell, partecipant.getLastLaunch(), partecipant.getColor());
 				if (move != null) {
 					moves.add(move);
 				}
