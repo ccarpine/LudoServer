@@ -141,11 +141,16 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param y, vertical position in the panel
 	 */
 	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
+//		super.paint(g);
+//		Graphics2D g2d = (Graphics2D) g;
+//		g2d.drawImage(dieSprite, x, y, this);
+//		Toolkit.getDefaultToolkit().sync();
+//		g.dispose();
+		super.paint(this.getGraphics());
+		Graphics2D g2d = (Graphics2D) this.getGraphics();
 		g2d.drawImage(dieSprite, x, y, this);
 		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
+		this.getGraphics().dispose();
 	}
 	
 	/**
