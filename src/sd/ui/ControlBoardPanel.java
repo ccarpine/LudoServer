@@ -186,11 +186,10 @@ public class ControlBoardPanel extends BGPanel {
 		// int launchResult = coreGame.getCurrentDie();
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,
 				"What's your name?"));// coreGame.launchDie();
+		
+		/* I become the current partecipant only AFTER having launched the die, because of
+		 * the call to initTurn()*/
 		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
-		System.out.println("current partecipant: "
-				+ this.coreGame.getCurrentPartecipant().getColor()
-				+ " e last launch "
-				+ this.coreGame.getCurrentPartecipant().getLastLaunch());
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(animationBuffer,
 				animationSpeed);
