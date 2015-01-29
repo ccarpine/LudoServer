@@ -149,7 +149,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							/* the internal memory status and the gui of the game is updated */
 							result = coreGame.updateStatus(partecipants, gameBoard, ipCurrentPartecipant, currentDie);
 							coreGame.incrementTurn();
-							controlBoardPanel.drawControlBoardGUI(result == Constants.UPDATE_NEXT);
+							controlBoardPanel.drawControlBoardGUI();
 							gamePanel.drawGUI();
 						}
 					});
@@ -222,8 +222,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.coreGame.iWin()) {
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
-		} else 
-		{ 
+		} else { 
 			JOptionPane.showMessageDialog(null, "You Win!!!!");
 		}
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,10 +47,10 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_WAIT_FOR_TURN;
-		this.drawControlBoardGUI(false);
+		this.drawControlBoardGUI();
 	}
 	
-	public void drawControlBoardGUI(boolean makeDieRoll) {
+	public void drawControlBoardGUI() {
 		this.removeAll();
 		this.updateUI();
 		JLabel colorIntro = new JLabel("You");
@@ -112,8 +113,13 @@ public class ControlBoardPanel extends BGPanel {
 		this.exactDieFaces = this.initExactDieFaces();
 		this.setPlayerConnected();
 		this.updateUI();
-		if (makeDieRoll) {
-			startAnimationDie(containerDie);
+		if (!this.coreGame.amItheCurrentPartecipant()) {
+			BufferedImage[][] dieFaces =  this.initExactDieFaces();
+			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentDie()-1][0]));
+			//resultDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
+			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+			this.add(resultDie);
+			//startAnimationDie(containerDie);
 		}
 	}
 	
