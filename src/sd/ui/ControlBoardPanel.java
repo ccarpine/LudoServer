@@ -118,7 +118,7 @@ public class ControlBoardPanel extends BGPanel {
 			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentDie()-1][0]));
 			//resultDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-			this.add(resultDie);
+			containerDie.add(resultDie);
 			//startAnimationDie(containerDie);
 		}
 	}
