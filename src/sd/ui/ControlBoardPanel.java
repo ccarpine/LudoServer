@@ -116,10 +116,8 @@ public class ControlBoardPanel extends BGPanel {
 		if (!this.coreGame.amItheCurrentPartecipant() && this.coreGame.getTurn() > 0) {
 			BufferedImage[][] dieFaces =  this.initExactDieFaces();
 			JLabel resultDie = new JLabel(new ImageIcon(dieFaces[coreGame.getCurrentPartecipant().getLastLaunch()-1][0]));
-			//resultDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 			resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 			containerDie.add(resultDie);
-			//startAnimationDie(containerDie);
 		}
 	}
 	
@@ -223,6 +221,16 @@ public class ControlBoardPanel extends BGPanel {
 			button.setBounds(5 + (i * 33), 205, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
+			JLabel lastDie = new JLabel();
+			lastDie.setBounds(5 + (i * 33), 230, 20, 20);
+			int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
+			if (lastLaunch > 0) {
+				lastDie.setIcon(new javax.swing.ImageIcon(
+						ClassLoader.getSystemResource("sd/ui/images/dice/"+
+								this.coreGame.getPartecipants().get(i).getColor()+"_"+lastLaunch+"launch.png")));
+				
+				this.add(lastDie);
+			}
 		}
 	}
 
@@ -272,7 +280,7 @@ public class ControlBoardPanel extends BGPanel {
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
-					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getMyPartecipant().getIp());
+					userPlayer.updateNext(coreGame.getPartecipants(), coreGame.getGameBoard(), coreGame.getCurrentPartecipant().getIp());
 				}
 			}
 		}).start();

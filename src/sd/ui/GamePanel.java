@@ -241,12 +241,12 @@ public class GamePanel extends BGPanel {
 		Move chosenMove = new Move(cellStart, cellDestination);
 		// if start cell is equal to null the core game decrement the pawns in bench
 		if (cellStart == null) {
-			this.coreGame.getMyPartecipant().removePawnsInBench();
+			this.coreGame.getCurrentPartecipant().removePawnsInBench();
 		}
 		// result is the color of the eaten pawn
 		String result = this.coreGame.handleTurn(chosenMove);
 		// update GUI here
-		int indexColorMover = this.getIndexColor(this.coreGame.getMyPartecipant().getColor());
+		int indexColorMover = this.getIndexColor(this.coreGame.getCurrentPartecipant().getColor());
 		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
 		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
@@ -257,8 +257,8 @@ public class GamePanel extends BGPanel {
 		}
 		this.drawGUI();
 		//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
-		System.out.println("4 UPDATE SEND -->" +this.coreGame.getNextPartecipant(this.coreGame.getMyPartecipant().getIp()).getIp());
-		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
+		System.out.println("4 UPDATE SEND");
+		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp());
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class GamePanel extends BGPanel {
 		possibleMoves = coreGame.initTurn();
 		if (possibleMoves.size() == 0) {
 			this.coreGame.setTurnActive(false);
-			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getMyPartecipant().getIp());
+			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp());
 		} else {
 			for (int i=0; i<possibleMoves.size(); i++) {
 				final int moveIndex = i;

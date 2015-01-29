@@ -159,12 +159,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
-						System.out.println("4 UPDATE SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp());
+						System.out.println("4 UPDATE SEND ("+ result +")");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant);
 						break;
 					/* giving the next player the permission to play*/
 					case Constants.PLAY_NEXT:
-						System.out.println("5 INIT TURN SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp() + "/RMIGameClient" );
+						System.out.println("5 INIT TURN SEND ("+ result +")");
 						playNext();
 						break;
 					/* */
