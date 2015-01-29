@@ -210,6 +210,7 @@ public class ControlBoardPanel extends BGPanel {
 	/**
 	 * set the icon for all the player
 	 */
+	// TODO sbaglia a settare dado
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
