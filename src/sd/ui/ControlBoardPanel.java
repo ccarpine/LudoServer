@@ -67,7 +67,7 @@ public class ControlBoardPanel extends BGPanel {
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-		this.timeOfTurn = new JLabel("Attendere...");
+		this.timeOfTurn = new JLabel("Wait...");
 		this.timeOfTurn.setBounds(120, 20, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.WHITE);
@@ -141,7 +141,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param y, vertical position in the panel
 	 */
 	public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
-		super.paint(g);
+		super.paintComponents(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(dieSprite, x, y, this);
 		Toolkit.getDefaultToolkit().sync();
@@ -197,9 +197,13 @@ public class ControlBoardPanel extends BGPanel {
 		animation.start();
 		for (int counter=0; counter<animationSpeed*100; counter++) {
 			animation.update();
+			panel.removeAll();
+			panel.updateUI();
 			paint(panel.getGraphics(), animation.getSprite(), animation.getSprite().getWidth(), animation.getSprite().getHeight());
 		}
 		// showing final face of the die, according to the launch result 
+		panel.removeAll();
+		panel.updateUI();
 		AnimationSprite resultAnimation = new AnimationSprite(this.exactDieFaces[launchResult-1], 6);
 		resultAnimation.start();
 		resultAnimation.update();
