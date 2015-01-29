@@ -159,6 +159,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
+						
 						System.out.println("4 UPDATE SEND ("+ result +")-->" +coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp()).getIp());
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, currentDie);
 						break;
