@@ -360,6 +360,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void initTurn() throws RemoteException {
 		this.controlBoardPanel.drawControlBoardGUI(false);
+		this.gamePanel.drawGUI();
 		if (!this.coreGame.iWin()) {
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();

@@ -279,12 +279,12 @@ public class ControlBoardPanel extends BGPanel {
 		String color = this.coreGame.getNextActivePartecipant(
 				this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
-			color = this.coreGame.getPartecipants().get(0).getColor();
+			color = this.coreGame.getPartecipants().get(this.coreGame.getFirstActiveIndex()).getColor();
 		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-			if (!Constants.COLOR[i].equals(color)) {
+			if (this.coreGame.getPartecipants().get(i).isStatusActive() && !Constants.COLOR[i].equals(color)) {
 				this.currentPlayer
 						.get(i)
 						.setIcon(

@@ -348,4 +348,19 @@ public class CoreGame implements Serializable {
 					this.ipCurrentPartecipant).getIp();
 		}
 	}
+	
+	/**
+	 * 
+	 * @return, the index/position of the first active player 
+	 */
+	public int getFirstActiveIndex() {
+		
+		for(int i=0; i<this.partecipants.size(); i++) {
+			if(this.partecipants.get(i).isStatusActive())
+				return i;
+		}
+		
+		return -1;
+		
+	}
 }
