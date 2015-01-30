@@ -239,28 +239,27 @@ public class ControlBoardPanel extends BGPanel {
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-			
-			/* a player might haven exited during the building of the GUI */
-			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
-				CellButton button = new CellButton(0, 0,
-						"images/turnMarkers/on/" + Constants.COLOR[i] + ".png",
-						new Cell(Constants.COLOR[i], 0, 0));
-				button.setBounds(5 + (i * 33), 100, 20, 20);
-				this.currentPlayer.add(button);
-				this.add(button);
-				JLabel lastDie = new JLabel();
-				lastDie.setBounds(5 + (i * 33), 125, 20, 20);
-				int lastLaunch = this.coreGame.getPartecipants().get(i)
-						.getLastLaunch();
-				if (lastLaunch > 0) {
-					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader
-							.getSystemResource("sd/ui/images/dice/"
-									+ this.coreGame.getPartecipants().get(i)
-											.getColor() + "_" + lastLaunch
-									+ ".png")));
 
-					this.add(lastDie);
-				}
+			/* a player might haven exited during the building of the GUI */
+			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"
+					+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],
+					0, 0));
+			button.setBounds(5 + (i * 33), 100, 20, 20);
+			this.currentPlayer.add(button);
+			this.add(button);
+			JLabel lastDie = new JLabel();
+			lastDie.setBounds(5 + (i * 33), 125, 20, 20);
+			int lastLaunch = this.coreGame.getPartecipants().get(i)
+					.getLastLaunch();
+			if (lastLaunch > 0) {
+				lastDie.setIcon(new javax.swing.ImageIcon(
+						ClassLoader
+								.getSystemResource("sd/ui/images/dice/"
+										+ this.coreGame.getPartecipants()
+												.get(i).getColor() + "_"
+										+ lastLaunch + ".png")));
+
+				this.add(lastDie);
 			}
 		}
 	}
@@ -279,12 +278,14 @@ public class ControlBoardPanel extends BGPanel {
 		String color = this.coreGame.getNextActivePartecipant(
 				this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
-			color = this.coreGame.getPartecipants().get(this.coreGame.getFirstActiveIndex()).getColor();
+			color = this.coreGame.getPartecipants()
+					.get(this.coreGame.getFirstActiveIndex()).getColor();
 		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-			if (this.coreGame.getPartecipants().get(i).isStatusActive() && !Constants.COLOR[i].equals(color)) {
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()
+					&& !Constants.COLOR[i].equals(color)) {
 				this.currentPlayer
 						.get(i)
 						.setIcon(
