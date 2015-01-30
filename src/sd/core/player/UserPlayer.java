@@ -34,6 +34,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private CoreGame coreGame;
 	private boolean isPlaying;
 	private int result;
+	private boolean buildGUIDone;
 
 	/**
 	 * when launched, it creates a future game player giving him the possibility
@@ -44,6 +45,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * 
 	 */
 	public UserPlayer(String ServerIp) throws RemoteException {
+		this.buildGUIDone = false;
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
@@ -71,9 +73,83 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				this.buildGUIAndForward();
+				this.buildGUIAndForward(this.coreGame.getPartecipants());
+			}
+
+			else {
+
+				this.waitBuildGUI();
 			}
 		}
+
+	}
+
+	/* it handles the lack of message buildGUI from the previous player */
+	private void waitBuildGUI() {
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				long wait = coreGame.getTimeForBuildGUI();
+
+				/* All the players before me have crashed */
+				if (wait == 0) {
+					buildGUIAndForward(coreGame.getPartecipants());
+
+				}
+
+				else {
+
+					while (wait > 0 && !buildGUIDone) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						wait -= 1000;
+					}
+
+					if (!buildGUIDone) {
+						boolean foundPreviousAlive = false;
+
+						while (!foundPreviousAlive) {
+							Partecipant previous = coreGame
+									.getPreviousActive(coreGame
+											.getMyPartecipant().getColor());
+							try {
+								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
+										.lookup("rmi://" + previous.getIp()
+												+ "/RMIGameClient");
+								tryPrevious.isAlive(previous.getColor());
+								foundPreviousAlive = true;
+							}
+
+							catch (MalformedURLException | RemoteException
+									| NotBoundException e) {
+								e.printStackTrace();
+								coreGame.getPartecipants()
+										.get(coreGame
+												.getIDPartecipantByColor(previous
+														.getColor()))
+										.setStatusActive(false);
+							}
+
+						}
+					}
+
+					else {
+						if (wait > 0) {
+							System.out
+									.println("Tempo che era rimasto: " + wait);
+						}
+					}
+
+				}
+			}
+		}).start();
 
 	}
 
@@ -83,13 +159,16 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * and forward this permission to the next; On the contrary case, it means that all the other players
 	 * have finished buildind their GUI. The first player can start the game
 	 */
-	public void buildGUI() throws RemoteException {
-		if (this.coreGame.amItheCurrentPartecipant()) {
-			System.out.println("Sono il primo e gioco");
-			this.initTurn();
-		} else {
-			System.out.println("Non sono il primo e creo l'interfaccia");
-			this.buildGUIAndForward();
+	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
+		if (!buildGUIDone) {
+			buildGUIDone = true;
+			if (this.coreGame.amItheCurrentPartecipant()) {
+				System.out.println("Sono il primo e gioco");
+				this.initTurn();
+			} else {
+				System.out.println("Non sono il primo e creo l'interfaccia");
+				this.buildGUIAndForward(partecipants);
+			}
 		}
 	}
 
@@ -98,7 +177,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
-	private void buildGUIAndForward() {
+	private void buildGUIAndForward(final List<Partecipant> partecipants) {
+		this.coreGame.setPartecipants(partecipants);
 		new Thread() {
 			public void run() {
 				try {
@@ -115,7 +195,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 							.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
-					nextInTurn.buildGUI();
+					nextInTurn.buildGUI(partecipants);
 				} catch (MalformedURLException | RemoteException
 						| NotBoundException e) {
 					e.printStackTrace();
@@ -146,8 +226,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
-		
-		System.out.println("turno ricevuto: " + currentTurn + " e turno del core: " + this.coreGame.getTurn());
+
+		System.out.println("turno ricevuto: " + currentTurn
+				+ " e turno del core: " + this.coreGame.getTurn());
 
 		if (currentTurn == this.coreGame.getTurn()) {
 
@@ -239,10 +320,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 					this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 					.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
-			nextInTurn
-					.updateStatus(partecipants, gameBoard,
-							ipCurrentPartecipant, isDoubleTurn,
-							currentTurn);
+			nextInTurn.updateStatus(partecipants, gameBoard,
+					ipCurrentPartecipant, isDoubleTurn, currentTurn);
 		} catch (MalformedURLException | NotBoundException | RemoteException e1) {
 			e1.printStackTrace();
 		}
@@ -286,6 +365,29 @@ public class UserPlayer extends UnicastRemoteObject implements
 		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
 			exc.printStackTrace();
 		}
+	}
+
+	@Override
+	/**
+	 * this method, if correctly invoked tells the invoker if the player is alive; moreover 
+	 * the invoker tells the invoked that all the partecipants between them have crashed. 
+	 */
+	public void isAlive(String color) throws RemoteException {
+
+		boolean end = false;
+
+		while (!end) {
+			Partecipant partecipant = this.coreGame.getPreviousActive(color);
+			if (partecipant.getColor().equals(
+					this.coreGame.getMyPartecipant().getColor()))
+				end = true;
+			else {
+				this.coreGame.setUnactivePartecipant(partecipant.getColor());
+				color = partecipant.getColor();
+			}
+
+		}
+
 	}
 
 }

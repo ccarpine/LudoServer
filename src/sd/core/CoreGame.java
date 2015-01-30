@@ -58,6 +58,10 @@ public class CoreGame implements Serializable {
 		return this.partecipants;
 	}
 
+	public void setPartecipants(List<Partecipant> partecipants) {
+		this.partecipants = partecipants;
+	}
+
 	public GameBoard getGameBoard() {
 		return this.gameBoard;
 	}
@@ -124,8 +128,8 @@ public class CoreGame implements Serializable {
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).isStatusActive()) {
 				if (ip.equals(this.partecipants.get(i).getIp())) {
-					return this.partecipants
-							.get((i + 1) % this.partecipants.size());
+					return this.partecipants.get((i + 1)
+							% this.partecipants.size());
 				}
 			}
 		}
@@ -238,8 +242,76 @@ public class CoreGame implements Serializable {
 	public void setTurnActive(boolean turnActive) {
 		this.turnActive = turnActive;
 	}
-	
+
 	public boolean isDoubleTurn() {
 		return this.isDoubleTurn;
+	}
+
+	/**
+	 * 
+	 * @return, the number of ACTIVE partecipants before the caller
+	 */
+	private int getPreviousActivePartecipants() {
+
+		int result = 0;
+		for (int i = 0; i < this.getPartecipants().size(); i++) {
+			if (this.getPartecipants().get(i).isStatusActive()) {
+				if (!(this.getPartecipants().get(i).getIp().equals(this
+						.getMyPartecipant().getIp()))) {
+					result++;
+				}
+
+				else
+					return result;
+			}
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * 
+	 * @return, the maximum time that the invoking partecipant MUST wait to receive a message for buildGUI; if 0 is returned
+	 * it means that it must not wait for a message but it must build the gui and forward it
+	 */
+	public long getTimeForBuildGUI() {
+
+		int position = this.getPreviousActivePartecipants();
+		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY) * position;
+
+	}
+
+	/**
+	 * 
+	 * @param color
+	 *            , the color from which to find the first active partecipant
+	 *            before it
+	 * @return, it returns the first previous active partecipant from the given
+	 *          color
+	 */
+	public Partecipant getPreviousActive(String color) {
+
+		int position = this.getIDPartecipantByColor(color);
+		int difference = 1;
+		Partecipant partecipant = this.getPartecipants().get(
+				(position + this.getPartecipants().size() - difference)
+						% this.getPartecipants().size());
+
+		while (!partecipant.isStatusActive()) {
+
+			difference++;
+			partecipant = this.getPartecipants().get(
+					(position + this.getPartecipants().size() - difference)
+							% this.getPartecipants().size());
+		}
+
+		return partecipant;
+
+	}
+
+	public void setUnactivePartecipant(String color) {
+		int position = this.getIDPartecipantByColor(color);
+		this.partecipants.get(position).setStatusActive(false);
 	}
 }

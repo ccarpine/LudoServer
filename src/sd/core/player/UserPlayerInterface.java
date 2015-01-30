@@ -19,7 +19,7 @@ public interface UserPlayerInterface extends Remote {
 	
 	/** allows player to initialize gui
 	 */
-	void buildGUI() throws RemoteException;
+	void buildGUI(List<Partecipant> partecipants) throws RemoteException;
 	
 	/** it updates the game status
 	 * @param partecipants, the user game player still taking part into the match. This list can change 
@@ -33,5 +33,10 @@ public interface UserPlayerInterface extends Remote {
 	 * @throws RemoteException
 	 */
 	void initTurn() throws RemoteException;
+	
+	/** ping to a client-player to check if it's alive
+	 * @ip, the client-player ip address to check
+	 */
+	void isAlive(String color) throws RemoteException;
 
 }
