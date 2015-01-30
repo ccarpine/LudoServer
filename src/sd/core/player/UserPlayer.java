@@ -74,12 +74,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
-			}
-			else {
+			} else {
 
-				if(this.coreGame.getMyPartecipant().getIp().equals("192.168.1.64")) 
-					System.exit(1);
-				
 				this.waitBuildGUI();
 			}
 		}
@@ -123,25 +119,32 @@ public class UserPlayer extends UnicastRemoteObject implements
 							Partecipant previous = coreGame
 									.getPreviousActive(coreGame
 											.getMyPartecipant().getColor());
-							
-							System.out.println("Cerco di pingare " + previous.getIp());
-							
+
+							System.out.println("Cerco di pingare "
+									+ previous.getIp());
+
 							try {
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
 										.lookup("rmi://" + previous.getIp()
 												+ "/RMIGameClient");
-								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
+								tryPrevious.isAlive(coreGame.getMyPartecipant()
+										.getColor());
 								foundPreviousAlive = true;
 								System.out.println(previous.getIp() + " è vivo");
 								waitBuildGUI();
 							}
 
-							/* the previous player has crashed and it must be set as unactive*/
+							/*
+							 * the previous player has crashed and it must be
+							 * set as unactive
+							 */
 							catch (MalformedURLException | RemoteException
 									| NotBoundException e) {
-								//e.printStackTrace();
-								System.out.println(previous.getIp() + " has crashed");
-								coreGame.setUnactivePartecipant(previous.getColor());
+								// e.printStackTrace();
+								System.out.println(previous.getIp()
+										+ " has crashed");
+								coreGame.setUnactivePartecipant(previous
+										.getColor());
 							}
 
 						}
@@ -167,11 +170,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
-		if (!buildGUIDone) {			
+		if (!buildGUIDone) {
 			buildGUIDone = true;
-			System.out.println("corrente:" + this.coreGame.getCurrentPartecipant());
-			System.out.println("my partecipant: " + this.coreGame.getMyPartecipant().getIp());
-			
+			System.out.println("corrente:"
+					+ this.coreGame.getCurrentPartecipant());
+			System.out.println("my partecipant: "
+					+ this.coreGame.getMyPartecipant().getIp());
+
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.gamePanel.drawGUI();
 				this.controlBoardPanel.drawControlBoardGUI(false);
@@ -191,18 +196,22 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * that match.
 	 */
 	private void buildGUIAndForward(final List<Partecipant> partecipants) {
-		
+
 		this.coreGame.setPartecipants(partecipants);
-				
-		System.out.println("Current partecipant is " + this.coreGame.getCurrentPartecipant().getIp());
-		
-		for(int j=0; j<this.coreGame.getPartecipants().size(); j++) {
-			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp() + 
-					" is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
+
+		System.out.println("Current partecipant is "
+				+ this.coreGame.getCurrentPartecipant().getIp());
+
+		for (int j = 0; j < this.coreGame.getPartecipants().size(); j++) {
+			System.out.println("Partecipant "
+					+ this.coreGame.getPartecipants().get(j).getIp()
+					+ " is active = "
+					+ this.coreGame.getPartecipants().get(j).isStatusActive());
 		}
-		
-		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());
-		
+
+		System.out.println("Current is "
+				+ this.coreGame.getCurrentPartecipant().getIp());
+
 		new Thread() {
 			public void run() {
 				try {
@@ -215,18 +224,29 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
-				Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
-				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
+				Partecipant partecipant = coreGame
+						.getNextActivePartecipant(coreGame.getMyPartecipant()
+								.getIp());
+				System.out
+						.println("chiamo buildGUI su: " + partecipant.getIp());
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
-							.lookup("rmi://" + partecipant.getIp() + "/RMIGameClient");
+							.lookup("rmi://" + partecipant.getIp()
+									+ "/RMIGameClient");
 					nextInTurn.buildGUI(coreGame.getPartecipants());
-				
-			    /* my following player has crashed and so the crash of NEXT partecipant is handled */
-				} catch (MalformedURLException | RemoteException| NotBoundException e) {
+
+					/*
+					 * my following player has crashed and so the crash of NEXT
+					 * partecipant is handled
+					 */
+				} catch (MalformedURLException | RemoteException
+						| NotBoundException e) {
 					System.out.println(partecipant.getIp() + " has crashed!");
 					coreGame.setUnactivePartecipant(partecipant.getColor());
-					/* ATTENZIONE: adesso devo passare la lista aggiornata con i giocatori che sono crashati */
+					/*
+					 * ATTENZIONE: adesso devo passare la lista aggiornata con i
+					 * giocatori che sono crashati
+					 */
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 			}
