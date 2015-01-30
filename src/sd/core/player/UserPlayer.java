@@ -199,7 +199,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
-				Partecipant partecipant = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp());
+				Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 				
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
@@ -306,7 +306,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	private void playNext() {
 		try {
-			String nextPartecipantId = this.coreGame.getNextPartecipant(
+			String nextPartecipantId = this.coreGame.getNextActivePartecipant(
 					this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
 					.lookup("rmi://" + nextPartecipantId + "/RMIGameClient");
@@ -328,7 +328,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard,
 			String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn) {
 		try {
-			String nextInTurnId = this.coreGame.getNextPartecipant(
+			String nextInTurnId = this.coreGame.getNextActivePartecipant(
 					this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 					.lookup("rmi://" + nextInTurnId + "/RMIGameClient");

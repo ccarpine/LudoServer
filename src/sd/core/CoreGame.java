@@ -124,7 +124,7 @@ public class CoreGame implements Serializable {
 	 *            , String ip of a specific partecipant
 	 * @return partecipant, the next player
 	 */
-	public Partecipant getNextPartecipant(String ip) {
+	public Partecipant getNextActivePartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (ip.equals(this.partecipants.get(i).getIp())) {
 				if (this.partecipants.get((i + 1) % this.partecipants.size()).isStatusActive()) {
@@ -133,7 +133,7 @@ public class CoreGame implements Serializable {
 			}
 
 		}
-		return null;
+		return this.getMyPartecipant();
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class CoreGame implements Serializable {
 		this.partecipants.get(position).setStatusActive(false);
 		if (this.partecipants.get(position).getIp()
 				.equals(this.ipCurrentPartecipant)) {
-			this.ipCurrentPartecipant = this.getNextPartecipant(
+			this.ipCurrentPartecipant = this.getNextActivePartecipant(
 					this.ipCurrentPartecipant).getIp();
 		}
 	}

@@ -271,7 +271,7 @@ public class ControlBoardPanel extends BGPanel {
 		 * che è arrivato con l'aggiornamento il quale proprio adesso sta
 		 * giocando.
 		 */
-		String color = this.coreGame.getNextPartecipant(
+		String color = this.coreGame.getNextActivePartecipant(
 				this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(0).getColor();
