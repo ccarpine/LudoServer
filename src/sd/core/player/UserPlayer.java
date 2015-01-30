@@ -171,6 +171,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			System.out.println("my partecipant: " + this.coreGame.getMyPartecipant().getIp());
 			
 			if (this.coreGame.amItheCurrentPartecipant()) {
+				this.gamePanel.drawGUI();
+				this.controlBoardPanel.drawControlBoardGUI(false);
 				System.out.println("Sono il primo e gioco");
 				System.out.println("Chiamo initTurn()");
 				this.initTurn();
@@ -360,8 +362,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		this.controlBoardPanel.drawControlBoardGUI(false);
-		this.gamePanel.drawGUI();
 		if (!this.coreGame.iWin()) {
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
