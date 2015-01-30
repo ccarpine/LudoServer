@@ -127,7 +127,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 								waitBuildGUI();
 							}
 
-							/* the previous player has crashed */
+							/* the previous player has crashed and it must be set as unactive*/
 							catch (MalformedURLException | RemoteException
 									| NotBoundException e) {
 								e.printStackTrace();
