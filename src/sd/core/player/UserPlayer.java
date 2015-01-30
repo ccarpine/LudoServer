@@ -73,11 +73,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				System.exit(0);
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			}
 			else {
 
+				System.exit(1);
+				
 				this.waitBuildGUI();
 			}
 		}
