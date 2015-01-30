@@ -204,12 +204,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 							.lookup("rmi://" + partecipant.getIp() + "/RMIGameClient");
-					nextInTurn.buildGUI(partecipants);
+					nextInTurn.buildGUI(coreGame.getPartecipants());
 				
 			    /* my following player has crashed and so the crash of NEXT partecipant is handled */
 				} catch (MalformedURLException | RemoteException| NotBoundException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
+					System.out.println(partecipant.getIp() + " has crashed!");
 					coreGame.setUnactivePartecipant(partecipant.getColor());
+					/* ATTENZIONE: adesso devo passare la lista aggiornata con i giocatori che sono crashati */
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 			}
