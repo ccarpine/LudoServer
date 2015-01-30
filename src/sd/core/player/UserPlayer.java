@@ -96,6 +96,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 				/* All the players before me have crashed */
 				if (wait == 0) {
+					System.out.println("Costruisco la GUI e faccio forward");
 					buildGUIAndForward(coreGame.getPartecipants());
 
 				}
@@ -129,6 +130,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 												+ "/RMIGameClient");
 								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
+								System.out.println(previous.getIp() + " è vivo");
 								waitBuildGUI();
 							}
 
