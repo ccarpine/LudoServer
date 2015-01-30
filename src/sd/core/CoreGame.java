@@ -126,12 +126,12 @@ public class CoreGame implements Serializable {
 	 */
 	public Partecipant getNextPartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
-			if (this.partecipants.get(i).isStatusActive()) {
-				if (ip.equals(this.partecipants.get(i).getIp())) {
-					return this.partecipants.get((i + 1)
-							% this.partecipants.size());
+			if (ip.equals(this.partecipants.get(i).getIp())) {
+				if (this.partecipants.get((i + 1) % this.partecipants.size()).isStatusActive()) {
+					return this.partecipants.get((i + 1) % this.partecipants.size());
 				}
 			}
+
 		}
 		return null;
 	}
@@ -272,14 +272,17 @@ public class CoreGame implements Serializable {
 
 	/**
 	 * 
-	 * @return, the maximum time that the invoking partecipant MUST wait to receive a message for buildGUI; if 0 is returned
-	 * it means that it must not wait for a message but it must build the gui and forward it
+	 * @return, the maximum time that the invoking partecipant MUST wait to
+	 *          receive a message for buildGUI; if 0 is returned it means that
+	 *          it must not wait for a message but it must build the gui and
+	 *          forward it
 	 */
 	public long getTimeForBuildGUI() {
 
 		/* for active partecipants ONLY */
 		int numberPreviousAlive = this.getPreviousActivePartecipants();
-		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY) * numberPreviousAlive;
+		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)
+				* numberPreviousAlive;
 
 	}
 
@@ -311,16 +314,21 @@ public class CoreGame implements Serializable {
 
 	}
 
-	/** this method set the player of the given color as not active and if he was the current partecipant
-	 * then a new current partecipant is set, the first active after him. 
+	/**
+	 * this method set the player of the given color as not active and if he was
+	 * the current partecipant then a new current partecipant is set, the first
+	 * active after him.
 	 * 
-	 * @param color, the colormof the player that has crashed
+	 * @param color
+	 *            , the color of the player that has crashed
 	 */
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
 		this.partecipants.get(position).setStatusActive(false);
-		if (this.partecipants.get(position).getIp().equals(this.ipCurrentPartecipant)) {
-			this.ipCurrentPartecipant = this.getNextPartecipant(this.ipCurrentPartecipant).getIp();
+		if (this.partecipants.get(position).getIp()
+				.equals(this.ipCurrentPartecipant)) {
+			this.ipCurrentPartecipant = this.getNextPartecipant(
+					this.ipCurrentPartecipant).getIp();
 		}
 	}
 }

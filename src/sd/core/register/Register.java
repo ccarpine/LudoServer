@@ -76,7 +76,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 				System.out.println("call for the start for the IP"+ this.gamersIp.get(i));
 				
 			} catch (RemoteException e) {
-				e.printStackTrace();
+				System.out.println("L'utente " + this.gamersIp.get(i) + " non è raggiungibile!");
+				//e.printStackTrace();
 			}
 		}
 	}
