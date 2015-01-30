@@ -169,6 +169,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			buildGUIDone = true;
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Sono il primo e gioco");
+				System.out.println("Chiamo initTurn()");
 				this.initTurn();
 			} else {
 				System.out.println("Non sono il primo e creo l'interfaccia");
