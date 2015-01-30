@@ -41,6 +41,10 @@ public class CoreGame implements Serializable {
 		this.ipCurrentPartecipant = ipGamers.get(0);
 		this.gameBoard = new GameBoard();
 	}
+	
+	public void setCurrentPartecipant(String ip) {
+		this.ipCurrentPartecipant = ip;
+	}
 
 	public String getWinner() {
 		return this.winner;

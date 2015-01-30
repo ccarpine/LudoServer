@@ -178,17 +178,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/**
-	 * it build the gui for the player that invokes this method and sends this
+	 * it build the GUI for the player that invokes this method and sends this
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
-	private void buildGUIAndForward(final List<Partecipant> partecipants) {				
+	private void buildGUIAndForward(final List<Partecipant> partecipants) {
+		
 		this.coreGame.setPartecipants(partecipants);
+		
+		for(int i=0; i<this.coreGame.getPartecipants().size(); i++) {
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
+				this.coreGame.setCurrentPartecipant(this.coreGame.getPartecipants().get(i).getIp());
+				break;
+			}
+		}
 		
 		for(int j=0; j<this.coreGame.getPartecipants().size(); j++) {
 			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp() + 
 					" is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
 		}
+		
+		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());
 		
 		new Thread() {
 			public void run() {
