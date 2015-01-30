@@ -186,9 +186,11 @@ public class ControlBoardPanel extends BGPanel {
 		// int launchResult = coreGame.getCurrentDie();
 		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,
 				"What's your name?"));// coreGame.launchDie();
-		
-		/* I become the current partecipant only AFTER having launched the die, because of
-		 * the call to initTurn()*/
+
+		/*
+		 * I become the current partecipant only AFTER having launched the die,
+		 * because of the call to initTurn()
+		 */
 		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		// This is the actual animation
 		AnimationSprite animation = new AnimationSprite(animationBuffer,
@@ -202,7 +204,8 @@ public class ControlBoardPanel extends BGPanel {
 			panel.updateUI();
 			// TODO start
 
-			resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
+			resultDie.setIcon(new ImageIcon(animationBuffer[counter
+					% Constants.ROTATIONS]));
 			panel.add(resultDie);
 			// System.out.println("OK 1");
 			// TODO end
@@ -218,8 +221,7 @@ public class ControlBoardPanel extends BGPanel {
 		resultAnimation.start();
 		resultAnimation.update();
 		// TODO start
-		resultDie.setIcon(new ImageIcon(
-				exactDieFaces[launchResult - 1][0]));
+		resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
 		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		panel.add(resultDie);
 		// System.out.println("OK 2");
@@ -237,25 +239,28 @@ public class ControlBoardPanel extends BGPanel {
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"
-					+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],
-					0, 0));
-			button.setBounds(5 + (i * 33), 100, 20, 20);
-			this.currentPlayer.add(button);
-			this.add(button);
-			JLabel lastDie = new JLabel();
-			lastDie.setBounds(5 + (i * 33), 125, 20, 20);
-			int lastLaunch = this.coreGame.getPartecipants().get(i)
-					.getLastLaunch();
-			if (lastLaunch > 0) {
-				lastDie.setIcon(new javax.swing.ImageIcon(
-						ClassLoader
-								.getSystemResource("sd/ui/images/dice/"
-										+ this.coreGame.getPartecipants()
-												.get(i).getColor() + "_"
-										+ lastLaunch + ".png")));
+			
+			/* a player might haven exited during the building of the GUI */
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
+				CellButton button = new CellButton(0, 0,
+						"images/turnMarkers/on/" + Constants.COLOR[i] + ".png",
+						new Cell(Constants.COLOR[i], 0, 0));
+				button.setBounds(5 + (i * 33), 100, 20, 20);
+				this.currentPlayer.add(button);
+				this.add(button);
+				JLabel lastDie = new JLabel();
+				lastDie.setBounds(5 + (i * 33), 125, 20, 20);
+				int lastLaunch = this.coreGame.getPartecipants().get(i)
+						.getLastLaunch();
+				if (lastLaunch > 0) {
+					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader
+							.getSystemResource("sd/ui/images/dice/"
+									+ this.coreGame.getPartecipants().get(i)
+											.getColor() + "_" + lastLaunch
+									+ ".png")));
 
-				this.add(lastDie);
+					this.add(lastDie);
+				}
 			}
 		}
 	}
@@ -321,7 +326,8 @@ public class ControlBoardPanel extends BGPanel {
 					userPlayer.getGamePanel().makePossibleMoveDisable();
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
-							.getIp(), coreGame.isDoubleTurn(), coreGame.getTurn());
+							.getIp(), coreGame.isDoubleTurn(), coreGame
+							.getTurn());
 				}
 			}
 		}).start();

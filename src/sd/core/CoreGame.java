@@ -71,7 +71,17 @@ public class CoreGame implements Serializable {
 	}
 
 	public boolean iWin() {
-		if (this.getMyPartecipant().getColor().equals(this.winner)
+		
+		int activeOnes = 0;
+		for(int i=0; i<this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).isStatusActive())
+				activeOnes++;
+			if(activeOnes > 1) {
+				break;
+			}
+		}
+		
+		if (activeOnes <= 1 || this.getMyPartecipant().getColor().equals(this.winner)
 				|| this.partecipants.size() == 1)
 			return true;
 		return false;
