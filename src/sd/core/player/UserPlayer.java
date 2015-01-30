@@ -213,7 +213,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				} catch (Exception ex) {
 				}
 				Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
-				
+				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 							.lookup("rmi://" + partecipant.getIp() + "/RMIGameClient");
