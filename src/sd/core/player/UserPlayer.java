@@ -165,8 +165,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
-		if (!buildGUIDone) {
+		if (!buildGUIDone) {			
 			buildGUIDone = true;
+			
+			System.out.println("corrente:" + this.coreGame.getCurrentPartecipant());
+			System.out.println("my partecipant: " + this.coreGame.getMyPartecipant().getIp());
+			
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("Sono il primo e gioco");
 				System.out.println("Chiamo initTurn()");
@@ -179,21 +183,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/**
-	 * it build the GUI for the player that invokes this method and sends this
+	 * it builds the GUI for the player that invokes this method and sends this
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
 	private void buildGUIAndForward(final List<Partecipant> partecipants) {
 		
 		this.coreGame.setPartecipants(partecipants);
-		
-		for(int i=0; i<this.coreGame.getPartecipants().size(); i++) {
-			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
-				this.coreGame.setCurrentPartecipant(this.coreGame.getPartecipants().get(i).getIp());
-				break;
-			}
-		}
-		
+				
 		System.out.println("Current partecipant is " + this.coreGame.getCurrentPartecipant().getIp());
 		
 		for(int j=0; j<this.coreGame.getPartecipants().size(); j++) {
@@ -209,6 +206,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
+							System.out.println("Chiamo initInterface()");
 							initInterface();
 						}
 					});
