@@ -131,9 +131,12 @@ public class CoreGame implements Serializable {
 	public Partecipant getNextActivePartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (ip.equals(this.partecipants.get(i).getIp())) {
-				if (this.partecipants.get((i + 1) % this.partecipants.size()).isStatusActive()) {
-					return this.partecipants.get((i + 1) % this.partecipants.size());
+				
+				for(int j=0; j<this.partecipants.size(); j++) {
+					if (this.partecipants.get((i + 1 + j) % this.partecipants.size()).isStatusActive())
+						return this.partecipants.get((i + 1 + j) % this.partecipants.size());
 				}
+				
 			}
 
 		}
