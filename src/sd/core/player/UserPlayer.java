@@ -75,7 +75,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			}
-
 			else {
 
 				this.waitBuildGUI();
@@ -123,10 +122,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
 										.lookup("rmi://" + previous.getIp()
 												+ "/RMIGameClient");
-								tryPrevious.isAlive(previous.getColor());
+								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
+								waitBuildGUI();
 							}
 
+							/* the previous player has crashed */
 							catch (MalformedURLException | RemoteException
 									| NotBoundException e) {
 								e.printStackTrace();

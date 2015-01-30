@@ -8,10 +8,10 @@ public class Constants {
 	
 	/* the following constants are used to manage crashes according to the phase in which the
 	 * crash happens plus the latency */
-	public static final int MAX_TIME_TO_BUILD_GUI = 20;
-	public static final int MAX_TIME_FOR_TURN = 90;
-	public static final int LATENCY = 2;
-	public static final int MAX_TIME_FOR_UPDATE = 20; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
+	public static final long MAX_TIME_TO_BUILD_GUI = 20000L;
+	public static final long MAX_TIME_FOR_TURN = 90000L;
+	public static final long LATENCY = 2000L;
+	public static final long MAX_TIME_FOR_UPDATE = 2000L; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
 	
 	public static final int SUCCESS = 0;
 	public static final int WALL = 1;

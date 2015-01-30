@@ -277,8 +277,9 @@ public class CoreGame implements Serializable {
 	 */
 	public long getTimeForBuildGUI() {
 
-		int position = this.getPreviousActivePartecipants();
-		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY) * position;
+		/* for active partecipants ONLY */
+		int numberPreviousAlive = this.getPreviousActivePartecipants();
+		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY) * numberPreviousAlive;
 
 	}
 
