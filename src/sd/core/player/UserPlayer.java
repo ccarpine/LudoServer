@@ -193,6 +193,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 		}
 		
+		System.out.println("Current partecipant is " + this.coreGame.getCurrentPartecipant().getIp());
+		
 		for(int j=0; j<this.coreGame.getPartecipants().size(); j++) {
 			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp() + 
 					" is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
