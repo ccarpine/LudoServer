@@ -83,7 +83,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	}
 
-	/* it handles the lack of message buildGUI from the previous player */
+	/* it handles the lack of message buildGUI from the previous player ONLY */
 	private void waitBuildGUI() {
 
 		new Thread(new Runnable() {
@@ -131,11 +131,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							catch (MalformedURLException | RemoteException
 									| NotBoundException e) {
 								e.printStackTrace();
-								coreGame.getPartecipants()
-										.get(coreGame
-												.getIDPartecipantByColor(previous
-														.getColor()))
-										.setStatusActive(false);
+								coreGame.setUnactivePartecipant(previous.getColor());
 							}
 
 						}
@@ -191,15 +187,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
+				Partecipant partecipant = coreGame.getNextPartecipant(coreGame.getMyPartecipant().getIp());
+				
 				try {
-					String nextInTurnId = coreGame.getNextPartecipant(
-							coreGame.getMyPartecipant().getIp()).getIp();
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
-							.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
+							.lookup("rmi://" + partecipant.getIp() + "/RMIGameClient");
 					nextInTurn.buildGUI(partecipants);
-				} catch (MalformedURLException | RemoteException
-						| NotBoundException e) {
+				
+			    /* my following player has crashed and so the crash of NEXT partecipant is handled */
+				} catch (MalformedURLException | RemoteException| NotBoundException e) {
 					e.printStackTrace();
+					coreGame.setUnactivePartecipant(partecipant.getColor());
+					buildGUIAndForward(coreGame.getPartecipants());
 				}
 			}
 		}.start();

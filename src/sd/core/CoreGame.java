@@ -311,8 +311,16 @@ public class CoreGame implements Serializable {
 
 	}
 
+	/** this method set the player of the given color as not active and if he was the current partecipant
+	 * then a new current partecipant is set, the first active after him. 
+	 * 
+	 * @param color, the colormof the player that has crashed
+	 */
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
 		this.partecipants.get(position).setStatusActive(false);
+		if (this.partecipants.get(position).getIp().equals(this.ipCurrentPartecipant)) {
+			this.ipCurrentPartecipant = this.getNextPartecipant(this.ipCurrentPartecipant).getIp();
+		}
 	}
 }
