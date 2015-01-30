@@ -284,20 +284,27 @@ public class ControlBoardPanel extends BGPanel {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-			if (this.coreGame.getPartecipants().get(i).isStatusActive()
-					&& !Constants.COLOR[i].equals(color)) {
-				this.currentPlayer
-						.get(i)
-						.setIcon(
-								new javax.swing.ImageIcon(
-										ClassLoader
-												.getSystemResource("sd/ui/images/turnMarkers/off/"
-														+ Constants.COLOR[i]
-														+ ".png")));
-			} else {
-				this.currentPlayer.get(i).changeState();
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
+				if (!Constants.COLOR[i].equals(color)) {
+
+					this.currentPlayer
+							.get(i)
+							.setIcon(
+									new javax.swing.ImageIcon(
+											ClassLoader
+													.getSystemResource("sd/ui/images/turnMarkers/off/"
+															+ Constants.COLOR[i]
+															+ ".png")));
+				} else {
+					this.currentPlayer.get(i).changeState();
+				}
+			}
+
+			else {
+				this.currentPlayer.get(i).setVisible(false);
 			}
 		}
+
 	}
 
 	/**
