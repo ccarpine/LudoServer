@@ -167,7 +167,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		if (!buildGUIDone) {			
 			buildGUIDone = true;
-			
+			this.coreGame.setPartecipants(partecipants);
 			System.out.println("corrente:" + this.coreGame.getCurrentPartecipant());
 			System.out.println("my partecipant: " + this.coreGame.getMyPartecipant().getIp());
 			
