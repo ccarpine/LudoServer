@@ -73,12 +73,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				System.exit(0);
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			}
 			else {
@@ -97,6 +92,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			@Override
 			public void run() {
 				long wait = coreGame.getTimeForBuildGUI();
+				System.out.println("Attendo per " + wait + " millisecondi");
 
 				/* All the players before me have crashed */
 				if (wait == 0) {
@@ -124,6 +120,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 							Partecipant previous = coreGame
 									.getPreviousActive(coreGame
 											.getMyPartecipant().getColor());
+							
+							System.out.println("Cerco di pingare " + previous.getIp());
+							
 							try {
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
 										.lookup("rmi://" + previous.getIp()
@@ -136,7 +135,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 							/* the previous player has crashed and it must be set as unactive*/
 							catch (MalformedURLException | RemoteException
 									| NotBoundException e) {
-								e.printStackTrace();
+								//e.printStackTrace();
+								System.out.println(previous.getIp() + " has crashed");
 								coreGame.setUnactivePartecipant(previous.getColor());
 							}
 
