@@ -77,7 +77,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 			else {
 
-				System.exit(1);
+				if(this.coreGame.getMyPartecipant().getIp().equals("192.168.1.64")) 
+					System.exit(1);
 				
 				this.waitBuildGUI();
 			}
