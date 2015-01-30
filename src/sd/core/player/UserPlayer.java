@@ -73,6 +73,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			}
 			else {
@@ -174,8 +180,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
-	private void buildGUIAndForward(final List<Partecipant> partecipants) {
+	private void buildGUIAndForward(final List<Partecipant> partecipants) {				
 		this.coreGame.setPartecipants(partecipants);
+		
+		for(int j=0; j<this.coreGame.getPartecipants().size(); j++) {
+			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp() + 
+					" is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
+		}
+		
 		new Thread() {
 			public void run() {
 				try {
