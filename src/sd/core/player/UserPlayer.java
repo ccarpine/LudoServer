@@ -195,7 +195,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 						 * the previous player has crashed and it must be set as unactive
 						 */
 						catch (MalformedURLException | RemoteException | NotBoundException e) {
-							// e.printStackTrace();
 							System.out.println(previous.getIp()	+ " has crashed");
 							coreGame.setUnactivePartecipant(previous.getColor());
 						}
@@ -348,10 +347,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	private void playNext() {
 		try {
-			String nextPartecipantId = this.coreGame.getNextActivePartecipant(
-					this.coreGame.getMyPartecipant().getIp()).getIp();
-			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
-					.lookup("rmi://" + nextPartecipantId + "/RMIGameClient");
+			String nextPartecipantId = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextPartecipantId + "/RMIGameClient");
 			nextPlayer.initTurn();
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			e.printStackTrace();
@@ -370,11 +367,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard,
 			String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn) {
 		try {
-			String nextInTurnId = this.coreGame.getNextActivePartecipant(
-					this.coreGame.getMyPartecipant().getIp()).getIp();
+			String nextInTurnId = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 			System.out.println("mando l-update status a" + nextInTurnId);
-			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
-					.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
+			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
 			nextInTurn.updateStatus(partecipants, gameBoard,
 					ipCurrentPartecipant, isDoubleTurn, currentTurn);
 		} catch (MalformedURLException | NotBoundException | RemoteException e1) {
