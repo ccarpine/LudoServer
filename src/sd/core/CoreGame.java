@@ -206,7 +206,6 @@ public class CoreGame implements Serializable {
 		if (this.gameBoard.isVictory(this.getMyPartecipant())) {
 			this.winner = this.getMyPartecipant().getColor();
 		}
-		this.turnActive = false;
 		return result;
 	}
 
