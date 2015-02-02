@@ -76,7 +76,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-				this.waitFor(Constants.PHASE_BUILD_GUI, buildGUIDone);
+				this.waitFor(Constants.PHASE_BUILD_GUI);
 			}
 		}
 
@@ -102,7 +102,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final int phaseNumber, final boolean phase) {
+	private void waitFor(final int phaseNumber) {
 
 		new Thread(new Runnable() {
 			@Override
@@ -119,7 +119,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 				else {	
-					while (wait > 0 && (phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone || phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)) {
+					while (wait > 0 && 
+							((phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone))
+						) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -127,15 +129,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
+					if (phaseNumber == Constants.PHASE_BUILD_GUI)
+						System.out.println("ho atteso nella fase di build gui. Sono uscita con il bool a: "+ buildGUIDone);
+					if (phaseNumber == Constants.PHASE_FIRST_CYCLE)
+						System.out.println("ho atteso nella fase del primo giro. Sono uscita con il bool a: "+ firstCycleDone);
+					
 					if (phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone || phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone){
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
+								System.out.println("tento di fare ping a: "+ previous.getIp());
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
-								waitFor(phaseNumber, phase);
+								waitFor(phaseNumber);
 							}
 							/*
 							 * the previous player has crashed and it must be set as unactive
@@ -185,7 +193,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 					nextInTurn.buildGUI(coreGame.getPartecipants());
 					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
-					waitFor(Constants.PHASE_FIRST_CYCLE, firstCycleDone); 
+					waitFor(Constants.PHASE_FIRST_CYCLE); 
 					/*
 					 * my following player has crashed and so the crash of NEXT
 					 * partecipant is handled
