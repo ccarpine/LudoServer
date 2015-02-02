@@ -91,7 +91,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		if (!buildGUIDone) {
 			buildGUIDone = true;
-			
+
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.initTurn();
 			} else {
@@ -155,6 +155,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							 * the previous player has crashed and it must be set as unactive
 							 */
 							catch (MalformedURLException | RemoteException | NotBoundException e) {
+								System.out.println("WAIT FOR: set unactive" + previous.getIp()); 
 								coreGame.setUnactivePartecipant(previous.getColor());
 							}
 						}

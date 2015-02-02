@@ -94,7 +94,7 @@ public class ControlBoardPanel extends BGPanel {
 				}).start();
 			}
 		});
-		this.die.setEnabled(false);
+		this.die.setEnabled(this.coreGame.isTurnActive());
 		this.add(die);
 		JButton fold = new JButton("Fold");
 		fold.setIcon(new javax.swing.ImageIcon(ClassLoader
