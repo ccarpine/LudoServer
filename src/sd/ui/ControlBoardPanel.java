@@ -321,7 +321,7 @@ public class ControlBoardPanel extends BGPanel {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					countdown--;
+					countdown-=1000;
 					int seconds = (int) (countdown/1000) % 60;
 					int minutes = (int) (( (countdown/1000) / 60) % 60);
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
