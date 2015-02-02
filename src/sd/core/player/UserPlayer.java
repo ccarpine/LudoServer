@@ -35,7 +35,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private boolean isPlaying;
 	private int result;
 	private boolean buildGUIDone;
-
+	private boolean firstCycleDone;
 	/**
 	 * when launched, it creates a future game player giving him the possibility
 	 * to register at the server
@@ -46,6 +46,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public UserPlayer(String ServerIp) throws RemoteException {
 		this.buildGUIDone = false;
+		this.firstCycleDone = false;
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
 		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
@@ -75,7 +76,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-
 				this.waitBuildGUI();
 			}
 		}
@@ -90,73 +90,51 @@ public class UserPlayer extends UnicastRemoteObject implements
 			@Override
 			public void run() {
 				long wait = coreGame.getTimeForBuildGUI();
-				System.out.println("Attendo per " + wait + " millisecondi");
+				//System.out.println("Attendo per " + wait + " millisecondi");
 
 				/* All the players before me have crashed */
 				if (wait == 0) {
-					System.out.println("Costruisco la GUI e faccio forward");
+				//	System.out.println("Costruisco la GUI e faccio forward");
 					buildGUIAndForward(coreGame.getPartecipants());
-
 				}
-
 				else {
-
 					while (wait > 0 && !buildGUIDone) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
 						wait -= 1000;
 					}
-
 					if (!buildGUIDone) {
 						boolean foundPreviousAlive = false;
-
 						while (!foundPreviousAlive) {
-							Partecipant previous = coreGame
-									.getPreviousActive(coreGame
-											.getMyPartecipant().getColor());
-
-							System.out.println("Cerco di pingare "
-									+ previous.getIp());
-
+							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+						//	System.out.println("Cerco di pingare "+ previous.getIp());
 							try {
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
-										.lookup("rmi://" + previous.getIp()
-												+ "/RMIGameClient");
+										.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 								tryPrevious.isAlive(coreGame.getMyPartecipant()
 										.getColor());
 								foundPreviousAlive = true;
 								System.out.println(previous.getIp() + " è vivo");
 								waitBuildGUI();
 							}
-
 							/*
 							 * the previous player has crashed and it must be
 							 * set as unactive
 							 */
-							catch (MalformedURLException | RemoteException
-									| NotBoundException e) {
+							catch (MalformedURLException | RemoteException | NotBoundException e) {
 								// e.printStackTrace();
-								System.out.println(previous.getIp()
-										+ " has crashed");
-								coreGame.setUnactivePartecipant(previous
-										.getColor());
+							//	System.out.println(previous.getIp()	+ " has crashed");
+								coreGame.setUnactivePartecipant(previous.getColor());
 							}
-
 						}
 					}
-
-					else {
-						if (wait > 0) {
-							System.out
-									.println("Tempo che era rimasto: " + wait);
-						}
-					}
-
+					/*else {
+						if (wait > 0) 
+							System.out.println("Tempo che era rimasto: " + wait);
+					}*/
 				}
 			}
 		}).start();
@@ -172,16 +150,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		if (!buildGUIDone) {
 			buildGUIDone = true;
-			System.out.println("corrente:"
-					+ this.coreGame.getCurrentPartecipant());
-			System.out.println("my partecipant: "
-					+ this.coreGame.getMyPartecipant().getIp());
-
+			System.out.println("corrente:" + this.coreGame.getCurrentPartecipant());
+			System.out.println("my partecipant:"  + this.coreGame.getMyPartecipant().getIp());
+			
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.gamePanel.drawGUI();
 				this.controlBoardPanel.drawControlBoardGUI(false);
 				System.out.println("Sono il primo e gioco");
 				System.out.println("Chiamo initTurn()");
+				this.firstCycleDone = true;
 				this.initTurn();
 			} else {
 				System.out.println("Non sono il primo e creo l'interfaccia");
@@ -190,26 +167,78 @@ public class UserPlayer extends UnicastRemoteObject implements
 		}
 	}
 
+	/* it handles the lack of message buildGUI from the previous player ONLY */
+	private void waitForFirstCycle() {
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				long wait = coreGame.getTimeForTheFirstCycle();
+				System.out.println("First cycle: Attendo per " + wait + " millisecondi");
+
+				/* All the players before me have crashed */
+				if (wait == Constants.LATENCY) {
+					System.out.println("First cycle: faccio il turno");
+					try {
+						initTurn();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				else {
+					while (wait > 0 && !firstCycleDone) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						wait -= 1000;
+					}
+					if (!firstCycleDone) {
+						boolean foundPreviousAlive = false;
+						while (!foundPreviousAlive) {
+							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+							System.out.println("First cycle: Cerco di pingare "+ previous.getIp());
+							try {
+								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
+								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
+								foundPreviousAlive = true;
+								System.out.println(previous.getIp() + " è vivo");
+								waitForFirstCycle();
+							}
+							/*
+							 * the previous player has crashed and it must be set as unactive
+							 */
+							catch (MalformedURLException | RemoteException | NotBoundException e) {
+								// e.printStackTrace();
+								System.out.println(previous.getIp()	+ " has crashed");
+								coreGame.setUnactivePartecipant(previous.getColor());
+							}
+						}
+					}
+					else {
+						if (wait > 0) 
+							System.out.println("First cycle: Tempo che era rimasto: " + wait);
+					}
+				}
+			}
+		}).start();
+
+	}
+
 	/**
 	 * it builds the GUI for the player that invokes this method and sends this
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
 	private void buildGUIAndForward(final List<Partecipant> partecipants) {
-
 		this.coreGame.setPartecipants(partecipants);
-
 		System.out.println("Current partecipant is "+ this.coreGame.getCurrentPartecipant().getIp());
-
 		for (int j = 0; j < this.coreGame.getPartecipants().size(); j++) {
-			System.out.println("Partecipant "
-					+ this.coreGame.getPartecipants().get(j).getIp()
-					+ " is active = "
-					+ this.coreGame.getPartecipants().get(j).isStatusActive());
+			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp()
+					+ " is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
 		}
-
-		System.out.println("Current is "
-				+ this.coreGame.getCurrentPartecipant().getIp());
+		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());
 
 		new Thread() {
 			public void run() {
@@ -223,23 +252,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
-				Partecipant partecipant = coreGame
-						.getNextActivePartecipant(coreGame.getMyPartecipant()
-								.getIp());
-				System.out
-						.println("chiamo buildGUI su: " + partecipant.getIp());
+				Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
+				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
 				try {
-					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
-							.lookup("rmi://" + partecipant.getIp()
-									+ "/RMIGameClient");
+					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 					nextInTurn.buildGUI(coreGame.getPartecipants());
-
+					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
+					waitForFirstCycle(); 
 					/*
 					 * my following player has crashed and so the crash of NEXT
 					 * partecipant is handled
 					 */
-				} catch (MalformedURLException | RemoteException
-						| NotBoundException e) {
+				} catch (MalformedURLException | RemoteException | NotBoundException e) {
 					System.out.println(partecipant.getIp() + " has crashed!");
 					coreGame.setUnactivePartecipant(partecipant.getColor());
 					/*
@@ -276,12 +300,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
-
-		System.out.println("turno ricevuto: " + currentTurn
-				+ " e turno del core: " + this.coreGame.getTurn());
-
 		if (currentTurn == this.coreGame.getTurn()) {
-
+			this.firstCycleDone = true;
+			System.out.println("turno ricevuto: " + currentTurn	+ " e turno del core: " + this.coreGame.getTurn());
 			new Thread() {
 				public void run() {
 					try {
@@ -289,14 +310,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 							@Override
 							public void run() {
 								/*
-								 * the internal memory status and the gui of the
-								 * game is updated
+								 * the internal memory status and the gui of the game is updated
 								 */
-								result = coreGame.updateStatus(partecipants,
-										gameBoard, ipCurrentPartecipant);
+								result = coreGame.updateStatus(partecipants,gameBoard, ipCurrentPartecipant);
 								coreGame.incrementTurn();
-								controlBoardPanel
-										.drawControlBoardGUI(isDoubleTurn);
+								controlBoardPanel.drawControlBoardGUI(isDoubleTurn);
 								gamePanel.drawGUI();
 							}
 						});
@@ -310,8 +328,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (" + result + ")");
-						updateNext(partecipants, gameBoard,
-								ipCurrentPartecipant, isDoubleTurn, currentTurn);
+						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
@@ -327,14 +344,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						break;
 					case Constants.END_GAME:
-						JOptionPane.showMessageDialog(null, "il vincitore e': "
-								+ coreGame.getWinner());
+						JOptionPane.showMessageDialog(null, "il vincitore e': " + coreGame.getWinner());
 						break;
 					default:
 						break;
 					}
 				}
 			}.start();
+			
 		}
 	}
 

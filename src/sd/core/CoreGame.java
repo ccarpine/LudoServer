@@ -390,10 +390,8 @@ public class CoreGame implements Serializable {
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
 		this.partecipants.get(position).setStatusActive(false);
-		if (this.partecipants.get(position).getIp()
-				.equals(this.ipCurrentPartecipant)) {
-			this.ipCurrentPartecipant = this.getNextActivePartecipant(
-					this.ipCurrentPartecipant).getIp();
+		if (this.partecipants.get(position).getIp().equals(this.ipCurrentPartecipant)) {
+			this.ipCurrentPartecipant = this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp();
 		}
 	}
 	
