@@ -91,7 +91,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			public void run() {
 				long wait = coreGame.getTimeForBuildGUI();
 				//System.out.println("Attendo per " + wait + " millisecondi");
-
 				/* All the players before me have crashed */
 				if (wait == 0) {
 				//	System.out.println("Costruisco la GUI e faccio forward");
@@ -256,6 +255,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
+					if (coreGame.getMyPartecipant().getIp().equals("192.168.1.81")){
+						System.exit(0);
+					}
 					nextInTurn.buildGUI(coreGame.getPartecipants());
 					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
 					waitForFirstCycle(); 
