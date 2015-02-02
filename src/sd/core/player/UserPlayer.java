@@ -171,7 +171,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 				else {	
-					while (wait > 0 && !phase) {
+					while (wait > 0 && (phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone || phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -179,7 +179,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
-					if (!phase){
+					if (phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone || phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone){
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
