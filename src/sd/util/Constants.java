@@ -109,6 +109,7 @@ public class Constants {
 	
 	public static final int PHASE_BUILD_GUI = 0;
 	public static final int PHASE_FIRST_CYCLE = 1;
+	public static final int PHASE_CYCLE = 2;
 	
 	
 	
