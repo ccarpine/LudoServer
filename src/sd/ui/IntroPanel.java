@@ -12,9 +12,8 @@ import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-import sd.core.player.UserPlayerInterface;
-import sd.core.register.Register;
 import sd.core.register.RegisterInterface;
 
 public class IntroPanel extends BGPanel {
@@ -58,8 +57,16 @@ public class IntroPanel extends BGPanel {
 			public void actionPerformed(ActionEvent e) {
 				goOnMatch.setEnabled(false);
 				// try the connection to the server
-				startConnection(serverIP);
-				startCountdown();
+				if (!startConnection(serverIP)) {
+
+					JOptionPane.showMessageDialog(null,"Server is out of service. Try later!");
+					System.exit(1);
+
+				}
+
+				else {
+					startCountdown();
+				}
 
 			}
 		});
@@ -75,8 +82,10 @@ public class IntroPanel extends BGPanel {
 				try {
 					RegisterInterface server = (RegisterInterface) Naming
 							.lookup("rmi://" + serverIP + "/RMILudoServer");
-					server.deletePartecipant(Inet4Address.getLocalHost().getHostAddress());
-				} catch (RemoteException | MalformedURLException | UnknownHostException | NotBoundException exc) {
+					server.deletePartecipant(Inet4Address.getLocalHost()
+							.getHostAddress());
+				} catch (RemoteException | MalformedURLException
+						| UnknownHostException | NotBoundException exc) {
 					exc.printStackTrace();
 				}
 				System.exit(0);
@@ -112,7 +121,7 @@ public class IntroPanel extends BGPanel {
 			return true;
 		} catch (RemoteException | MalformedURLException | NotBoundException
 				| UnknownHostException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 	}
