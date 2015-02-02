@@ -116,7 +116,6 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	public void enableTurn() {
 			System.out.println("Sono dentro enableTurn()");
-			this.die.setEnabled(true);
 			this.setTimer();
 	}
 
