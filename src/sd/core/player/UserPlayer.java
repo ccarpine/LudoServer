@@ -160,46 +160,45 @@ public class UserPlayer extends UnicastRemoteObject implements
 			@Override
 			public void run() {
 				long wait = 0;
-				
 				//long wait = coreGame.getTimeForTheFirstCycle();
-				
 				if (phaseNumber == Constants.PHASE_BUILD_GUI) {
 					wait = coreGame.getTimeForBuildGUI();
 				}
-				
 				else if (phaseNumber == Constants.PHASE_FIRST_CYCLE) {
 					wait = coreGame.getTimeForTheFirstCycle();
 				}
-				
-				while (wait > 0 && !phase) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					wait -= 1000;
+				if (phaseNumber == Constants.PHASE_BUILD_GUI && wait==0){
+					buildGUIAndForward(coreGame.getPartecipants());
 				}
-				
-					boolean foundPreviousAlive = false;
-					while (!foundPreviousAlive) {
-						Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+				else {	
+					while (wait > 0 && !phase) {
 						try {
-							
-							UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-							tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
-							foundPreviousAlive = true;
-							
-							waitFor(phaseNumber, phase);
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						/*
-						 * the previous player has crashed and it must be set as unactive
-						 */
-						catch (MalformedURLException | RemoteException | NotBoundException e) {
-							coreGame.setUnactivePartecipant(previous.getColor());
+						wait -= 1000;
+					}
+					if (!phase){
+						boolean foundPreviousAlive = false;
+						while (!foundPreviousAlive) {
+							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+							try {
+								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
+								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
+								foundPreviousAlive = true;
+								waitFor(phaseNumber, phase);
+							}
+							/*
+							 * the previous player has crashed and it must be set as unactive
+							 */
+							catch (MalformedURLException | RemoteException | NotBoundException e) {
+								coreGame.setUnactivePartecipant(previous.getColor());
+							}
 						}
 					}
 				}
-			
+			}
 		}).start();
 
 	}
