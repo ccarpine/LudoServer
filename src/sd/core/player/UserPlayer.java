@@ -432,13 +432,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void isAlive(String color) throws RemoteException {
 		boolean end = false;
+		String pingerColor = color;
 		while (!end) {
-			Partecipant partecipant = this.coreGame.getPreviousActive(color);
+			Partecipant partecipant = this.coreGame.getPreviousActive(pingerColor);
 			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor()))
 				end = true;
 			else {
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
-				color = partecipant.getColor();
+				pingerColor = partecipant.getColor();
 			}
 		}
 		/* *
