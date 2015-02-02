@@ -82,58 +82,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	}
 
-	/* it handles the lack of message buildGUI from the previous player ONLY */
-	/*private void waitBuildGUI() {
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				long wait = coreGame.getTimeForBuildGUI();
-				//System.out.println("Attendo per " + wait + " millisecondi");
-				/* All the players before me have crashed */
-	/*			if (wait == 0) {
-				//	System.out.println("Costruisco la GUI e faccio forward");
-					buildGUIAndForward(coreGame.getPartecipants());
-				}
-				else {
-					while (wait > 0 && !buildGUIDone) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						wait -= 1000;
-					}
-					if (!buildGUIDone) {
-						boolean foundPreviousAlive = false;
-						while (!foundPreviousAlive) {
-							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
-						//	System.out.println("Cerco di pingare "+ previous.getIp());
-							try {
-								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
-								foundPreviousAlive = true;
-								System.out.println(previous.getIp() + " è vivo");
-								waitBuildGUI();
-							}
-							/*
-							 * the previous player has crashed and it must be
-							 * set as unactive
-							 */
-		/*					catch (MalformedURLException | RemoteException | NotBoundException e) {
-								// e.printStackTrace();
-							//	System.out.println(previous.getIp()	+ " has crashed");
-								coreGame.setUnactivePartecipant(previous.getColor());
-							}
-						}
-					}
-				}
-			}
-		}).start();
-
-	}*/
-
 	@Override
 	/**
 	 * If the player invoking this method is not the first that will play then he can build his GUI 
@@ -210,12 +158,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	private void buildGUIAndForward(final List<Partecipant> partecipants) {
 		this.coreGame.setPartecipants(partecipants);
-		System.out.println("Current partecipant is "+ this.coreGame.getCurrentPartecipant().getIp());
+		/*System.out.println("Current partecipant is "+ this.coreGame.getCurrentPartecipant().getIp());
 		for (int j = 0; j < this.coreGame.getPartecipants().size(); j++) {
-			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp()
-					+ " is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
+			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp()+ " is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
 		}
-		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());
+		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());*/
 
 		new Thread() {
 			public void run() {
@@ -367,7 +314,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("Mando updateNext a: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
@@ -443,9 +389,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * otherwise you wait for the message 
 		 * */
 		if (this.buildGUIDone) {
-			System.out.println("abbiamo costruito l'interfaccia e siamo stati pingati da "+ color);
-			System.out.println("il current partecipant e' " + this.coreGame.getCurrentPartecipant().getIp());
-			
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());

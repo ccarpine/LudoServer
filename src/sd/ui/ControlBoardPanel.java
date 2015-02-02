@@ -183,8 +183,7 @@ public class ControlBoardPanel extends BGPanel {
 		BufferedImage[][] exactDieFaces = this.initExactDieFaces();
 		int animationSpeed = 40;
 		// int launchResult = coreGame.getCurrentDie();
-		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,
-				"What's your name?"));// coreGame.launchDie();
+		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));// coreGame.launchDie();
 
 		/*
 		 * I become the current partecipant only AFTER having launched the die,
@@ -312,11 +311,10 @@ public class ControlBoardPanel extends BGPanel {
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
-				System.out.println("Faccio l'update next se is turn active " + coreGame.isTurnActive());
+				timeOfTurn.setText("Wait...");
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
-					System.out.println("Faccio l'update next");
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
 							.getIp(), coreGame.isDoubleTurn(), coreGame
