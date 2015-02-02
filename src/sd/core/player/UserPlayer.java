@@ -446,10 +446,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * otherwise you wait for the message 
 		 * */
 		if (this.buildGUIDone) {
+			System.out.println("abbiamo costruito l'interfaccia e siamo stati pingati da "+ color);
+			System.out.println("il current partecipant e' " + this.coreGame.getCurrentPartecipant().getIp());
 			String nextInTurnId = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
 			UserPlayerInterface nextInTurn = null;
 			if (this.coreGame.getCurrentPartecipant().getColor().equals(color)) {
 				try {
+					System.out.println("faccio l'init turn a " + color);
 					nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId +"/RMIGameClient");
 					nextInTurn.initTurn();
 				} catch (MalformedURLException | NotBoundException e) {
@@ -458,6 +461,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 			else {
 				try {
+					System.out.println("faccio l'update a " + color);
 					nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId +"/RMIGameClient");
 					nextInTurn.updateStatus(this.coreGame.getPartecipants(), 
 											this.coreGame.getGameBoard(), 
