@@ -256,9 +256,12 @@ public class GamePanel extends BGPanel {
 			//this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
 		}
 		this.drawGUI();
-		//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
-		System.out.println("4 UPDATE SEND");
-		this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn());
+		if (coreGame.isTurnActive()) {
+			coreGame.setTurnActive(false);
+			//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
+			System.out.println("4 UPDATE SEND");
+			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn());
+		}
 	}
 	
 	/**

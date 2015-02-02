@@ -273,8 +273,7 @@ public class CoreGame implements Serializable {
 		int result = 0;
 		for (int i = 0; i < this.getPartecipants().size(); i++) {
 			if (this.getPartecipants().get(i).isStatusActive()) {
-				if (!(this.getPartecipants().get(i).getIp().equals(this
-						.getMyPartecipant().getIp()))) {
+				if (!(this.getPartecipants().get(i).getIp().equals(this.getMyPartecipant().getIp()))) {
 					result++;
 				}
 
@@ -286,7 +285,38 @@ public class CoreGame implements Serializable {
 		return result;
 
 	}
-
+	
+	/***
+	 * 
+	 * @param position of the invoking player (if the param is equal to size return the 
+	 * number of all active partecipants)
+	 * @return the number of the active partecipant before a specific position
+	 */
+	public int getNrActivePartecipantBefore(int position){
+		int nrActivePartecipant = 0;
+		for (int i = 0; i < position; i++ ){
+			if (this.partecipants.get(i).isStatusActive()){
+				nrActivePartecipant++;
+			}
+		}
+		return nrActivePartecipant; 
+	}
+	
+	/***
+	 * 
+	 * @param position of the invoking player  (if the param is equal to  return the 
+	 * number of all active partecipants)
+	 * @return the number of the active partecipant after a specific position
+	 */
+	public int getNrActivePartecipantAfter(int position){
+		int nrActivePartecipant = 0;
+		for (int i = position; i < this.partecipants.size(); i++ ){
+			if (this.partecipants.get(i).isStatusActive()){
+				nrActivePartecipant++;
+			}
+		}
+		return nrActivePartecipant; 
+	}
 	/**
 	 * 
 	 * @return, the maximum time that the invoking partecipant MUST wait to
@@ -295,12 +325,30 @@ public class CoreGame implements Serializable {
 	 *          forward it
 	 */
 	public long getTimeForBuildGUI() {
-
 		/* for active partecipants ONLY */
 		int numberPreviousAlive = this.getPreviousActivePartecipants();
-		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)
-				* numberPreviousAlive;
-
+		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)* numberPreviousAlive;
+	}
+	
+	/***
+	 * 
+	 * @return, the maximun time that the invoking partecipant have to wait
+	 * 			to recevice a messagge for the first update after the first turn
+	 * 			exept for the fist player that wait for init turn (he has to receive the last buil gui message)
+	 */
+	public long getTimeForTheFirstCycle() {
+		long timeToWait = 0;
+		int activePartecipantBeforeMe = 0;
+		
+		activePartecipantBeforeMe = (this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition()));
+		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + this.getNrActivePartecipantAfter(this.getMyPartecipant().getColorPosition()) * Constants.MAX_TIME_TO_BUILD_GUI;
+		
+		if( activePartecipantBeforeMe > 0){
+			timeToWait += Constants.MAX_TIME_FOR_TURN;
+			timeToWait += (activePartecipantBeforeMe -1) * Constants.MAX_TIME_FOR_UPDATE;
+		}
+		
+		return timeToWait;
 	}
 
 	/**

@@ -323,10 +323,9 @@ public class ControlBoardPanel extends BGPanel {
 						e.printStackTrace();
 					}
 					countdown--;
-					int seconds = (int) countdown % 60;
-					int minutes = (int) ((countdown / 60) % 60);
-					timeOfTurn.setText(String.format("%02d", minutes) + ":"
-							+ String.format("%02d", seconds));
+					int seconds = (int) (countdown/1000) % 60;
+					int minutes = (int) (( (countdown/1000) / 60) % 60);
+					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
 				if (coreGame.isTurnActive()) {
