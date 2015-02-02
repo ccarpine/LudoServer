@@ -153,11 +153,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			System.out.println("my partecipant:"  + this.coreGame.getMyPartecipant().getIp());
 			
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				this.gamePanel.drawGUI();
-				this.controlBoardPanel.drawControlBoardGUI(false);
-				System.out.println("Sono il primo e gioco");
-				System.out.println("Chiamo initTurn()");
-				this.firstCycleDone = true;
 				this.initTurn();
 			} else {
 				System.out.println("Non sono il primo e creo l'interfaccia");
@@ -175,50 +170,39 @@ public class UserPlayer extends UnicastRemoteObject implements
 				long wait = coreGame.getTimeForTheFirstCycle();
 				System.out.println("First cycle: Attendo per " + wait + " millisecondi");
 
-				/* All the players before me have crashed */
-				if (wait == Constants.LATENCY) {
-					System.out.println("First cycle: faccio il turno");
+				while (wait > 0 && !firstCycleDone) {
 					try {
-						initTurn();
-					} catch (RemoteException e) {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
+					wait -= 1000;
+				}
+				if (!firstCycleDone) {
+					boolean foundPreviousAlive = false;
+					while (!foundPreviousAlive) {
+						Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+						System.out.println("First cycle: Cerco di pingare "+ previous.getIp());
+						try {
+							UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
+							tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
+							foundPreviousAlive = true;
+							System.out.println(previous.getIp() + " è vivo");
+							waitForFirstCycle();
+						}
+						/*
+						 * the previous player has crashed and it must be set as unactive
+						 */
+						catch (MalformedURLException | RemoteException | NotBoundException e) {
+							// e.printStackTrace();
+							System.out.println(previous.getIp()	+ " has crashed");
+							coreGame.setUnactivePartecipant(previous.getColor());
+						}
 					}
 				}
 				else {
-					while (wait > 0 && !firstCycleDone) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						wait -= 1000;
-					}
-					if (!firstCycleDone) {
-						boolean foundPreviousAlive = false;
-						while (!foundPreviousAlive) {
-							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
-							System.out.println("First cycle: Cerco di pingare "+ previous.getIp());
-							try {
-								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
-								foundPreviousAlive = true;
-								System.out.println(previous.getIp() + " è vivo");
-								waitForFirstCycle();
-							}
-							/*
-							 * the previous player has crashed and it must be set as unactive
-							 */
-							catch (MalformedURLException | RemoteException | NotBoundException e) {
-								// e.printStackTrace();
-								System.out.println(previous.getIp()	+ " has crashed");
-								coreGame.setUnactivePartecipant(previous.getColor());
-							}
-						}
-					}
-					else {
-						if (wait > 0) 
-							System.out.println("First cycle: Tempo che era rimasto: " + wait);
-					}
+					if (wait > 0) 
+						System.out.println("First cycle: Tempo che era rimasto: " + wait);
 				}
 			}
 		}).start();
@@ -403,6 +387,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void initTurn() throws RemoteException {
 		if (!this.coreGame.iWin()) {
+			this.firstCycleDone = true;
+			this.gamePanel.drawGUI();
+			this.controlBoardPanel.drawControlBoardGUI(false);
+			System.out.println("Sono il primo e gioco");
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
 		} else {
@@ -442,21 +430,47 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
 	 */
 	public void isAlive(String color) throws RemoteException {
-
 		boolean end = false;
-
 		while (!end) {
 			Partecipant partecipant = this.coreGame.getPreviousActive(color);
-			if (partecipant.getColor().equals(
-					this.coreGame.getMyPartecipant().getColor()))
+			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor()))
 				end = true;
 			else {
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
 				color = partecipant.getColor();
 			}
-
 		}
-
+		/* *
+		 * if you receive a isAlive message during the first cycle 
+		 * if you have alredy received the message you forward intiTurn to the invoker
+		 * otherwise you wait for the message 
+		 * */
+		if (this.buildGUIDone) {
+			String nextInTurnId = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp()).getIp();
+			UserPlayerInterface nextInTurn = null;
+			if (this.coreGame.getCurrentPartecipant().getColor().equals(color)) {
+				try {
+					nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId +"/RMIGameClient");
+					nextInTurn.initTurn();
+				} catch (MalformedURLException | NotBoundException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurnId +"/RMIGameClient");
+					nextInTurn.updateStatus(this.coreGame.getPartecipants(), 
+											this.coreGame.getGameBoard(), 
+											this.coreGame.getCurrentPartecipant().getIp(), 
+											this.coreGame.isDoubleTurn(), 
+											this.coreGame.getTurn());
+				} catch (MalformedURLException | NotBoundException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		
 	}
 
 }
