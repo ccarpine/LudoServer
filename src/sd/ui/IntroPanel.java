@@ -60,7 +60,7 @@ public class IntroPanel extends BGPanel {
 				if (!startConnection(serverIP)) {
 
 					JOptionPane.showMessageDialog(null,"Server is out of service. Try later!");
-					System.exit(1);
+					System.exit(0);
 
 				}
 
