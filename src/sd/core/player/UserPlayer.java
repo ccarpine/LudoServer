@@ -118,7 +118,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 				if (phaseNumber == Constants.PHASE_BUILD_GUI && wait==0){
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
-				else {	
+				else {
+					if (phaseNumber == Constants.PHASE_BUILD_GUI)
+						System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
+					if (phaseNumber == Constants.PHASE_FIRST_CYCLE)
+						System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
+					
+					
 					while (wait > 0 && 
 							((phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone))
 						) {
