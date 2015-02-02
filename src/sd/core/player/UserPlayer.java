@@ -184,6 +184,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 						System.out.println("First cycle: Cerco di pingare "+ previous.getIp());
 						try {
+							System.out.println("mando il mio colore a chi pingo " +(coreGame.getMyPartecipant().getColor()));
 							UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 							tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 							foundPreviousAlive = true;
