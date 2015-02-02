@@ -115,10 +115,8 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
-		if (this.coreGame.getWinner().isEmpty()) {
 			this.die.setEnabled(true);
 			this.setTimer();
-		}
 	}
 
 	/**
@@ -328,7 +326,7 @@ public class ControlBoardPanel extends BGPanel {
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
-				
+				System.out.println("Faccio l'update next se is turn active " + coreGame.isTurnActive());
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
