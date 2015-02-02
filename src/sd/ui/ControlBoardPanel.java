@@ -238,26 +238,16 @@ public class ControlBoardPanel extends BGPanel {
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
-
 			/* a player might haven exited during the building of the GUI */
-			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"
-					+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],
-					0, 0));
+			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],0, 0));
 			button.setBounds(5 + (i * 33), 100, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			JLabel lastDie = new JLabel();
 			lastDie.setBounds(5 + (i * 33), 125, 20, 20);
-			int lastLaunch = this.coreGame.getPartecipants().get(i)
-					.getLastLaunch();
+			int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
 			if (lastLaunch > 0) {
-				lastDie.setIcon(new javax.swing.ImageIcon(
-						ClassLoader
-								.getSystemResource("sd/ui/images/dice/"
-										+ this.coreGame.getPartecipants()
-												.get(i).getColor() + "_"
-										+ lastLaunch + ".png")));
-
+				lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
 				this.add(lastDie);
 			}
 		}
