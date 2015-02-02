@@ -107,6 +107,9 @@ public class Constants {
 	/* number of times the die rotates when launched */
 	public static final int ROTATIONS = 10;
 	
+	public static final int PHASE_BUILD_GUI = 0;
+	public static final int PHASE_FIRST_CYCLE = 1;
+	
 	
 	
 
