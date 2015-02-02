@@ -253,9 +253,10 @@ public class GamePanel extends BGPanel {
 			int indexColorEaten = this.getIndexColor(result);
 			Cell eatenPawnPosition = getPositionGUI(indexColorEaten, cellDestination);
 			Cell freeBenchPosition = getFreePositionBenchGUI(indexColorEaten);
-			//this.movePawn(eatenPawnPosition, freeBenchPosition, indexColorEaten);
+			//this.movePawn(eatenPawnPosition, freeBenchPosition, indeixColorEaten);
 		}
 		this.drawGUI();
+		System.out.println("Turn in Gamepanel riga 259 is: " + coreGame.isTurnActive());
 		if (coreGame.isTurnActive()) {
 			coreGame.setTurnActive(false);
 			//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
