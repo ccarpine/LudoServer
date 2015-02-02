@@ -256,7 +256,6 @@ public class GamePanel extends BGPanel {
 			//this.movePawn(eatenPawnPosition, freeBenchPosition, indeixColorEaten);
 		}
 		this.drawGUI();
-		System.out.println("Turn in Gamepanel riga 259 is: " + coreGame.isTurnActive());
 		if (coreGame.isTurnActive()) {
 			coreGame.setTurnActive(false);
 			//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
