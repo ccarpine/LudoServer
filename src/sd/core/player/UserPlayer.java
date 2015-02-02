@@ -76,7 +76,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-				this.waitFor(coreGame.getTimeForBuildGUI(), buildGUIDone);
+				this.waitFor(coreGame.getTimeForBuildGUI(), buildGUIDone, "Build GUI");
 			}
 		}
 
@@ -154,14 +154,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final long waitTime, final boolean phase) {
+	private void waitFor(final long waitTime, final boolean phase, final String descriptionPhase) {
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				long wait = waitTime;
 				//long wait = coreGame.getTimeForTheFirstCycle();
-				System.out.println("First cycle: Attendo per " + wait + " millisecondi");
+				System.out.println(descriptionPhase +": attendo per " + wait + " millisecondi");
 
 				while (wait > 0 && !phase) {
 					try {
@@ -175,27 +175,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 					boolean foundPreviousAlive = false;
 					while (!foundPreviousAlive) {
 						Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
-						System.out.println("First cycle: Cerco di pingare "+ previous.getIp());
+						System.out.println( descriptionPhase +": cerco di pingare "+ previous.getIp());
 						try {
-							System.out.println("mando il mio colore a chi pingo " +(coreGame.getMyPartecipant().getColor()));
+							System.out.println(descriptionPhase +": mando il mio colore a chi pingo " +(coreGame.getMyPartecipant().getColor()));
 							UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 							tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 							foundPreviousAlive = true;
-							System.out.println(previous.getIp() + " è vivo");
-							waitFor(wait, phase);
+							System.out.println(descriptionPhase + ": " + previous.getIp() + " è vivo");
+							waitFor(wait, phase, descriptionPhase);
 						}
 						/*
 						 * the previous player has crashed and it must be set as unactive
 						 */
 						catch (MalformedURLException | RemoteException | NotBoundException e) {
-							System.out.println(previous.getIp()	+ " has crashed");
+							System.out.println(descriptionPhase + ": " +  previous.getIp()	+ " has crashed");
 							coreGame.setUnactivePartecipant(previous.getColor());
 						}
 					}
 				}
 				else {
 					if (wait > 0) 
-						System.out.println("First cycle: Tempo che era rimasto: " + wait);
+						System.out.println(descriptionPhase + ": Tempo che era rimasto: " + wait);
 				}
 			}
 		}).start();
@@ -237,7 +237,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 					nextInTurn.buildGUI(coreGame.getPartecipants());
 					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
-					waitFor(coreGame.getTimeForTheFirstCycle(), firstCycleDone); 
+					waitFor(coreGame.getTimeForTheFirstCycle(), firstCycleDone, "Fist cycle"); 
 					/*
 					 * my following player has crashed and so the crash of NEXT
 					 * partecipant is handled
