@@ -385,11 +385,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void initTurn() throws RemoteException {
 		if (!this.coreGame.iWin()) {
 			this.firstCycleDone = true;
-			this.gamePanel.drawGUI();
-			this.controlBoardPanel.drawControlBoardGUI(false);
 			System.out.println("Sono il primo e gioco");
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
+			this.gamePanel.drawGUI();
+			this.controlBoardPanel.drawControlBoardGUI(false);
 		} else {
 			JOptionPane.showMessageDialog(null, "You Win!!!!");
 		}
