@@ -387,7 +387,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.firstCycleDone = true;
 			System.out.println("Sono il primo e gioco");
 			this.gamePanel.drawGUI();
-			this.controlBoardPanel.drawControlBoardGUI(false);
+			this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
 			this.coreGame.setTurnActive(true);
 			this.controlBoardPanel.enableTurn();
 		} else {

@@ -274,20 +274,16 @@ public class ControlBoardPanel extends BGPanel {
 		 * che è arrivato con l'aggiornamento il quale proprio adesso sta
 		 * giocando.
 		 */
-		String color = this.coreGame.getNextActivePartecipant(
-				this.coreGame.getCurrentPartecipant().getIp()).getColor();
+		String color = this.coreGame.getNextActivePartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
-			color = this.coreGame.getPartecipants()
-					.get(this.coreGame.getFirstActiveIndex()).getColor();
+			color = this.coreGame.getPartecipants().get(this.coreGame.getFirstActiveIndex()).getColor();
 		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				if (!Constants.COLOR[i].equals(color)) {
-
-					this.currentPlayer
-							.get(i)
+					this.currentPlayer.get(i)
 							.setIcon(
 									new javax.swing.ImageIcon(
 											ClassLoader
@@ -298,7 +294,6 @@ public class ControlBoardPanel extends BGPanel {
 					this.currentPlayer.get(i).changeState();
 				}
 			}
-
 			else {
 				this.currentPlayer.get(i).setVisible(false);
 			}
