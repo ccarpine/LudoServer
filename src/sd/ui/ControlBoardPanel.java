@@ -192,7 +192,7 @@ public class ControlBoardPanel extends BGPanel {
 		 */
 		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		// This is the actual animation
-		AnimationSprite animation = new AnimationSprite(animationBuffer,
+		/* AnimationSprite animation = new AnimationSprite(animationBuffer,
 				animationSpeed);
 		animation.start();
 		JLabel resultDie = new JLabel();
@@ -227,7 +227,7 @@ public class ControlBoardPanel extends BGPanel {
 		// TODO end
 		// paint(panel.getGraphics(), resultAnimation.getSprite(),
 		// resultAnimation.getSprite().getWidth(),
-		// resultAnimation.getSprite().getHeight());
+//		 resultAnimation.getSprite().getHeight());*/
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
