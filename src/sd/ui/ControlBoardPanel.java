@@ -115,6 +115,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
+			System.out.println("Sono dentro enableTurn()");
 			this.die.setEnabled(true);
 			this.setTimer();
 	}
