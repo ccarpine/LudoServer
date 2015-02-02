@@ -396,7 +396,22 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * if you have alredy received the message you forward intiTurn to the invoker
 		 * otherwise you wait for the message 
 		 * */
-		if (this.buildGUIDone) {
+		if (!this.buildGUIDone){
+			boolean foundNextAlive = false;
+			while (!foundNextAlive) {
+				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
+				UserPlayerInterface nextInTurnPlayer = null;
+				try {
+					System.out.println("IS ALIVE: invio la build gui a " + color);
+					nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
+					nextInTurnPlayer.buildGUI(this.coreGame.getPartecipants());;
+					foundNextAlive = true;
+				} catch (MalformedURLException | NotBoundException e) {
+					this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
+				}
+			}
+		}
+		else {
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
