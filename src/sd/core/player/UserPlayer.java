@@ -76,14 +76,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-				this.waitBuildGUI();
+				this.waitFor(coreGame.getTimeForBuildGUI(), buildGUIDone);
 			}
 		}
 
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitBuildGUI() {
+	/*private void waitBuildGUI() {
 
 		new Thread(new Runnable() {
 
@@ -92,7 +92,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				long wait = coreGame.getTimeForBuildGUI();
 				//System.out.println("Attendo per " + wait + " millisecondi");
 				/* All the players before me have crashed */
-				if (wait == 0) {
+	/*			if (wait == 0) {
 				//	System.out.println("Costruisco la GUI e faccio forward");
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
@@ -121,7 +121,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							 * the previous player has crashed and it must be
 							 * set as unactive
 							 */
-							catch (MalformedURLException | RemoteException | NotBoundException e) {
+		/*					catch (MalformedURLException | RemoteException | NotBoundException e) {
 								// e.printStackTrace();
 							//	System.out.println(previous.getIp()	+ " has crashed");
 								coreGame.setUnactivePartecipant(previous.getColor());
@@ -132,7 +132,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 		}).start();
 
-	}
+	}*/
 
 	@Override
 	/**
@@ -154,15 +154,16 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitForFirstCycle() {
+	private void waitFor(final long waitTime, final boolean phase) {
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				long wait = coreGame.getTimeForTheFirstCycle();
+				long wait = waitTime;
+				//long wait = coreGame.getTimeForTheFirstCycle();
 				System.out.println("First cycle: Attendo per " + wait + " millisecondi");
 
-				while (wait > 0 && !firstCycleDone) {
+				while (wait > 0 && !phase) {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -170,7 +171,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 					wait -= 1000;
 				}
-				if (!firstCycleDone) {
+				if (!phase) {
 					boolean foundPreviousAlive = false;
 					while (!foundPreviousAlive) {
 						Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
@@ -181,7 +182,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
 							foundPreviousAlive = true;
 							System.out.println(previous.getIp() + " è vivo");
-							waitForFirstCycle();
+							waitFor(wait, phase);
 						}
 						/*
 						 * the previous player has crashed and it must be set as unactive
@@ -236,7 +237,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 					nextInTurn.buildGUI(coreGame.getPartecipants());
 					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
-					waitForFirstCycle(); 
+					waitFor(coreGame.getTimeForTheFirstCycle(), firstCycleDone); 
 					/*
 					 * my following player has crashed and so the crash of NEXT
 					 * partecipant is handled
