@@ -372,6 +372,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		try {
 			String nextInTurnId = this.coreGame.getNextActivePartecipant(
 					this.coreGame.getMyPartecipant().getIp()).getIp();
+			System.out.println("mando l-update status a" + nextInTurnId);
 			UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
 					.lookup("rmi://" + nextInTurnId + "/RMIGameClient");
 			nextInTurn.updateStatus(partecipants, gameBoard,

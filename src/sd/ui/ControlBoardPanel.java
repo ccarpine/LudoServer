@@ -328,9 +328,11 @@ public class ControlBoardPanel extends BGPanel {
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
+				
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
+					System.out.println("Faccio l'update next");
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
 							.getIp(), coreGame.isDoubleTurn(), coreGame
