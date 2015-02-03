@@ -101,7 +101,7 @@ public class GamePanel extends BGPanel {
 			/* creating starting cell for the bench path for current color */
 			String colorPawn = Constants.COLOR[i];
 			
-			if (i < this.coreGame.getPartecipants().size() ){
+			if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()){
 				if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > 0 ) {
 					colorPawn += "_"+Constants.COLOR[i];
 				}
