@@ -278,6 +278,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					case Constants.END_GAME:
 						JOptionPane.showMessageDialog(null, "il vincitore e': " + coreGame.getCurrentPartecipant().getColor());
+						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						break;
 					default:
 						break;
