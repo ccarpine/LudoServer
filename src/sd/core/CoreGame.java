@@ -32,7 +32,7 @@ public class CoreGame implements Serializable {
 		this.turnActive = false;
 		// generate the partecipants giving them a color according to their
 		// registration order
-		for (int i = 0; i < ipGamers.size(); i++) {
+		for (int i=0; i<ipGamers.size(); i++) {
 			Partecipant partecipant = new Partecipant(ipGamers.get(i),
 					Constants.COLOR[i], i);
 			this.partecipants.add(partecipant);
@@ -404,6 +404,7 @@ public class CoreGame implements Serializable {
 		if (this.partecipants.get(position).getIp().equals(this.ipCurrentPartecipant)) {
 			this.ipCurrentPartecipant = this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp();
 		}
+		this.gameBoard.clearPawnByColor(color);
 	}
 	
 	/**

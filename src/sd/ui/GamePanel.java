@@ -134,7 +134,6 @@ public class GamePanel extends BGPanel {
 			}
 		}
 		
-	//	this.printCellsButton();
 		this.updateUI();
 	}
 	

@@ -180,5 +180,9 @@ public class GameBoard implements Serializable{
 		}
 		return true;
 	}
+	
+	public void clearPawnByColor(String color) {
+		
+	}
 
 }
