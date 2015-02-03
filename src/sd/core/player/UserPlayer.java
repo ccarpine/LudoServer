@@ -427,7 +427,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * if you have alredy received the message you forward intiTurn to the invoker
 		 * otherwise you wait for the message 
 		 * */
-		else if (phase == Constants.PHASE_FIRST_CYCLE || phase == Constants.PHASE_CYCLE) {
+		else if (	(phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
+					(phase == Constants.PHASE_CYCLE )) {
 			if (currentCrashed) {
 				this.playNext(false);
 			} else {
