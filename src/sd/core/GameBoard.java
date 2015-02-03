@@ -174,8 +174,10 @@ public class GameBoard implements Serializable{
 	 */
 	public boolean isVictory(Partecipant partecipant) {
 		for (int i = Constants.COLUMNS - Constants.BENCH_DIMENSION; i < Constants.COLUMNS; i++) {
-			if (this.cells[(partecipant.getColorPosition() + 1)
-					% Constants.ROWS][i].getPawns().size() == 0)
+			if (this.cells
+					[(partecipant.getColorPosition() - 1 + Constants.ROWS) % Constants.ROWS]
+					[i]
+					.getPawns().size() == 0)
 				return false;
 		}
 		return true;
