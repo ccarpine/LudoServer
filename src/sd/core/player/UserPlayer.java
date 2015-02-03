@@ -182,12 +182,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	private void buildGUIAndForward(final List<Partecipant> partecipants) {
 		this.coreGame.setPartecipants(partecipants);
-		/*System.out.println("Current partecipant is "+ this.coreGame.getCurrentPartecipant().getIp());
-		for (int j = 0; j < this.coreGame.getPartecipants().size(); j++) {
-			System.out.println("Partecipant " + this.coreGame.getPartecipants().get(j).getIp()+ " is active = " + this.coreGame.getPartecipants().get(j).isStatusActive());
-		}
-		System.out.println("Current is " + this.coreGame.getCurrentPartecipant().getIp());*/
-
 		new Thread() {
 			public void run() {
 				try {
@@ -200,25 +194,16 @@ public class UserPlayer extends UnicastRemoteObject implements
 					});
 				} catch (Exception ex) {
 				}
-				Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
-				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
-				try {
-					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
-					nextInTurn.buildGUI(coreGame.getPartecipants());
-					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
-					waitFor(Constants.PHASE_FIRST_CYCLE); 
-					/*
-					 * my following player has crashed and so the crash of NEXT
-					 * partecipant is handled
-					 */
-				} catch (MalformedURLException | RemoteException | NotBoundException e) {
-					System.out.println(partecipant.getIp() + " has crashed!");
-					coreGame.setUnactivePartecipant(partecipant.getColor());
-					/*
-					 * ATTENZIONE: adesso devo passare la lista aggiornata con i
-					 * giocatori che sono crashati
-					 */
-					buildGUIAndForward(coreGame.getPartecipants());
+				boolean foundNextAlive = false;
+				while (!foundNextAlive) {
+					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
+					try {
+						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
+						nextInTurn.buildGUI(coreGame.getPartecipants());
+						foundNextAlive = true;
+					} catch (MalformedURLException | NotBoundException | RemoteException e) {
+						coreGame.setUnactivePartecipant(partecipant.getColor());
+					}
 				}
 			}
 		}.start();
