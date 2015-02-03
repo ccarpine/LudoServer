@@ -112,7 +112,7 @@ public class Constants {
 	public static final int PHASE_CYCLE = 2;
 	
 	
-	
+	public static final int DIE_ANIMATION_SPEED = 40;
 
 
 }

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import sd.core.Cell;
 import sd.core.CoreGame;
@@ -174,56 +175,63 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param Jpanel
 	 *            , the container for the die animation
 	 */
-	private void startAnimationDie(JPanel panel) {
-		BufferedImage[] animationBuffer = this.initAnimationBuffer();
-		BufferedImage[][] exactDieFaces = this.initExactDieFaces();
-		int animationSpeed = 40;
+	private void startAnimationDie(final JPanel panel) {
 		int launchResult = this.coreGame.launchDie();
 		//int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));
-
 		/*
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
 		 */
 		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
-		// This is the actual animation
-		AnimationSprite animation = new AnimationSprite(animationBuffer,
-				animationSpeed);
-		animation.start();
-		JLabel resultDie = new JLabel();
-		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-		for (int counter = 0; counter < animationSpeed * 100; counter++) {
-			animation.update();
-			panel.removeAll();
-			panel.updateUI();
-			// TODO start
-			System.out.println("infor");
-			resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
-			panel.add(resultDie);
-			// TODO end
-			// paint(panel.getGraphics(), animation.getSprite(),
-			// animation.getSprite().getWidth(),
-			// animation.getSprite().getHeight());
-		}
-		// showing final face of the die, according to the launch result
-		panel.removeAll();
-		panel.updateUI();
-		AnimationSprite resultAnimation = new AnimationSprite(
-				exactDieFaces[launchResult - 1], 6);
-		resultAnimation.start();
-		resultAnimation.update();
-		// TODO start
-		System.out.println("0");
-		resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
-		System.out.println("1");
-		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-		System.out.println("2");
-		panel.add(resultDie);
-		// System.out.println("OK 2");
-		// TODO end
-		// paint(panel.getGraphics(), resultAnimation.getSprite(),
-		// resultAnimation.getSprite().getWidth(),
-		// resultAnimation.getSprite().getHeight());
+		new Thread() {
+			public void run() {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() { 
+						public void run() {
+							BufferedImage[] animationBuffer = initAnimationBuffer();
+							BufferedImage[][] exactDieFaces = initExactDieFaces();
+							int launchResult = coreGame.getMyPartecipant().getLastLaunch();
+							AnimationSprite animation = new AnimationSprite(animationBuffer, Constants.DIE_ANIMATION_SPEED);
+							animation.start();
+							JLabel resultDie = new JLabel();
+							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+							for (int counter = 0; counter < Constants.DIE_ANIMATION_SPEED * 100; counter++) {
+								animation.update();
+								panel.removeAll();
+								panel.updateUI();
+								// TODO start
+								System.out.println("infor");
+								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
+								panel.add(resultDie);
+								// TODO end
+								// paint(panel.getGraphics(), animation.getSprite(),
+								// animation.getSprite().getWidth(),
+								// animation.getSprite().getHeight());
+								// showing final face of the die, according to the launch result
+								panel.removeAll();
+								panel.updateUI();
+								AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
+								resultAnimation.start();
+								resultAnimation.update();
+								// TODO start
+								System.out.println("0");
+								resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
+								System.out.println("1");
+								resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+								System.out.println("2");
+								panel.add(resultDie);
+								// System.out.println("OK 2");
+								// TODO end
+								// paint(panel.getGraphics(), resultAnimation.getSprite(),
+								// resultAnimation.getSprite().getWidth(),
+								// resultAnimation.getSprite().getHeight());
+							}	
+						}
+					});
+				} catch (Exception ex) {
+				}
+			}
+		}.start();
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
