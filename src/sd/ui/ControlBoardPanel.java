@@ -315,7 +315,7 @@ public class ControlBoardPanel extends BGPanel {
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
 							.getIp(), coreGame.isDoubleTurn(), coreGame
-							.getTurn());
+							.getTurn(), true);
 				}
 			}
 		}).start();

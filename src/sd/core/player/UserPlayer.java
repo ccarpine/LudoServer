@@ -130,7 +130,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 				else {
 					int currentTurn = coreGame.getTurn();
 					while (wait > 0 && 
-							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
+							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
 							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
 						try {
 							Thread.sleep(1000);
@@ -141,9 +142,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 					if (phase == Constants.PHASE_BUILD_GUI)
 						System.out.println("ho atteso nella fase di build gui. Sono uscita con il bool a: "+ buildGUIDone);
-					if (phase == Constants.PHASE_FIRST_CYCLE)
+					else if (phase == Constants.PHASE_FIRST_CYCLE)
 						System.out.println("ho atteso nella fase del primo giro. Sono uscita con il bool a: "+ firstCycleDone);
-					if (phase == Constants.PHASE_CYCLE)
+					else if (phase == Constants.PHASE_CYCLE)
 						System.out.println("ho atteso nella fase giro. Sono uscita con il bool a: ");
 					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
@@ -257,12 +258,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (" + result + ")");
-						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn);
+						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
 						System.out.println("5 INIT TURN SEND (" + result + ")");
-						playNext();
+						playNext(true);
 						break;
 					// the client play again
 					case Constants.PLAY_AGAIN:
@@ -288,7 +289,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * this method is invoked by a user player when he can allow the next to
 	 * play
 	 */
-	private void playNext() {
+	private void playNext(boolean doWait) {
 		boolean foundNextAlive = false;
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
@@ -298,7 +299,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 				nextPlayer.initTurn();
 				foundNextAlive = true;
 				/* wait for the next message it will be a Update status message */
-				this.waitFor(Constants.PHASE_CYCLE);
+				if (doWait)
+					this.waitFor(Constants.PHASE_CYCLE);
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
 			}
@@ -314,7 +316,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            , the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn) {
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn, boolean doWait) {
 		boolean foundNextAlive = false;
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
@@ -322,12 +324,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
-				if (!isDoubleTurn){
+				if (!isDoubleTurn && doWait) {
 				/* wait for the next message it will be a Update status message */
 					this.waitFor(Constants.PHASE_CYCLE);
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
+				boolean currentCrash = false;
+				if (nextInTurnPartecipant.getIp().equals(coreGame.getCurrentPartecipant().getIp())) {
+					currentCrash = true;
+				}
 				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
+				if (currentCrash) {
+					foundNextAlive = true;
+					this.playNext(doWait);
+				}
 			}
 		}
 
@@ -338,15 +348,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		if (!this.coreGame.iWin()) {
-			this.firstCycleDone = true;
-			System.out.println("Sono il primo e gioco");
-			this.coreGame.setTurnActive(true);
-			this.gamePanel.drawGUI();
-			this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
-			this.controlBoardPanel.enableTurn();
-		} else {
-			JOptionPane.showMessageDialog(null, "You Win!!!!");
+		if (!this.coreGame.isTurnActive()) {
+			if (!this.coreGame.iWin()) {
+				this.firstCycleDone = true;
+				System.out.println("Sono il primo e gioco");
+				this.coreGame.setTurnActive(true);
+				this.gamePanel.drawGUI();
+				this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
+				this.controlBoardPanel.enableTurn();
+			} else {
+				JOptionPane.showMessageDialog(null, "You Win!!!!");
+			}
 		}
 	}
 
@@ -381,6 +393,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
 	 */
 	public void isAlive(int phase, String color) throws RemoteException {
+		boolean currentCrashed = false;
 		boolean end = false;
 		String pingerColor = color;
 		while (!end) {
@@ -388,6 +401,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor()))
 				end = true;
 			else {
+				if (partecipant.getIp().equals(this.coreGame.getCurrentPartecipant().getIp())) {
+					currentCrashed = true;
+				}
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
 				pingerColor = partecipant.getColor();
 			}
@@ -411,34 +427,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 			}
 		} else if (phase == Constants.PHASE_FIRST_CYCLE || phase == Constants.PHASE_CYCLE) {
-			boolean foundNextAlive = false;
-			while (!foundNextAlive) {
-				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
-				UserPlayerInterface nextInTurnPlayer = null;
-				if (this.coreGame.getCurrentPartecipant().getColor().equals(color)) {
-					try {
-						System.out.println("IS ALIVE: faccio l'init turn a " + color);
-						nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
-						nextInTurnPlayer.initTurn();
-						foundNextAlive = true;
-					} catch (MalformedURLException | NotBoundException e) {
-						this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
-					}
-				}
-				else {
-					try {
-						System.out.println("IS ALIVE: faccio l'update a " + color);
-						nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
-						nextInTurnPlayer.updateStatus(this.coreGame.getPartecipants(), 
-												this.coreGame.getGameBoard(), 
-												this.coreGame.getCurrentPartecipant().getIp(), 
-												this.coreGame.isDoubleTurn(), 
-												this.coreGame.getTurn());
-						foundNextAlive = true;
-					} catch (MalformedURLException | NotBoundException e) {
-						this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
-					}
-				}
+			if (currentCrashed) {
+				this.playNext(false);
+			} else {
+				this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
 			}
 		}
 	}
