@@ -185,7 +185,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							System.out.println("Chiamo initInterface()");
+							System.out.println("buildGUIAndForward: Chiamo initInterface()");
 							initInterface();
 						}
 					});
@@ -195,6 +195,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				while (!foundNextAlive) {
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
+						System.out.println("BUIL GUI AND FORWORD: chiamo la BUILD GUI su" + partecipant.getIp());
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
@@ -414,7 +415,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 				try {
-					System.out.println("IS ALIVE: invio la build gui a " + color);
+					System.out.println("IS ALIVE: invio la BUILD GUI a " + color);
 					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
 					nextInTurnPlayer.buildGUI(this.coreGame.getPartecipants());
 					foundNextAlive = true;
