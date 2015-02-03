@@ -124,6 +124,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 				
 				if (phase == Constants.PHASE_BUILD_GUI && wait==0){
+					System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 				else {
