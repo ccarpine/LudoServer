@@ -61,23 +61,13 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	 */
 	private void startGame() {
 		List<UserPlayerInterface> UsersPlayer = new ArrayList<UserPlayerInterface>();
-		// loockup with all gamers
+		// loockup with all gamers and send request to all
 		for (int i=0; i<this.gamersIp.size(); i++) {
 			try {
 				UsersPlayer.add((UserPlayerInterface) Naming.lookup("rmi://" + this.gamersIp.get(i) + "/RMIGameClient"));
-			} catch (MalformedURLException | RemoteException | NotBoundException e) {
-				e.printStackTrace();
-			}
-		}
-		// send the request of start to all gamers
-		for (int i=this.gamersIp.size()-1; i>=0; i--) {
-			try {
 				UsersPlayer.get(i).start(this.gamersIp);
-				System.out.println("call for the start for the IP"+ this.gamersIp.get(i));
-				
-			} catch (RemoteException e) {
+			} catch (MalformedURLException | RemoteException | NotBoundException e) {
 				System.out.println("L'utente " + this.gamersIp.get(i) + " non è raggiungibile!");
-				//e.printStackTrace();
 			}
 		}
 	}
