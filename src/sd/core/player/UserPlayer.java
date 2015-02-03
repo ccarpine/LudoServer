@@ -204,9 +204,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				System.out.println("chiamo buildGUI su: " + partecipant.getIp());
 				try {
 					UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
-					if (coreGame.getMyPartecipant().getIp().equals("192.168.1.81")){
-						System.exit(0);
-					}
 					nextInTurn.buildGUI(coreGame.getPartecipants());
 					/* all partecipant wait for update for the first turn exept the first player that wait for his first turn*/
 					waitFor(Constants.PHASE_FIRST_CYCLE); 
