@@ -321,6 +321,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
+				System.out.println("Tento di mandare l'aggiornamento della mia mossa a: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
