@@ -355,6 +355,7 @@ public class CoreGame implements Serializable {
 		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
 		if (this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp())){
 			timeToWait += (this.getNrActivePartecipantAfter(0)-1) * Constants.MAX_TIME_FOR_UPDATE;
+			timeToWait += Constants.MAX_TIME_FOR_TURN;
 		} else {
 			timeToWait += (this.getNrActivePartecipantAfter(0)-2) * Constants.MAX_TIME_FOR_UPDATE;
 			timeToWait += Constants.MAX_TIME_FOR_TURN;

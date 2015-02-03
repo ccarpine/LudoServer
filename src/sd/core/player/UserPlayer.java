@@ -328,9 +328,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
+				System.out.println("5 UPDATE STATUS il mio dowait e':" + doWait); 
 				if (!isDoubleTurn && doWait) {
 				/* wait for the next message it will be a Update status message */
-					System.out.println("update next mi metto ad aspettare il dowait e':" + doWait);
+					System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
 					this.waitFor(Constants.PHASE_CYCLE);
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
