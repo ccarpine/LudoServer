@@ -203,6 +203,12 @@ public class ControlBoardPanel extends BGPanel {
 								panel.add(resultDie);
 								panel.updateUI();
 								updateUI();
+								try {
+									Thread.sleep(200);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}	
 							panel.removeAll();
 							panel.updateUI();
@@ -215,6 +221,12 @@ public class ControlBoardPanel extends BGPanel {
 							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 							System.out.println("2");
 							panel.add(resultDie);
+							try {
+								Thread.sleep(200);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							userPlayer.getGamePanel().makePossibleMoveFlash();
 						}
 					});
