@@ -239,12 +239,14 @@ public class ControlBoardPanel extends BGPanel {
 			button.setBounds(5 + (i * 33), 100, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
-			JLabel lastDie = new JLabel();
-			lastDie.setBounds(5 + (i * 33), 125, 20, 20);
-			int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
-			if (lastLaunch > 0) {
-				lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
-				this.add(lastDie);
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
+				JLabel lastDie = new JLabel();
+				lastDie.setBounds(5 + (i * 33), 125, 20, 20);
+				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
+				if (lastLaunch > 0) {
+					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
+					this.add(lastDie);
+				}
 			}
 		}
 	}
