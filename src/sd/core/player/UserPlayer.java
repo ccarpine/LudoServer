@@ -277,7 +277,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						break;
 					case Constants.END_GAME:
-						JOptionPane.showMessageDialog(null, "il vincitore e': " + coreGame.getWinner());
+						JOptionPane.showMessageDialog(null, "il vincitore e': " + coreGame.getCurrentPartecipant().getColor());
 						break;
 					default:
 						break;

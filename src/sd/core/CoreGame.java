@@ -13,7 +13,6 @@ public class CoreGame implements Serializable {
 	private List<Partecipant> partecipants;
 	private GameBoard gameBoard;
 	private String ipCurrentPartecipant;
-	private String winner;
 	private boolean isDoubleTurn;
 	private int turn;
 	private boolean turnActive;
@@ -25,7 +24,6 @@ public class CoreGame implements Serializable {
 	 *            , IP list of all player
 	 */
 	public CoreGame(List<String> ipGamers) {
-		this.winner = "";
 		this.partecipants = new ArrayList<Partecipant>();
 		this.isDoubleTurn = false;
 		this.turn = 0;
@@ -44,10 +42,6 @@ public class CoreGame implements Serializable {
 	
 	public void setCurrentPartecipant(String ip) {
 		this.ipCurrentPartecipant = ip;
-	}
-
-	public String getWinner() {
-		return this.winner;
 	}
 
 	public void incrementTurn() {
@@ -81,7 +75,7 @@ public class CoreGame implements Serializable {
 			}
 		}
 		
-		if (activeOnes <= 1 || this.getMyPartecipant().getColor().equals(this.winner)
+		if (activeOnes <= 1 || this.gameBoard.isVictory(this.getMyPartecipant())
 				|| this.partecipants.size() == 1)
 			return true;
 		return false;
@@ -203,9 +197,6 @@ public class CoreGame implements Serializable {
 			this.partecipants.get(this.getIDPartecipantByColor(result))
 					.addPawnsInBench();
 		}
-		if (this.gameBoard.isVictory(this.getMyPartecipant())) {
-			this.winner = this.getMyPartecipant().getColor();
-		}
 		return result;
 	}
 
@@ -229,7 +220,7 @@ public class CoreGame implements Serializable {
 		 * you received the message that you have send
 		 */
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
-			if (!this.winner.isEmpty()) {
+			if (!this.gameBoard.isVictory(this.getMyPartecipant())) {
 				return Constants.END_GAME;
 			} else if (this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
