@@ -94,7 +94,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.initTurn();
 			} else {
-				System.out.println("Non sono il primo e creo l'interfaccia");
 				this.buildGUIAndForward(partecipants);
 			}
 		}
@@ -141,17 +140,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait -= 1000;
 					}
 					if (phase == Constants.PHASE_BUILD_GUI)
-						System.out.println("ho atteso nella fase di build gui. Sono uscita con il bool a: "+ buildGUIDone);
+						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait);
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
-						System.out.println("ho atteso nella fase del primo giro. Sono uscita con il bool a: "+ firstCycleDone);
+						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait);
 					else if (phase == Constants.PHASE_CYCLE)
-						System.out.println("ho atteso nella fase giro. Sono uscita con il bool a: ");
+						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait);
 					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
-								System.out.println("tento di fare ping a: "+ previous.getIp());
+								System.out.println("mando ISALIVE a: "+ previous.getIp());
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 								tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
@@ -257,12 +256,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 					switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
-						System.out.println("4 UPDATE SEND (" + result + ")");
+						//System.out.println("4 UPDATE SEND (" + result + ")");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
-						System.out.println("5 INIT TURN SEND (" + result + ")");
+						//System.out.println("5 INIT TURN SEND (" + result + ")");
 						playNext(true);
 						break;
 					// the client play again
@@ -294,7 +293,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("Mando playnext a: " + nextInTurnPartecipant.getIp());
+				System.out.println("4 UPDATE SEND to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn();
 				foundNextAlive = true;
@@ -321,7 +320,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("Tento di mandare l'aggiornamento della mia mossa a: " + nextInTurnPartecipant.getIp());
+				System.out.println("5 INIT TURN SEND to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
@@ -351,8 +350,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void initTurn() throws RemoteException {
 		if (!this.coreGame.isTurnActive()) {
 			if (!this.coreGame.iWin()) {
+				System.out.println("I play");
 				this.firstCycleDone = true;
-				System.out.println("Sono il primo e gioco");
 				this.coreGame.setTurnActive(true);
 				this.gamePanel.drawGUI();
 				this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
