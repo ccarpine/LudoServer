@@ -194,7 +194,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							System.out.println("buildGUIAndForward: Chiamo initInterface()");
 							initInterface();
 						}
 					});
@@ -368,22 +367,21 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void initTurn() throws RemoteException {
 		if (!this.coreGame.isTurnActive()) {
+			this.firstCycleDone = true;
+			this.coreGame.setTurnActive(true);
+			gamePanel.drawGUI();
+			controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
 			if (this.coreGame.getNrActivePartecipantAfter(0) == 1){
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						gamePanel.drawGUI();
-						controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
+						//TODO change interface
 						JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
 					}
 				}).start();
 			}
 			else{
 				System.out.println("I play");
-				this.firstCycleDone = true;
-				this.coreGame.setTurnActive(true);
-				this.gamePanel.drawGUI();
-				this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
 				this.controlBoardPanel.enableTurn();
 			}
 		}
