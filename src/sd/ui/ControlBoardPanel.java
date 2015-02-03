@@ -202,9 +202,9 @@ public class ControlBoardPanel extends BGPanel {
 								System.out.println("infor");
 								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 								panel.add(resultDie);
-								panel.removeAll();
-								panel.updateUI();
 							}	
+							panel.removeAll();
+							panel.updateUI();
 							AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
 							resultAnimation.start();
 							resultAnimation.update();
