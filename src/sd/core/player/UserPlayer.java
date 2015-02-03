@@ -372,6 +372,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
+						gamePanel.drawGUI();
+						controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
 						JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
 					}
 				}).start();
