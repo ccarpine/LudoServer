@@ -146,7 +146,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec");
 					else if (phase == Constants.PHASE_CYCLE)
 						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
-					if (wait <= 0) {
+					if (wait <= 0  && ((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
+							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
