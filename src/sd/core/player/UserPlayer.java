@@ -408,12 +408,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				pingerColor = partecipant.getColor();
 			}
 		}
-		/* *
-		 * if you receive a isAlive message during the first cycle 
-		 * if you have alredy received the message you forward intiTurn to the invoker
-		 * otherwise you wait for the message 
-		 * */
-		if (phase == Constants.PHASE_BUILD_GUI) {
+		if (buildGUIDone && phase == Constants.PHASE_BUILD_GUI) {
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
@@ -426,7 +421,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 					this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
 				}
 			}
-		} else if (phase == Constants.PHASE_FIRST_CYCLE || phase == Constants.PHASE_CYCLE) {
+		}
+		/* *
+		 * if you receive a isAlive message during the first cycle 
+		 * if you have alredy received the message you forward intiTurn to the invoker
+		 * otherwise you wait for the message 
+		 * */
+		else if (phase == Constants.PHASE_FIRST_CYCLE || phase == Constants.PHASE_CYCLE) {
 			if (currentCrashed) {
 				this.playNext(false);
 			} else {
