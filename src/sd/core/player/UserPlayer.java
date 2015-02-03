@@ -141,11 +141,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait -= 1000;
 					}
 					if (phase == Constants.PHASE_BUILD_GUI)
-						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait);
+						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait/1000 + "sec");
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
-						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait);
+						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec");
 					else if (phase == Constants.PHASE_CYCLE)
-						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait);
+						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
 					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
