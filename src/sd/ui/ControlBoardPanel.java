@@ -176,21 +176,20 @@ public class ControlBoardPanel extends BGPanel {
 	 *            , the container for the die animation
 	 */
 	private void startAnimationDie(final JPanel panel) {
-		int launchResult = this.coreGame.launchDie();
 		//int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));
 		/*
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
 		 */
-		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		new Thread() {
 			public void run() {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable() { 
+					SwingUtilities.invokeLater(new Runnable() { 
 						public void run() {
 							BufferedImage[] animationBuffer = initAnimationBuffer();
 							BufferedImage[][] exactDieFaces = initExactDieFaces();
-							int launchResult = coreGame.getMyPartecipant().getLastLaunch();
+							int launchResult = coreGame.launchDie();
+							coreGame.getMyPartecipant().setLastLaunch(launchResult);
 							AnimationSprite animation = new AnimationSprite(animationBuffer, Constants.DIE_ANIMATION_SPEED);
 							animation.start();
 							JLabel resultDie = new JLabel();
@@ -202,11 +201,8 @@ public class ControlBoardPanel extends BGPanel {
 								System.out.println("infor");
 								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 								panel.add(resultDie);
-								try {
-									Thread.sleep(300);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
+								panel.updateUI();
+								updateUI();
 							}	
 							panel.removeAll();
 							panel.updateUI();
