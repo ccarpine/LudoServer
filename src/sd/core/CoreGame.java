@@ -353,13 +353,8 @@ public class CoreGame implements Serializable {
 	public long getTimeForCycle(){
 		long timeToWait = 0;
 		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
-		if (this.ipCurrentPartecipant.equals(this.getMyPartecipant().getIp())){
-			timeToWait += (this.getNrActivePartecipantAfter(0)-1) * Constants.MAX_TIME_FOR_UPDATE;
-			timeToWait += Constants.MAX_TIME_FOR_TURN;
-		} else {
-			timeToWait += (this.getNrActivePartecipantAfter(0)-2) * Constants.MAX_TIME_FOR_UPDATE;
-			timeToWait += Constants.MAX_TIME_FOR_TURN;
-		}
+		timeToWait += (this.getNrActivePartecipantAfter(0)-1) * Constants.MAX_TIME_FOR_UPDATE;
+		timeToWait += Constants.MAX_TIME_FOR_TURN;
 		return timeToWait;
 	}
 	
