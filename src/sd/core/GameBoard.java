@@ -16,8 +16,8 @@ public class GameBoard implements Serializable{
 	public GameBoard() {
 		int victory = Constants.COLUMNS - Constants.BENCH_DIMENSION;
 		this.cells = new Cell[Constants.ROWS][Constants.COLUMNS];
-		for (int r = 0; r < Constants.ROWS; r++) {
-			for (int c = 0; c < Constants.COLUMNS; c++) {
+		for (int r=0; r<Constants.ROWS; r++) {
+			for (int c=0; c<Constants.COLUMNS; c++) {
 				if (c == 0) {
 					this.cells[r][c] = new Cell(Constants.COLOR[r], r, c);
 				} else if (c < victory) {
@@ -182,7 +182,14 @@ public class GameBoard implements Serializable{
 	}
 	
 	public void clearPawnByColor(String color) {
-		
+		for (int r=0; r<Constants.ROWS; r++) {
+			for (int c=0; c<Constants.COLUMNS; c++) {
+				int pawns = cells[r][c].getPawns().size();
+				for (int p=0; p<pawns; p++) {
+					cells[r][c].getPawns().remove(0);
+				}
+			}
+		}
 	}
 
 }
