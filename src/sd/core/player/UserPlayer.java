@@ -328,6 +328,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				foundNextAlive = true;
 				if (!isDoubleTurn && doWait) {
 				/* wait for the next message it will be a Update status message */
+					System.out.println("update next mi metto ad aspettare il dowait e':" + doWait);
 					this.waitFor(Constants.PHASE_CYCLE);
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
