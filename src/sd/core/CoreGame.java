@@ -65,7 +65,6 @@ public class CoreGame implements Serializable {
 	}
 
 	public boolean iWin() {
-		
 		int activeOnes = 0;
 		for(int i=0; i<this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).isStatusActive())
@@ -74,12 +73,10 @@ public class CoreGame implements Serializable {
 				break;
 			}
 		}
-		
 		if (activeOnes <= 1 || this.gameBoard.isVictory(this.getMyPartecipant())
 				|| this.partecipants.size() == 1)
 			return true;
 		return false;
-
 	}
 
 	/**
@@ -215,6 +212,8 @@ public class CoreGame implements Serializable {
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard,
 			String ipCurrentPartecipant) {
 		this.ipCurrentPartecipant = ipCurrentPartecipant;
+		this.partecipants = partecipant;
+		this.gameBoard = gameBoard;
 		/*
 		 * check if my ip is equals to the last that has just played, means that
 		 * you received the message that you have send
@@ -230,8 +229,6 @@ public class CoreGame implements Serializable {
 			if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
 				return Constants.END_GAME;
 			}
-			this.partecipants = partecipant;
-			this.gameBoard = gameBoard;
 			return Constants.UPDATE_NEXT;
 		}
 	}
