@@ -219,13 +219,13 @@ public class ControlBoardPanel extends BGPanel {
 							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 							System.out.println("2");
 							panel.add(resultDie);
+							userPlayer.getGamePanel().makePossibleMoveFlash();
 						}
 					});
 				} catch (Exception ex) {
 				}
 			}
 		}.start();
-		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
 	/**
