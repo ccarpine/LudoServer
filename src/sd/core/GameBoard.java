@@ -186,7 +186,9 @@ public class GameBoard implements Serializable{
 			for (int c=0; c<Constants.COLUMNS; c++) {
 				int pawns = cells[r][c].getPawns().size();
 				for (int p=0; p<pawns; p++) {
-					cells[r][c].getPawns().remove(0);
+					if (cells[r][c].getPawns().get(0).equals(color)) {
+						cells[r][c].getPawns().remove(0);
+					}
 				}
 			}
 		}
