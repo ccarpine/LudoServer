@@ -102,13 +102,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final int phaseNumber) {
+	private void waitFor(final int phase) {
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				long wait = 0;
-				switch (phaseNumber) {
+				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
 						System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
@@ -125,14 +125,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 				}
 				
-				if (phaseNumber == Constants.PHASE_BUILD_GUI && wait==0){
+				if (phase == Constants.PHASE_BUILD_GUI && wait==0){
 					buildGUIAndForward(coreGame.getPartecipants());
 				}
 				else {
 					int currentTurn = coreGame.getTurn();
 					while (wait > 0 && 
-							((phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phaseNumber == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	)
+							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	)
 						) {
 						try {
 							Thread.sleep(1000);
@@ -141,24 +141,24 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
-					if (phaseNumber == Constants.PHASE_BUILD_GUI)
+					if (phase == Constants.PHASE_BUILD_GUI)
 						System.out.println("ho atteso nella fase di build gui. Sono uscita con il bool a: "+ buildGUIDone);
-					if (phaseNumber == Constants.PHASE_FIRST_CYCLE)
+					if (phase == Constants.PHASE_FIRST_CYCLE)
 						System.out.println("ho atteso nella fase del primo giro. Sono uscita con il bool a: "+ firstCycleDone);
-					if (phaseNumber == Constants.PHASE_CYCLE)
+					if (phase == Constants.PHASE_CYCLE)
 						System.out.println("ho atteso nella fase giro. Sono uscita con il bool a: ");
 					
-					if ( (phaseNumber == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phaseNumber == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phaseNumber == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	){
+					if ( (phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	){
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
 								System.out.println("tento di fare ping a: "+ previous.getIp());
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-								tryPrevious.isAlive(coreGame.getMyPartecipant().getColor());
+								tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
-								waitFor(phaseNumber);
+								waitFor(phase);
 							}
 							/*
 							 * the previous player has crashed and it must be set as unactive
@@ -383,7 +383,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * this method, if correctly invoked tells the invoker if the player is alive; moreover 
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
 	 */
-	public void isAlive(String color) throws RemoteException {
+	public void isAlive(int phase, String color) throws RemoteException {
 		boolean end = false;
 		String pingerColor = color;
 		while (!end) {
@@ -400,22 +400,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * if you have alredy received the message you forward intiTurn to the invoker
 		 * otherwise you wait for the message 
 		 * */
-		if (!this.buildGUIDone){
+		if (phase == Constants.PHASE_BUILD_GUI) {
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
-				UserPlayerInterface nextInTurnPlayer = null;
 				try {
 					System.out.println("IS ALIVE: invio la build gui a " + color);
-					nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
+					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
 					nextInTurnPlayer.buildGUI(this.coreGame.getPartecipants());
 					foundNextAlive = true;
 				} catch (MalformedURLException | NotBoundException e) {
 					this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
 				}
 			}
-		}
-		else {
+		} else if (phase == Constants.PHASE_FIRST_CYCLE || phase == Constants.PHASE_CYCLE) {
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
 				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
