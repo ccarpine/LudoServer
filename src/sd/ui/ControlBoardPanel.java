@@ -202,6 +202,11 @@ public class ControlBoardPanel extends BGPanel {
 								System.out.println("infor");
 								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 								panel.add(resultDie);
+								try {
+									Thread.sleep(300);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							}	
 							panel.removeAll();
 							panel.updateUI();
