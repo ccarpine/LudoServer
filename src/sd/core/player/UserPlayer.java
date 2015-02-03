@@ -295,7 +295,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("4 UPDATE SEND to: " + nextInTurnPartecipant.getIp());
+				System.out.println("4 INIT TURN to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn();
 				foundNextAlive = true;
@@ -322,7 +322,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("5 INIT TURN SEND to: " + nextInTurnPartecipant.getIp());
+				System.out.println("5 UPDATE STATUS to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
