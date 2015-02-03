@@ -91,7 +91,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		if (!buildGUIDone) {
 			buildGUIDone = true;
-
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.initTurn();
 			} else {
@@ -132,8 +131,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					int currentTurn = coreGame.getTurn();
 					while (wait > 0 && 
 							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	)
-						) {
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -147,9 +145,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("ho atteso nella fase del primo giro. Sono uscita con il bool a: "+ firstCycleDone);
 					if (phase == Constants.PHASE_CYCLE)
 						System.out.println("ho atteso nella fase giro. Sono uscita con il bool a: ");
-					
-					if ( (phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) || (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn())	){
+					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
@@ -345,8 +341,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!this.coreGame.iWin()) {
 			this.firstCycleDone = true;
 			System.out.println("Sono il primo e gioco");
-			this.gamePanel.drawGUI();
 			this.coreGame.setTurnActive(true);
+			this.gamePanel.drawGUI();
 			this.controlBoardPanel.drawControlBoardGUI(this.coreGame.isDoubleTurn());
 			this.controlBoardPanel.enableTurn();
 		} else {
