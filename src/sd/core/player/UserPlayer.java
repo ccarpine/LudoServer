@@ -371,7 +371,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame.setTurnActive(true);
 			gamePanel.drawGUI();
 			controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
-			if (this.coreGame.getNrActivePartecipantAfter(0) == 1){
+			if (this.coreGame.isVictory(this.coreGame.getMyPartecipant())){
 				new Thread(new Runnable() {
 					@Override
 					public void run() {

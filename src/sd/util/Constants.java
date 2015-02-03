@@ -3,13 +3,13 @@ package sd.util;
 public class Constants {
 
 	public static final int MAX_PLAYER = 2;
-	public static final long MAX_WAIT_FOR_MATCH = 100000L;
+	public static final long MAX_WAIT_FOR_MATCH = 90000L;
 	public static final int BENCH_DIMENSION = 4;
 	
 	/* the following constants are used to manage crashes according to the phase in which the
 	 * crash happens plus the latency */
 	public static final long MAX_TIME_TO_BUILD_GUI = 4000L;
-	public static final long MAX_TIME_FOR_TURN = 90000L;
+	public static final long MAX_TIME_FOR_TURN = 60000L;
 	public static final long LATENCY = 1000L;
 	public static final long MAX_TIME_FOR_UPDATE = 3000L; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
 	

@@ -94,7 +94,8 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		// disable the die if the partecipant has win or if is not his turn
-		if (!coreGame.isTurnActive() || coreGame.getGameBoard().isVictory(coreGame.getMyPartecipant()))
+		if (!coreGame.isTurnActive() || coreGame.isVictory(coreGame.getMyPartecipant()))
+			System.out.println("disabile");
 			this.die.setEnabled(false);
 		this.add(die);
 		JButton fold = new JButton("Fold");

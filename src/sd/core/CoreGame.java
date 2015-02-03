@@ -384,13 +384,16 @@ public class CoreGame implements Serializable {
 	 * @return, the index/position of the first active player 
 	 */
 	public int getFirstActiveIndex() {
-		
 		for(int i=0; i<this.partecipants.size(); i++) {
 			if(this.partecipants.get(i).isStatusActive())
 				return i;
 		}
-		
 		return -1;
-		
+	}
+	
+	public boolean isVictory(Partecipant partecipant){
+		if (this.getNrActivePartecipantAfter(0) == 1)
+			return true;
+		return this.gameBoard.isVictory(partecipant);
 	}
 }
