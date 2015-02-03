@@ -197,11 +197,9 @@ public class ControlBoardPanel extends BGPanel {
 			panel.removeAll();
 			panel.updateUI();
 			// TODO start
-
-			resultDie.setIcon(new ImageIcon(animationBuffer[counter
-					% Constants.ROTATIONS]));
+			System.out.println("infor");
+			resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 			panel.add(resultDie);
-			// System.out.println("OK 1");
 			// TODO end
 			// paint(panel.getGraphics(), animation.getSprite(),
 			// animation.getSprite().getWidth(),
@@ -215,8 +213,11 @@ public class ControlBoardPanel extends BGPanel {
 		resultAnimation.start();
 		resultAnimation.update();
 		// TODO start
+		System.out.println("0");
 		resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
+		System.out.println("1");
 		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+		System.out.println("2");
 		panel.add(resultDie);
 		// System.out.println("OK 2");
 		// TODO end
