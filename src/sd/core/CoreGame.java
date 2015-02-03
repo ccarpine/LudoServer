@@ -220,7 +220,7 @@ public class CoreGame implements Serializable {
 		 * you received the message that you have send
 		 */
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
-			if (!this.gameBoard.isVictory(this.getMyPartecipant())) {
+			if (this.gameBoard.isVictory(this.getMyPartecipant())) {
 				return Constants.END_GAME;
 			} else if (this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
