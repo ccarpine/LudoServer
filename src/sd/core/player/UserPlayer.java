@@ -201,6 +201,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
+						waitFor(Constants.PHASE_FIRST_CYCLE);
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
