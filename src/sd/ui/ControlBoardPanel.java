@@ -199,33 +199,21 @@ public class ControlBoardPanel extends BGPanel {
 								animation.update();
 								panel.removeAll();
 								panel.updateUI();
-								// TODO start
 								System.out.println("infor");
 								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 								panel.add(resultDie);
-								// TODO end
-								// paint(panel.getGraphics(), animation.getSprite(),
-								// animation.getSprite().getWidth(),
-								// animation.getSprite().getHeight());
-								// showing final face of the die, according to the launch result
 								panel.removeAll();
 								panel.updateUI();
-								AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
-								resultAnimation.start();
-								resultAnimation.update();
-								// TODO start
-								System.out.println("0");
-								resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
-								System.out.println("1");
-								resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-								System.out.println("2");
-								panel.add(resultDie);
-								// System.out.println("OK 2");
-								// TODO end
-								// paint(panel.getGraphics(), resultAnimation.getSprite(),
-								// resultAnimation.getSprite().getWidth(),
-								// resultAnimation.getSprite().getHeight());
 							}	
+							AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
+							resultAnimation.start();
+							resultAnimation.update();
+							System.out.println("0");
+							resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
+							System.out.println("1");
+							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+							System.out.println("2");
+							panel.add(resultDie);
 						}
 					});
 				} catch (Exception ex) {
