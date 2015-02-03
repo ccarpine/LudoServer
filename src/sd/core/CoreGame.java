@@ -227,6 +227,9 @@ public class CoreGame implements Serializable {
 			else
 				return Constants.PLAY_NEXT;
 		} else {
+			if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
+				return Constants.END_GAME;
+			}
 			this.partecipants = partecipant;
 			this.gameBoard = gameBoard;
 			return Constants.UPDATE_NEXT;
