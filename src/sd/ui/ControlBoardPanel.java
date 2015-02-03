@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sd.core.Cell;
@@ -178,8 +178,8 @@ public class ControlBoardPanel extends BGPanel {
 		BufferedImage[] animationBuffer = this.initAnimationBuffer();
 		BufferedImage[][] exactDieFaces = this.initExactDieFaces();
 		int animationSpeed = 40;
-		// int launchResult = coreGame.getCurrentDie();
-		int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));// coreGame.launchDie();
+		int launchResult = this.coreGame.launchDie();
+		//int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));
 
 		/*
 		 * I become the current partecipant only AFTER having launched the die,
@@ -187,7 +187,7 @@ public class ControlBoardPanel extends BGPanel {
 		 */
 		this.coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		// This is the actual animation
-		/* AnimationSprite animation = new AnimationSprite(animationBuffer,
+		AnimationSprite animation = new AnimationSprite(animationBuffer,
 				animationSpeed);
 		animation.start();
 		JLabel resultDie = new JLabel();
@@ -222,14 +222,13 @@ public class ControlBoardPanel extends BGPanel {
 		// TODO end
 		// paint(panel.getGraphics(), resultAnimation.getSprite(),
 		// resultAnimation.getSprite().getWidth(),
-//		 resultAnimation.getSprite().getHeight());*/
+		// resultAnimation.getSprite().getHeight());
 		this.userPlayer.getGamePanel().makePossibleMoveFlash();
 	}
 
 	/**
 	 * set the icon for all the player
 	 */
-	// TODO sbaglia a settare dado
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
@@ -238,7 +237,7 @@ public class ControlBoardPanel extends BGPanel {
 			button.setBounds(5 + (i * 33), 100, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
-			/*if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
+			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				JLabel lastDie = new JLabel();
 				lastDie.setBounds(5 + (i * 33), 125, 20, 20);
 				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
@@ -246,7 +245,7 @@ public class ControlBoardPanel extends BGPanel {
 					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
 					this.add(lastDie);
 				}
-			}*/
+			}
 		}
 	}
 

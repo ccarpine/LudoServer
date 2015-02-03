@@ -64,21 +64,6 @@ public class CoreGame implements Serializable {
 		return this.gameBoard;
 	}
 
-	public boolean iWin() {
-		int activeOnes = 0;
-		for(int i=0; i<this.partecipants.size(); i++) {
-			if (this.partecipants.get(i).isStatusActive())
-				activeOnes++;
-			if(activeOnes > 1) {
-				break;
-			}
-		}
-		if (activeOnes <= 1 || this.gameBoard.isVictory(this.getMyPartecipant())
-				|| this.partecipants.size() == 1)
-			return true;
-		return false;
-	}
-
 	/**
 	 * 
 	 * @return boolean, TRUE if how invoke is the current partecipant

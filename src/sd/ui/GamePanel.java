@@ -242,17 +242,17 @@ public class GamePanel extends BGPanel {
 			this.coreGame.getCurrentPartecipant().removePawnsInBench();
 		}
 		// result is the color of the eaten pawn
-		String result = this.coreGame.handleTurn(chosenMove);
+		/*String result = */this.coreGame.handleTurn(chosenMove);
 		// update GUI here
-		int indexColorMover = this.getIndexColor(this.coreGame.getCurrentPartecipant().getColor());
+		/*int indexColorMover = this.getIndexColor(this.coreGame.getCurrentPartecipant().getColor());
 		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
 		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
 		if (result != null) {
 			int indexColorEaten = this.getIndexColor(result);
 			Cell eatenPawnPosition = getPositionGUI(indexColorEaten, cellDestination);
 			Cell freeBenchPosition = getFreePositionBenchGUI(indexColorEaten);
-			//this.movePawn(eatenPawnPosition, freeBenchPosition, indeixColorEaten);
-		}
+			this.movePawn(eatenPawnPosition, freeBenchPosition, indeixColorEaten);
+		}*/
 		this.drawGUI();
 		if (coreGame.isTurnActive()) {
 			coreGame.setTurnActive(false);
@@ -304,9 +304,9 @@ public class GamePanel extends BGPanel {
 	 * @param colorBenchIndex, the color of bench to increment
 	 * @return Cell, the cell of the first free position in the bench of that color
 	 */
-	private Cell getFreePositionBenchGUI(int colorBenchIndex) {
+	/*private Cell getFreePositionBenchGUI(int colorBenchIndex) {
 		return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+this.coreGame.getMyPartecipant().getPawnsInBench());
-	}
+	}*/
 	
 	/**
 	 * return the corrisponding ui cell
@@ -314,7 +314,7 @@ public class GamePanel extends BGPanel {
 	 * @param cellPosition, the cell in core game
 	 * @return Cell, the corrisponding ui cell
 	 */
-	private Cell getPositionGUI(int colorBenchIndex, Cell cellPosition) {
+	/*private Cell getPositionGUI(int colorBenchIndex, Cell cellPosition) {
 		// find pawn position in bench
 		if (cellPosition == null) {
 			return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS-1+this.coreGame.getMyPartecipant().getPawnsInBench());
@@ -330,35 +330,14 @@ public class GamePanel extends BGPanel {
 			}
 		}
 		return null;
-	}
-	
-	/** return the index of the color inside Constants.COLOR
-	 * @param color, the string color
-	 * @return int, the index of the color inside Constants.COLOR
-	 */
-	private int getIndexColor(String color) {
-		if (color.equals(Constants.COLOR[0])) {
-			return 0;
-		} else if (color.equals(Constants.COLOR[1])) {
-			return 1;
-		} else if (color.equals(Constants.COLOR[2])) {
-			return 2;
-		} else if (color.equals(Constants.COLOR[3])) {
-			return 3;
-		} else if (color.equals(Constants.COLOR[4])) {
-			return 4;
-		} else if (color.equals(Constants.COLOR[5])){
-			return 5;
-		} else
-			return -1;
-	}
+	}*/
 	
 	/** move the pawn from a gui cell to another 
 	 * @param startPosition, the gui cell from which the pawn moves
 	 * @param destinationPosition, the gui cell to which the pawn moves
 	 * @param indexColorPawn, the color of the moving pawn
 	 */
-	private void movePawn(Cell startPosition, Cell destinationPosition, int indexColorPawn) {
+	/*private void movePawn(Cell startPosition, Cell destinationPosition, int indexColorPawn) {
 		int indexStartColor = this.getIndexColor(startPosition.getColor());
 		int indexDestinationColor = this.getIndexColor(destinationPosition.getColor());
 		String iconStartPath = Constants.COLOR[indexStartColor];
@@ -378,15 +357,6 @@ public class GamePanel extends BGPanel {
 		this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
 				new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
 		this.updateUI();
-	}
-	
-	/*private void printCellsButton() {
-		for(int i=0; i<6; i++) {
-			for(int j=8; j<12; j++) {
-				System.out.println(this.getPathIcon(this.cellsButton[i][j].getCell()));
-			}
-			System.out.println("___________________________________");
-		}
 	}*/
 	
 }
