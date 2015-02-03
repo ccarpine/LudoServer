@@ -47,7 +47,6 @@ public class GamePanel extends BGPanel {
 		for (int i = 0; i < Constants.GUI_ROWS; i++)
 			size[1][i] = Constants.CELL_SIZE;
 		this.setLayout(new TableLayout(size));
-		this.drawGUI();
 	}
 	
 	public void drawGUI() {

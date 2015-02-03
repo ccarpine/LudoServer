@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,7 +41,6 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_TIME_FOR_TURN;
-		this.drawControlBoardGUI(false);
 	}
 
 	public void drawControlBoardGUI(boolean isDoubleTurn) {
