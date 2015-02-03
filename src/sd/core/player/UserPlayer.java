@@ -126,6 +126,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 				if (phase == Constants.PHASE_BUILD_GUI && wait==0){
 					System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 					buildGUIAndForward(coreGame.getPartecipants());
+				} else if (phase == Constants.PHASE_FIRST_CYCLE && wait==Constants.LATENCY){
+					System.out.println("BUILD GUI con wait = latency allora chiamo initTurn");
+					try {
+						initTurn();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					};
 				}
 				else {
 					int currentTurn = coreGame.getTurn();
@@ -141,9 +148,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait -= 1000;
 					}
 					if (phase == Constants.PHASE_BUILD_GUI)
-						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait/1000 + "sec");
+						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile buildGUIDone e' a:" + buildGUIDone);
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
-						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec");
+						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile firstCycleDone e' a: " + firstCycleDone);
 					else if (phase == Constants.PHASE_CYCLE)
 						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
 					if (wait <= 0  && ((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 

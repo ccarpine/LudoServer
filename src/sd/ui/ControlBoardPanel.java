@@ -203,12 +203,6 @@ public class ControlBoardPanel extends BGPanel {
 								panel.add(resultDie);
 								panel.updateUI();
 								updateUI();
-								try {
-									Thread.sleep(200);
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
 							}	
 							panel.removeAll();
 							panel.updateUI();
