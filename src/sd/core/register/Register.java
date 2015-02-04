@@ -44,7 +44,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 					}
 					counter += 1000;
 				}
-				System.out.println("readyToPlay " + readyToPlay + " - counter " + counter);
+				if (resetTimer) System.out.println("reset del timer!!");
+				else System.out.println("readyToPlay " + readyToPlay + " - counter " + counter);
 				startGame();
 				initVariable();
 			}
