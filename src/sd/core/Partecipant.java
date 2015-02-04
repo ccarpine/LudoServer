@@ -86,6 +86,7 @@ public class Partecipant implements Serializable {
 	 */
 	public boolean isMine() {
 		try {
+			System.out.println("4 - isMine: Mi chiedo se sono il current");
 			return this.ip.equals(Inet4Address.getLocalHost().getHostAddress());
 		} catch (UnknownHostException e) {
 			return false;

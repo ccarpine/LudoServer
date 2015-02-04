@@ -91,9 +91,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		if (!buildGUIDone) {
 			buildGUIDone = true;
+			System.out.println("0 - BuildGui");
 			if (this.coreGame.amItheCurrentPartecipant()) {
+				System.out.println("1 - BuildGui - I'm the current");
 				this.initTurn();
 			} else {
+				System.out.println("1 - BuildGui - I'm NOT the current");
 				this.buildGUIAndForward(partecipants);
 			}
 		}
@@ -375,10 +378,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						//TODO change interface
 						JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
 					}
 				}).start();
+				//TODO change interface
 			}
 			else{
 				System.out.println("I play");
