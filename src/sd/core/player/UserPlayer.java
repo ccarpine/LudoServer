@@ -1,7 +1,6 @@
 package sd.core.player;
 
 import java.awt.BorderLayout;
-import java.awt.image.BufferedImage;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -11,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import sd.core.CoreGame;
@@ -21,6 +19,7 @@ import sd.ui.ControlBoardPanel;
 import sd.ui.GamePanel;
 import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
+import sd.ui.VictoryPanel;
 import sd.util.Constants;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
@@ -30,6 +29,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
+	private String serverIP;
 	private GamePanel gamePanel;
 	private ControlBoardPanel controlBoardPanel;
 	private CoreGame coreGame;
@@ -45,12 +45,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            , the ip address of the register server
 	 * 
 	 */
-	public UserPlayer(String ServerIp) throws RemoteException {
+	public UserPlayer(String ServerIP) throws RemoteException {
 		this.buildGUIDone = false;
 		this.firstCycleDone = false;
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
-		this.mainFrame.addPanel(new IntroPanel(ServerIp), BorderLayout.CENTER);
+		this.serverIP = ServerIP;
+		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
 	}
 
 	/**
@@ -287,13 +288,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						break;
 					case Constants.END_GAME:
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								gamePanel.shadeInterface();
-								JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
-							}
-						}).start();
+						showVictory();
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						break;
 					default:
@@ -377,16 +372,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			gamePanel.drawGUI();
 			controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
 			if (this.coreGame.isVictory(this.coreGame.getMyPartecipant())){
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						gamePanel.shadeInterface();
-						JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
-					}
-				}).start();
-				//TODO change interface
-			}
-			else{
+				showVictory();
+			} else {
 				System.out.println("I play");
 				this.controlBoardPanel.enableTurn();
 			}
@@ -468,6 +455,16 @@ public class UserPlayer extends UnicastRemoteObject implements
 				this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
 			}
 		}
+	}
+	
+	private void showVictory() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				gamePanel.shadeInterface();
+				new VictoryPanel(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
+			}
+		}).start();
 	}
 
 }

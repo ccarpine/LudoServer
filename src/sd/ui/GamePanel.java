@@ -1,13 +1,9 @@
 package sd.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
 
 import sd.core.Cell;
 import sd.core.CoreGame;
@@ -303,70 +299,11 @@ public class GamePanel extends BGPanel {
 		}
 	}
 	
-	/**
-	 * return the cell of the first free position in the bench of that color
-	 * @param colorBenchIndex, the color of bench to increment
-	 * @return Cell, the cell of the first free position in the bench of that color
-	 */
-	/*private Cell getFreePositionBenchGUI(int colorBenchIndex) {
-		return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS+this.coreGame.getMyPartecipant().getPawnsInBench());
-	}*/
-	
-	/**
-	 * return the corrisponding ui cell
-	 * @param colorBenchIndex, the color of the pawn
-	 * @param cellPosition, the cell in core game
-	 * @return Cell, the corrisponding ui cell
-	 */
-	/*private Cell getPositionGUI(int colorBenchIndex, Cell cellPosition) {
-		// find pawn position in bench
-		if (cellPosition == null) {
-			return new Cell(Constants.COLOR[colorBenchIndex], colorBenchIndex, Constants.COLUMNS-1+this.coreGame.getMyPartecipant().getPawnsInBench());
-		// find pawn position in the whole game board
-		} else {
-			for (int i=0; i<Constants.ROWS; i++) {
-				for (int j=0; j<Constants.COLUMNS; j++) {
-					if (this.cellsButton[i][j].getCell().getRow() == cellPosition.getRow() &&
-							this.cellsButton[i][j].getCell().getColumn() == cellPosition.getColumn()) {
-						return new Cell(Constants.COLOR[i], i, j);
-					}
-				}
-			}
-		}
-		return null;
-	}*/
-	
-	/** move the pawn from a gui cell to another 
-	 * @param startPosition, the gui cell from which the pawn moves
-	 * @param destinationPosition, the gui cell to which the pawn moves
-	 * @param indexColorPawn, the color of the moving pawn
-	 */
-	/*private void movePawn(Cell startPosition, Cell destinationPosition, int indexColorPawn) {
-		int indexStartColor = this.getIndexColor(startPosition.getColor());
-		int indexDestinationColor = this.getIndexColor(destinationPosition.getColor());
-		String iconStartPath = Constants.COLOR[indexStartColor];
-		if (indexStartColor < 0)
-			iconStartPath = Constants.BLANK;
-		if (startPosition.getPawns().size() == 2)
-			iconStartPath += "_"+Constants.COLOR[indexColorPawn];
-		String iconDestinationPath = Constants.COLOR[indexDestinationColor];
-		if (indexDestinationColor < 0)
-			iconDestinationPath = Constants.BLANK;
-		if (destinationPosition.getPawns().size() == 1)
-			iconDestinationPath += "_WALL";
-		iconDestinationPath += "_"+Constants.COLOR[indexColorPawn];
-		this.cellsButton[startPosition.getRow()][startPosition.getColumn()].setIcon(
-				new javax.swing.ImageIcon(
-						ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconStartPath+".png")));
-		this.cellsButton[destinationPosition.getRow()][destinationPosition.getColumn()].setIcon(
-				new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
-		this.updateUI();
-	}*/
-	
 	public void shadeInterface() {
-		JPanel panel = new JPanel(new BorderLayout());
+		/*JPanel panel = new JPanel(new BorderLayout());
 		panel.setBackground(Color.decode("#D8000000"));
-		this.add(panel);
+		this.add(panel);*/
+		this.setOpaque(true);
 		this.updateUI();
 	}
 	
