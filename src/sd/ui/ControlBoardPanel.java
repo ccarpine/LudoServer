@@ -60,7 +60,7 @@ public class ControlBoardPanel extends BGPanel {
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
 		JButton color = new JButton();
-		color.setBounds(20, 130, 30, 30);
+		color.setBounds(20, 128, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/turnMarkers/on/SMALL_"
 						+ this.coreGame.getMyPartecipant().getColor() + ".png")));
@@ -70,7 +70,7 @@ public class ControlBoardPanel extends BGPanel {
 		color.setContentAreaFilled(false);
 		this.add(color);
 		this.timeOfTurn = new JLabel("Waiting");
-		this.timeOfTurn.setBounds(75, 135, 185, 25);
+		this.timeOfTurn.setBounds(75, 133, 185, 25);
 		this.timeOfTurn.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
@@ -82,7 +82,7 @@ public class ControlBoardPanel extends BGPanel {
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
-		containerDie.setBounds(20, 255, 170, 120);
+		containerDie.setBounds(20, 275, 170, 100);
 		this.add(containerDie);
 		this.die = new JButton();
 		this.die.setBounds(20, 385, 170, 50);
@@ -223,12 +223,12 @@ public class ControlBoardPanel extends BGPanel {
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			/* a player might haven exited during the building of the GUI */
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],0, 0));
-			button.setBounds(20 + (i * 33), 210, 20, 20);
+			button.setBounds(20 + (i * 33), 208, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				JLabel lastDie = new JLabel();
-				lastDie.setBounds(20 + (i * 33), 235, 20, 20);
+				lastDie.setBounds(20 + (i * 33), 233, 20, 20);
 				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
 				if (lastLaunch > 0) {
 					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
@@ -292,12 +292,11 @@ public class ControlBoardPanel extends BGPanel {
 						e.printStackTrace();
 					}
 					countdown-=1000;
-					int seconds = (int) (countdown/1000) % 60;
-					int minutes = (int) (( (countdown/1000) / 60) % 60);
-					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
+					int seconds = (int) (countdown/1000);
+					timeOfTurn.setText(String.valueOf(seconds)+" sec");
 				}
 				die.setEnabled(false);
-				timeOfTurn.setText("Wait...");
+				timeOfTurn.setText("Waiting");
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
