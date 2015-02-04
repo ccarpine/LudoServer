@@ -224,7 +224,7 @@ public class ControlBoardPanel extends BGPanel {
 							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
 							panel.add(resultDie);
 							try {
-								Thread.sleep(200);
+								Thread.sleep(1000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
