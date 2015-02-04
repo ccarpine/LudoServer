@@ -61,12 +61,9 @@ public class IntroPanel extends BGPanel {
 			}
 		});
 		this.add(goOnMatch);
-		JButton exit = new javax.swing.JButton("Exit");
-		exit.setFont(new MyFont().getMyFont(Font.BOLD, 34));
-		//exit.setForeground(Color.WHITE);
-		exit.setBackground(Color.decode("#2196F3"));
+		JButton exit = new javax.swing.JButton();
 		exit.setBounds(380, 340, 170, 50);
-		//exit.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.png")));
+		exit.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.png")));
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
