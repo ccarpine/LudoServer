@@ -1,6 +1,7 @@
 package sd.core.player;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -289,6 +290,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
+								gamePanel.shadeInterface();
 								JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
 							}
 						}).start();
@@ -378,6 +380,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
+						gamePanel.shadeInterface();
 						JOptionPane.showMessageDialog(null, "Il vincitore è: " + coreGame.getCurrentPartecipant().getColor());
 					}
 				}).start();
@@ -389,6 +392,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * @return the game panel

@@ -1,9 +1,13 @@
 package sd.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import sd.core.Cell;
 import sd.core.CoreGame;
@@ -358,5 +362,12 @@ public class GamePanel extends BGPanel {
 				new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/box/on/"+iconDestinationPath+"_WALL_"+Constants.COLOR[indexColorPawn]+".png")));
 		this.updateUI();
 	}*/
+	
+	public void shadeInterface() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBackground(Color.decode("#D8000000"));
+		this.add(panel);
+		this.updateUI();
+	}
 	
 }
