@@ -113,6 +113,5 @@ public class Constants {
 	
 	
 	public static final int DIE_ANIMATION_SPEED = 40;
-
-
+	
 }

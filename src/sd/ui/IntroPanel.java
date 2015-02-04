@@ -1,6 +1,7 @@
 package sd.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Inet4Address;
@@ -15,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import sd.core.register.RegisterInterface;
+import sd.util.MyFont;
 
 public class IntroPanel extends BGPanel {
 
@@ -63,7 +65,7 @@ public class IntroPanel extends BGPanel {
 		JButton exit = new javax.swing.JButton();
 		exit.setBounds(380, 340, 170, 50);
 		exit.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/exit.jpg")));
+				.getSystemResource("sd/ui/images/exit.png")));
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -81,14 +83,14 @@ public class IntroPanel extends BGPanel {
 		});
 		this.add(exit);
 		this.countdown = new JLabel();
-		this.countdown.setBounds(410, 405, 300, 30);
-		this.countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
+		this.countdown.setBounds(380, 405, 300, 30);
+		this.countdown.setFont(new MyFont().getMyFont(Font.PLAIN, 18));
 		this.countdown.setForeground(Color.BLACK);
 		this.countdown.setVisible(false);
 		this.add(countdown);
-		this.waitingLabel = new JLabel("Wait other players...");
-		this.waitingLabel.setFont(new java.awt.Font("Helvetica", 0, 18));
-		this.waitingLabel.setBounds(390, 420, 300, 50);
+		this.waitingLabel = new JLabel("Wait other players");
+		this.waitingLabel.setFont(new MyFont().getMyFont(Font.PLAIN, 18));
+		this.waitingLabel.setBounds(340, 420, 300, 50);
 		this.waitingLabel.setVisible(false);
 		this.add(waitingLabel);
 	}
@@ -124,8 +126,8 @@ public class IntroPanel extends BGPanel {
 				while (timeToStart > 0) {
 					int seconds = (int) (timeToStart / 1000) % 60;
 					int minutes = (int) ((timeToStart / 60000) % 60);
-					countdown.setText("Start in: "
-							+ String.format("%02d", minutes) + ":"
+					countdown.setText("Start in "
+							+ String.format("%02d", minutes) + ","
 							+ String.format("%02d", seconds));
 					try {
 						Thread.sleep(1000);
@@ -152,4 +154,5 @@ public class IntroPanel extends BGPanel {
 			}
 		}).start();
 	}
+	
 }

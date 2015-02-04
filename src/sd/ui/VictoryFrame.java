@@ -14,6 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import sd.util.Constants;
+import sd.util.MyFont;
+
 public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -41,7 +44,7 @@ public class VictoryFrame extends JFrame {
 		winner.setBounds(0, -35, 300, 400);
 		JButton newGame = new JButton();
 		newGame.setBounds(220, 240, 170, 50);
-		newGame.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/reload.jpg")));
+		newGame.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/again.png")));
 		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -50,13 +53,25 @@ public class VictoryFrame extends JFrame {
 		});
 		panel.add(newGame);
 		JLabel message = new JLabel("<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>");
-		message.setBounds(245, 0, 200, 250);
-		message.setFont(new java.awt.Font("Helvetica", Font.BOLD, 30));
-		message.setForeground(Color.WHITE);
+		message.setBounds(230, -5, 200, 250);
+		message.setFont(new MyFont().getMyFont(Font.PLAIN, 30));
+		if (colorWinner.equals(Constants.COLOR[0])) {
+			message.setForeground(Color.RED);
+		} else if (colorWinner.equals(Constants.COLOR[1])) {
+			message.setForeground(Color.GREEN);
+		} else if (colorWinner.equals(Constants.COLOR[2])) {
+			message.setForeground(Color.decode("#990099"));
+		} else if (colorWinner.equals(Constants.COLOR[3])) {
+			message.setForeground(Color.YELLOW);
+		} else if (colorWinner.equals(Constants.COLOR[4])) {
+			message.setForeground(Color.BLACK);
+		} else if (colorWinner.equals(Constants.COLOR[5])) {
+			message.setForeground(Color.BLUE);
+		}
 		panel.add(message);
 		JButton exit = new JButton();
 		exit.setBounds(220, 300, 170, 50);
-		exit.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
+		exit.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.png")));
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

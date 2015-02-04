@@ -1,6 +1,7 @@
 package sd.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -19,6 +20,7 @@ import sd.core.Cell;
 import sd.core.CoreGame;
 import sd.core.player.UserPlayer;
 import sd.util.Constants;
+import sd.util.MyFont;
 
 public class ControlBoardPanel extends BGPanel {
 
@@ -49,11 +51,11 @@ public class ControlBoardPanel extends BGPanel {
 		this.updateUI();
 		JLabel colorIntro = new JLabel("You");
 		colorIntro.setBounds(20, 10, 185, 25);
-		colorIntro.setFont(new java.awt.Font("Helvetica", 0, 16));
+		colorIntro.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
 		JButton color = new JButton();
-		color.setBounds(20, 35, 30, 30);
+		color.setBounds(20, 40, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/turnMarkers/on/SMALL_"
 						+ this.coreGame.getMyPartecipant().getColor() + ".png")));
@@ -62,14 +64,14 @@ public class ControlBoardPanel extends BGPanel {
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-		this.timeOfTurn = new JLabel("Wait...");
-		this.timeOfTurn.setBounds(75, 40, 185, 25);
-		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
+		this.timeOfTurn = new JLabel("Waiting");
+		this.timeOfTurn.setBounds(75, 45, 185, 25);
+		this.timeOfTurn.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
 		JLabel playerConnectedIntro = new JLabel("Player");
-		playerConnectedIntro.setBounds(20, 75, 185, 25);
-		playerConnectedIntro.setFont(new java.awt.Font("Helvetica", 0, 16));
+		playerConnectedIntro.setBounds(20, 90, 185, 25);
+		playerConnectedIntro.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
@@ -77,7 +79,7 @@ public class ControlBoardPanel extends BGPanel {
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
 		containerDie.setBounds(20, 245, 170, 130);
 		this.add(containerDie);
-		this.die = new JButton("Launch die");
+		this.die = new JButton();
 		this.die.setBounds(20, 385, 170, 50);
 		this.die.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/launch.png")));
@@ -97,9 +99,9 @@ public class ControlBoardPanel extends BGPanel {
 		if (!coreGame.isTurnActive() || coreGame.isVictory(coreGame.getMyPartecipant()))
 			this.die.setEnabled(false);
 		this.add(die);
-		JButton fold = new JButton("Fold");
+		JButton fold = new JButton();
 		fold.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/exit.jpg")));
+				.getSystemResource("sd/ui/images/exit.png")));
 		fold.setBounds(20, 440, 170, 50);
 		fold.addActionListener(new ActionListener() {
 			@Override
@@ -216,12 +218,12 @@ public class ControlBoardPanel extends BGPanel {
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			/* a player might haven exited during the building of the GUI */
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],0, 0));
-			button.setBounds(15 + (i * 33), 100, 20, 20);
+			button.setBounds(20 + (i * 33), 120, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				JLabel lastDie = new JLabel();
-				lastDie.setBounds(15 + (i * 33), 125, 20, 20);
+				lastDie.setBounds(20 + (i * 33), 145, 20, 20);
 				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
 				if (lastLaunch > 0) {
 					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
