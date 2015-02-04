@@ -19,6 +19,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	private List<String> gamersIp;
 	private long counter;
 	private boolean readyToPlay;
+	private boolean resetTimer;
 
 	
 	protected Register() throws RemoteException {
@@ -35,7 +36,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (!readyToPlay && counter < Constants.MAX_WAIT_FOR_MATCH) {
+				while (!readyToPlay && counter < Constants.MAX_WAIT_FOR_MATCH && !resetTimer) {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -43,6 +44,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 					}
 					counter += 1000;
 				}
+				if (resetTimer) System.out.println("reset del timer!!");
+				else System.out.println("readyToPlay " + readyToPlay + " - counter " + counter);
 				startGame();
 				initVariable();
 			}
@@ -55,6 +58,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		this.counter = 0;
 		this.gamersIp = new ArrayList<String>();
 		this.readyToPlay = false;
+		this.resetTimer = false;
 	}
 
 	/** allows the registred player to start the match
@@ -83,9 +87,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			}
 			/* add the partecipant ip to the list */
 			this.gamersIp.add(clientIp);
-			System.out.println("SERVER ---- Client Ip:" + clientIp);
-			System.out.println("------------------------");
-			System.out.println("SERVER ---- Client registrati per la partita:" + this.gamersIp.size());
+			System.out.println("SERVER ---- Client Ip:" + clientIp + " -- Client registrati per la partita:" + this.gamersIp.size());
 			System.out.println("------------------------");
 			/* partecipant limit reached, start the game */
 			if (this.gamersIp.size() == Constants.MAX_PLAYER) {
@@ -129,6 +131,11 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 				this.gamersIp.remove(i);
 				break;
 			}
+		}
+		/* if the only client register for the match leave, the timer have to be restarted*/
+		if (this.gamersIp.size()==0){
+			this.resetTimer = true; 
+			this.startTimer();
 		}
 		
 		System.out.println(ip + " exited");
