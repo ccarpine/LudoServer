@@ -1,6 +1,8 @@
 package sd.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,15 +28,18 @@ public class VictoryPanel extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.getContentPane().removeAll();
-		this.setLayout(null);
+		this.setLayout(new BorderLayout());
 		this.mainFrame = mainFrame;
 		this.serverIP = serverIP;
+		BGPanel panel = new BGPanel("images/sky.png");
+		this.add(panel);
+		panel.setLayout(null);
 		JLabel winner = new JLabel();
-		winner.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/victory/"+colorWinner+".png")));
+		//winner.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/victory/"+colorWinner+".png")));
 		winner.setBounds(10, 10, 300, 400);
-		this.add(winner);
+		panel.add(winner);
 		JButton newGame = new JButton();
-		newGame.setBounds(50, 240, 190, 60);
+		newGame.setBounds(190, 210, 190, 60);
 		newGame.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/reload.jpg")));
 		newGame.addActionListener(new ActionListener() {
 			@Override
@@ -42,9 +47,9 @@ public class VictoryPanel extends JFrame {
 				newGame();
 			}
 		});
-		this.add(newGame);
+		panel.add(newGame);
 		JButton exit = new JButton();
-		exit.setBounds(50, 320, 190, 60);
+		exit.setBounds(190, 280, 190, 60);
 		exit.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 		exit.addActionListener(new ActionListener() {
 			@Override
@@ -52,8 +57,8 @@ public class VictoryPanel extends JFrame {
 				System.exit(0);
 			}
 		});
-		this.add(exit);
-		
+		panel.add(exit);
+		panel.updateUI();
 	}
 
 	private void newGame() {
@@ -62,5 +67,11 @@ public class VictoryPanel extends JFrame {
 		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
 		this.dispose();
 	}
+	
+	@Override
+	public void setSize(Dimension d) {
+        Insets i = this.getInsets();
+        this.setSize(d.width + i.left + i.right, d.height + i.top + i.bottom);
+    }
 	
 }

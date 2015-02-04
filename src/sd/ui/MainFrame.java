@@ -1,6 +1,8 @@
 package sd.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -40,5 +42,11 @@ public class MainFrame extends JFrame {
 		this.getContentPane().removeAll();
 		this.setLayout(new BorderLayout());
 	}
+	
+	@Override
+	public void setSize(Dimension d) {
+        Insets i = this.getInsets();
+        this.setSize(d.width + i.left + i.right, d.height + i.top + i.bottom);
+    }
 	
 }
