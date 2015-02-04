@@ -49,13 +49,18 @@ public class ControlBoardPanel extends BGPanel {
 	public void drawControlBoardGUI(boolean isDoubleTurn) {
 		this.removeAll();
 		this.updateUI();
+		JLabel logo = new JLabel();
+		logo.setBounds(20, 10, 170, 80);
+		logo.setIcon(new javax.swing.ImageIcon(ClassLoader
+				.getSystemResource("sd/ui/images/logo.jpg")));
+		this.add(logo);
 		JLabel colorIntro = new JLabel("You");
-		colorIntro.setBounds(20, 110, 185, 25);
+		colorIntro.setBounds(20, 100, 185, 25);
 		colorIntro.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		colorIntro.setForeground(Color.WHITE);
 		this.add(colorIntro);
 		JButton color = new JButton();
-		color.setBounds(20, 140, 30, 30);
+		color.setBounds(20, 130, 30, 30);
 		color.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/turnMarkers/on/SMALL_"
 						+ this.coreGame.getMyPartecipant().getColor() + ".png")));
@@ -65,12 +70,12 @@ public class ControlBoardPanel extends BGPanel {
 		color.setContentAreaFilled(false);
 		this.add(color);
 		this.timeOfTurn = new JLabel("Waiting");
-		this.timeOfTurn.setBounds(75, 145, 185, 25);
+		this.timeOfTurn.setBounds(75, 135, 185, 25);
 		this.timeOfTurn.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
 		JLabel playerConnectedIntro = new JLabel("Player");
-		playerConnectedIntro.setBounds(20, 190, 185, 25);
+		playerConnectedIntro.setBounds(20, 180, 185, 25);
 		playerConnectedIntro.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
@@ -218,12 +223,12 @@ public class ControlBoardPanel extends BGPanel {
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			/* a player might haven exited during the building of the GUI */
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],0, 0));
-			button.setBounds(20 + (i * 33), 220, 20, 20);
+			button.setBounds(20 + (i * 33), 210, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				JLabel lastDie = new JLabel();
-				lastDie.setBounds(20 + (i * 33), 245, 20, 20);
+				lastDie.setBounds(20 + (i * 33), 235, 20, 20);
 				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
 				if (lastLaunch > 0) {
 					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
