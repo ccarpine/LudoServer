@@ -135,7 +135,7 @@ public class ControlBoardPanel extends BGPanel {
 		BufferedImage[][] result = new BufferedImage[6][1];
 		int myPosition = this.coreGame.getMyPartecipant().getColorPosition();
 		int offset = 0;
-		for(int i=0; i<6; i++) {
+		for (int i=0; i<6; i++) {
 			result[i][0] = DieSprite.getSprite(i, myPosition, offset);
 			offset += 2;
 		}
@@ -154,7 +154,7 @@ public class ControlBoardPanel extends BGPanel {
 		for (int i = 0; i < Constants.ROTATIONS; i++) {
 			rowSprite = 1 + random.nextInt(5);
 			colSprite = 1 + random.nextInt(5);
-			result[i] = DieSprite.getSprite(colSprite, rowSprite,0);
+			result[i] = DieSprite.getSprite(colSprite, rowSprite, 0);
 		}
 		return result;
 	}
