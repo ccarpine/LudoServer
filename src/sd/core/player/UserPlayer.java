@@ -462,7 +462,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				gamePanel.shadeInterface();
 				new VictoryFrame(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
 			}
 		}).start();

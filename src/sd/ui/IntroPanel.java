@@ -35,12 +35,12 @@ public class IntroPanel extends BGPanel {
 		JLabel ludo2 = new JLabel();
 		ludo2.setBounds(390, 30, 150, 220);
 		ludo2.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/angry1.png")));
+				.getSystemResource("sd/ui/images/angry2.png")));
 		this.add(ludo2);
 		JLabel ludo3 = new JLabel();
 		ludo3.setBounds(115, 260, 200, 220);
 		ludo3.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/angry2.png")));
+				.getSystemResource("sd/ui/images/angry1.png")));
 		this.add(ludo3);
 		final JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 280, 170, 50);

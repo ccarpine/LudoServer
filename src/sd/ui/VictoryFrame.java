@@ -1,7 +1,9 @@
 package sd.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -47,6 +49,11 @@ public class VictoryFrame extends JFrame {
 			}
 		});
 		panel.add(newGame);
+		JLabel message = new JLabel("<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>");
+		message.setBounds(245, 0, 200, 250);
+		message.setFont(new java.awt.Font("Helvetica", Font.BOLD, 30));
+		message.setForeground(Color.WHITE);
+		panel.add(message);
 		JButton exit = new JButton();
 		exit.setBounds(220, 300, 170, 50);
 		exit.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));

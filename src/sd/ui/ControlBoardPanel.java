@@ -62,8 +62,8 @@ public class ControlBoardPanel extends BGPanel {
 		color.setBorderPainted(false);
 		color.setContentAreaFilled(false);
 		this.add(color);
-		this.timeOfTurn = new JLabel("Wait your turn...");
-		this.timeOfTurn.setBounds(65, 40, 185, 25);
+		this.timeOfTurn = new JLabel("Wait...");
+		this.timeOfTurn.setBounds(75, 40, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
@@ -290,7 +290,7 @@ public class ControlBoardPanel extends BGPanel {
 					timeOfTurn.setText(String.format("%02d", minutes) + ":"+ String.format("%02d", seconds));
 				}
 				die.setEnabled(false);
-				timeOfTurn.setText("Wait your turn...");
+				timeOfTurn.setText("Wait...");
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();

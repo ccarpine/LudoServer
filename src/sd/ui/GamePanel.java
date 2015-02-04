@@ -287,14 +287,4 @@ public class GamePanel extends BGPanel {
 		}
 	}
 	
-	public void shadeInterface() {
-//		super.paintComponent(getGraphics());
-//		Color semiColor=new Color(0,0,0,128);
-//		getGraphics().setColor(semiColor);//the last param represents alpha
-//		getGraphics().fillRect(0, 0, 775, 530);
-		//this.setBackground(Color.BLACK);
-		//this.setOpaque(true);
-		//this.updateUI();
-	}
-	
 }
