@@ -36,9 +36,9 @@ public class VictoryPanel extends JFrame {
 		panel.setLayout(null);
 		JLabel winner = new JLabel();
 		winner.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/victory/"+colorWinner+".png")));
-		winner.setBounds(0, 0, 300, 400);
+		winner.setBounds(0, -20, 300, 400);
 		JButton newGame = new JButton();
-		newGame.setBounds(190, 210, 190, 60);
+		newGame.setBounds(210, 230, 170, 50);
 		newGame.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/reload.jpg")));
 		newGame.addActionListener(new ActionListener() {
 			@Override
@@ -48,7 +48,7 @@ public class VictoryPanel extends JFrame {
 		});
 		panel.add(newGame);
 		JButton exit = new JButton();
-		exit.setBounds(190, 280, 190, 60);
+		exit.setBounds(210, 290, 170, 50);
 		exit.setIcon(new ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.jpg")));
 		exit.addActionListener(new ActionListener() {
 			@Override

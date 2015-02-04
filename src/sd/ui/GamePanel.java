@@ -1,16 +1,17 @@
 package sd.ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import layout.TableLayout;
 import sd.core.Cell;
 import sd.core.CoreGame;
 import sd.core.Move;
 import sd.core.player.UserPlayer;
 import sd.util.Constants;
-import layout.TableLayout;
 
 /**
  * 
@@ -288,6 +289,10 @@ public class GamePanel extends BGPanel {
 	}
 	
 	public void shadeInterface() {
+//		super.paintComponent(getGraphics());
+//		Color semiColor=new Color(0,0,0,128);
+//		getGraphics().setColor(semiColor);//the last param represents alpha
+//		getGraphics().fillRect(0, 0, 775, 530);
 		//this.setBackground(Color.BLACK);
 		//this.setOpaque(true);
 		//this.updateUI();

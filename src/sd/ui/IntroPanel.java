@@ -48,35 +48,28 @@ public class IntroPanel extends BGPanel {
 				.getSystemResource("sd/ui/images/angry3.png")));
 		this.add(ludo3);
 		final JButton goOnMatch = new javax.swing.JButton();
-		goOnMatch.setBounds(380, 250, 180, 60);
+		goOnMatch.setBounds(380, 280, 180, 50);
 		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/start.jpg")));
 		goOnMatch.addActionListener(new ActionListener() {
-			// listener of the start button
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				goOnMatch.setEnabled(false);
 				// try the connection to the server
 				if (!startConnection(serverIP)) {
-
 					JOptionPane.showMessageDialog(null,"Server is out of service. Try later!");
 					System.exit(0);
-
-				}
-
-				else {
+				} else {
 					startCountdown();
 				}
-
 			}
 		});
 		this.add(goOnMatch);
 		JButton exit = new javax.swing.JButton();
-		exit.setBounds(380, 320, 180, 60);
+		exit.setBounds(380, 340, 180, 50);
 		exit.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/exit.jpg")));
 		exit.addActionListener(new ActionListener() {
-			// listener of the exit button
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -121,7 +114,6 @@ public class IntroPanel extends BGPanel {
 			return true;
 		} catch (RemoteException | MalformedURLException | NotBoundException
 				| UnknownHostException e) {
-			//e.printStackTrace();
 			return false;
 		}
 	}
@@ -131,7 +123,6 @@ public class IntroPanel extends BGPanel {
 	 */
 	private void startCountdown() {
 		this.countdown.setVisible(true);
-		// this.timeToStart = 10000;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -153,20 +144,16 @@ public class IntroPanel extends BGPanel {
 		}).start();
 
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				while (timeToStart > 0) {
 					waitingLabel.setVisible(!waitingLabel.isVisible());
 					try {
-
 						Thread.sleep(500);
-
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-
 			}
 		}).start();
 	}
