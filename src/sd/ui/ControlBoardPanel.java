@@ -63,7 +63,7 @@ public class ControlBoardPanel extends BGPanel {
 		color.setContentAreaFilled(false);
 		this.add(color);
 		this.timeOfTurn = new JLabel("Wait...");
-		this.timeOfTurn.setBounds(80, 40, 185, 25);
+		this.timeOfTurn.setBounds(75, 40, 185, 25);
 		this.timeOfTurn.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.timeOfTurn.setForeground(Color.WHITE);
 		this.add(timeOfTurn);
@@ -120,24 +120,6 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * Add the die in the panel in a specific position
-	 * 
-	 * @param g
-	 * @param dieSprite
-	 *            , buffered image of the die
-	 * @param x
-	 *            , orizontal position in the panel
-	 * @param y
-	 *            , vertical position in the panel
-	 */
-	/*
-	 * public void paint(Graphics g, BufferedImage dieSprite, int x, int y) {
-	 * super.paintComponents(g); Graphics2D g2d = (Graphics2D) g;
-	 * g2d.drawImage(dieSprite, x, y, this); Toolkit.getDefaultToolkit().sync();
-	 * g.dispose(); }
-	 */
-
-	/**
 	 * 
 	 * @return multidimensional array of buffered images for the 6 final image
 	 *         representing the die luaunch
@@ -178,7 +160,6 @@ public class ControlBoardPanel extends BGPanel {
 	 *            , the container for the die animation
 	 */
 	private void startAnimationDie(final JPanel panel) {
-		//int launchResult = Integer.parseInt(JOptionPane.showInputDialog(null,"What's your name?"));
 		/*
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
@@ -200,7 +181,6 @@ public class ControlBoardPanel extends BGPanel {
 								animation.update();
 								panel.removeAll();
 								panel.updateUI();
-								System.out.println("infor");
 								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
 								panel.add(resultDie);
 								panel.updateUI();
@@ -211,16 +191,12 @@ public class ControlBoardPanel extends BGPanel {
 							AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
 							resultAnimation.start();
 							resultAnimation.update();
-							System.out.println("0");
 							resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
-							System.out.println("1");
 							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-							System.out.println("2");
 							panel.add(resultDie);
 							try {
 								Thread.sleep(200);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							userPlayer.getGamePanel().makePossibleMoveFlash();

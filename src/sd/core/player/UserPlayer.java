@@ -19,7 +19,7 @@ import sd.ui.ControlBoardPanel;
 import sd.ui.GamePanel;
 import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
-import sd.ui.VictoryPanel;
+import sd.ui.VictoryFrame;
 import sd.util.Constants;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
@@ -462,8 +462,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				gamePanel.shadeInterface();
-				new VictoryPanel(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
+				new VictoryFrame(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
 			}
 		}).start();
 	}

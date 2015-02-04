@@ -33,17 +33,17 @@ public class IntroPanel extends BGPanel {
 		super("images/startWallpaper.jpg");
 		this.setLayout(null);
 		JLabel ludo2 = new JLabel();
-		ludo2.setBounds(440, 30, 150, 220);
+		ludo2.setBounds(390, 30, 150, 220);
 		ludo2.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/angry2.png")));
 		this.add(ludo2);
 		JLabel ludo3 = new JLabel();
-		ludo3.setBounds(30, 240, 200, 220);
+		ludo3.setBounds(115, 260, 200, 220);
 		ludo3.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/angry1.png")));
 		this.add(ludo3);
 		final JButton goOnMatch = new javax.swing.JButton();
-		goOnMatch.setBounds(380, 280, 180, 50);
+		goOnMatch.setBounds(380, 280, 170, 50);
 		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/start.png")));
 		goOnMatch.addActionListener(new ActionListener() {
@@ -61,7 +61,7 @@ public class IntroPanel extends BGPanel {
 		});
 		this.add(goOnMatch);
 		JButton exit = new javax.swing.JButton();
-		exit.setBounds(380, 340, 180, 50);
+		exit.setBounds(380, 340, 170, 50);
 		exit.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/exit.jpg")));
 		exit.addActionListener(new ActionListener() {
@@ -81,7 +81,7 @@ public class IntroPanel extends BGPanel {
 		});
 		this.add(exit);
 		this.countdown = new JLabel();
-		this.countdown.setBounds(390, 405, 300, 30);
+		this.countdown.setBounds(410, 405, 300, 30);
 		this.countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.countdown.setForeground(Color.BLACK);
 		this.countdown.setVisible(false);
