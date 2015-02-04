@@ -64,6 +64,7 @@ public class VictoryPanel extends JFrame {
 	private void newGame() {
 		this.setVisible(false);
 		this.mainFrame.resetFrame();
+		this.mainFrame.setSize(600, 500);
 		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
 		this.dispose();
 	}

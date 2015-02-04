@@ -465,6 +465,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				new VictoryPanel(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
 			}
 		}).start();
+		this.isPlaying = false;
 	}
 
 }
