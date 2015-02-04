@@ -21,7 +21,7 @@ public class MyFont {
 	        return font;
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
-			return Font.getFont("Helvetica");
+			return new Font("Helvetica", style, size);
 		}
 	}
 
