@@ -9,7 +9,7 @@ import sd.util.Constants;
 
 public class DieSprite {
 
-    public static BufferedImage getSprite(int xGrid, int yGrid) {
+    public static BufferedImage getSprite(int xGrid, int yGrid, int offset) {
     	try {
     		BufferedImage sprite = ImageIO.read(ClassLoader.getSystemResourceAsStream("sd/ui/images/dice/dices.png"));
         	return sprite.getSubimage(xGrid * Constants.DIE_SIZE, yGrid * Constants.DIE_SIZE, Constants.DIE_SIZE, Constants.DIE_SIZE);
