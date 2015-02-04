@@ -83,7 +83,7 @@ public class IntroPanel extends BGPanel {
 		});
 		this.add(exit);
 		this.countdown = new JLabel();
-		this.countdown.setBounds(380, 405, 300, 30);
+		this.countdown.setBounds(370, 405, 300, 30);
 		this.countdown.setFont(new MyFont().getMyFont(Font.PLAIN, 18));
 		this.countdown.setForeground(Color.BLACK);
 		this.countdown.setVisible(false);
@@ -124,11 +124,8 @@ public class IntroPanel extends BGPanel {
 			@Override
 			public void run() {
 				while (timeToStart > 0) {
-					int seconds = (int) (timeToStart / 1000) % 60;
-					int minutes = (int) ((timeToStart / 60000) % 60);
-					countdown.setText("Start in "
-							+ String.format("%02d", minutes) + ","
-							+ String.format("%02d", seconds));
+					int seconds = (int) (timeToStart / 1000);
+					countdown.setText("Start in "+String.valueOf(seconds)+" sec");
 					try {
 						Thread.sleep(1000);
 						timeToStart -= 1000;

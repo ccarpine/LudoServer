@@ -74,10 +74,17 @@ public class ControlBoardPanel extends BGPanel {
 		playerConnectedIntro.setFont(new MyFont().getMyFont(Font.BOLD, 16));
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
+		
+		JLabel titleGame = new JLabel("<html><center>Don't Be<br>Angry</center></html>");
+		titleGame.setBounds(30, 180, 200, 100);
+		titleGame.setFont(new MyFont().getMyFont(Font.BOLD, 30));
+		titleGame.setForeground(Color.WHITE);
+		this.add(titleGame);
+		
 		final JPanel containerDie = new JPanel();
 		containerDie.setBorder(BorderFactory.createTitledBorder(null,
 				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
-		containerDie.setBounds(20, 245, 170, 130);
+		containerDie.setBounds(20, 275, 170, 100);
 		this.add(containerDie);
 		this.die = new JButton();
 		this.die.setBounds(20, 385, 170, 50);

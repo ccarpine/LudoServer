@@ -53,8 +53,8 @@ public class VictoryFrame extends JFrame {
 		});
 		panel.add(newGame);
 		JLabel message = new JLabel("<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>");
-		message.setBounds(230, -5, 200, 250);
-		message.setFont(new MyFont().getMyFont(Font.PLAIN, 30));
+		message.setBounds(220, -5, 200, 250);
+		message.setFont(new MyFont().getMyFont(Font.PLAIN, 32));
 		if (colorWinner.equals(Constants.COLOR[0])) {
 			message.setForeground(Color.RED);
 		} else if (colorWinner.equals(Constants.COLOR[1])) {
