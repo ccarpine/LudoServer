@@ -32,25 +32,20 @@ public class IntroPanel extends BGPanel {
 	public IntroPanel(final String serverIP) {
 		super("images/startWallpaper.jpg");
 		this.setLayout(null);
-		JLabel ludo1 = new JLabel();
-		ludo1.setBounds(260, 30, 150, 220);
-		ludo1.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/angry1.png")));
-		this.add(ludo1);
 		JLabel ludo2 = new JLabel();
 		ludo2.setBounds(440, 30, 150, 220);
 		ludo2.setIcon(new javax.swing.ImageIcon(ClassLoader
 				.getSystemResource("sd/ui/images/angry2.png")));
 		this.add(ludo2);
 		JLabel ludo3 = new JLabel();
-		ludo3.setBounds(10, 280, 200, 200);
+		ludo3.setBounds(30, 240, 200, 220);
 		ludo3.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/angry3.png")));
+				.getSystemResource("sd/ui/images/angry1.png")));
 		this.add(ludo3);
 		final JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 280, 180, 50);
 		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader
-				.getSystemResource("sd/ui/images/start.jpg")));
+				.getSystemResource("sd/ui/images/start.png")));
 		goOnMatch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,14 +81,14 @@ public class IntroPanel extends BGPanel {
 		});
 		this.add(exit);
 		this.countdown = new JLabel();
-		this.countdown.setBounds(330, 405, 300, 30);
+		this.countdown.setBounds(390, 405, 300, 30);
 		this.countdown.setFont(new java.awt.Font("Helvetica", 0, 18));
 		this.countdown.setForeground(Color.BLACK);
 		this.countdown.setVisible(false);
 		this.add(countdown);
 		this.waitingLabel = new JLabel("Wait other players...");
 		this.waitingLabel.setFont(new java.awt.Font("Helvetica", 0, 18));
-		this.waitingLabel.setBounds(330, 420, 300, 50);
+		this.waitingLabel.setBounds(390, 420, 300, 50);
 		this.waitingLabel.setVisible(false);
 		this.add(waitingLabel);
 	}
