@@ -447,7 +447,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * if you have alredy received the message you forward intiTurn to the invoker
 		 * otherwise you wait for the message 
 		 * */
-		else if (	(phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
+		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
 					(phase == Constants.PHASE_CYCLE )) {
 			if (currentCrashed) {
 				this.playNext(false);
@@ -458,6 +458,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void showVictory() {
+		this.isPlaying = false;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -465,7 +466,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				new VictoryPanel(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
 			}
 		}).start();
-		this.isPlaying = false;
 	}
 
 }

@@ -31,7 +31,7 @@ public class GamePanel extends BGPanel {
 	 * @param coreGame
 	 */
 	public GamePanel(CoreGame coreGame, UserPlayer userPlayer) {
-		super("images/carpet2.jpg");
+		super("images/table1.jpg");
 		this.setPreferredSize(new java.awt.Dimension(570, 532));
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
@@ -145,7 +145,6 @@ public class GamePanel extends BGPanel {
 					return "images/starts/on/"+cell.getColor()+".png";
 				} else if (cell.getColumn() >= 8) {
 					return "images/victory/on/"+cell.getColor()+".png";
-					//return "images/victory/on/"+Constants.COLOR[(getIndexColor(cell.getColor())+5)%Constants.ROWS]+".png";
 				} else {
 					return "images/box/on/"+cell.getColor()+".png";
 				}
@@ -243,20 +242,9 @@ public class GamePanel extends BGPanel {
 		}
 		// result is the color of the eaten pawn
 		/*String result = */this.coreGame.handleTurn(chosenMove);
-		// update GUI here
-		/*int indexColorMover = this.getIndexColor(this.coreGame.getCurrentPartecipant().getColor());
-		Cell cellStartGUI = this.getPositionGUI(indexColorMover, cellStart);
-		Cell cellDestinationGUI = this.getPositionGUI(indexColorMover, cellDestination);
-		if (result != null) {
-			int indexColorEaten = this.getIndexColor(result);
-			Cell eatenPawnPosition = getPositionGUI(indexColorEaten, cellDestination);
-			Cell freeBenchPosition = getFreePositionBenchGUI(indexColorEaten);
-			this.movePawn(eatenPawnPosition, freeBenchPosition, indeixColorEaten);
-		}*/
 		this.drawGUI();
 		if (coreGame.isTurnActive()) {
 			coreGame.setTurnActive(false);
-			//this.movePawn(cellStartGUI, cellDestinationGUI, indexColorMover);
 			this.userPlayer.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), true);
 		}
 	}
@@ -300,11 +288,9 @@ public class GamePanel extends BGPanel {
 	}
 	
 	public void shadeInterface() {
-		/*JPanel panel = new JPanel(new BorderLayout());
-		panel.setBackground(Color.decode("#D8000000"));
-		this.add(panel);*/
-		this.setOpaque(true);
-		this.updateUI();
+		//this.setBackground(Color.BLACK);
+		//this.setOpaque(true);
+		//this.updateUI();
 	}
 	
 }

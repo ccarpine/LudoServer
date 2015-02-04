@@ -36,7 +36,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * @param coreGame
 	 */
 	public ControlBoardPanel(CoreGame coreGame, UserPlayer userPlayer) {
-		super("images/desk.jpg");
+		super("images/table2.jpg");
 		this.setOpaque(true);
 		this.setLayout(null);
 		this.coreGame = coreGame;
