@@ -133,10 +133,32 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private BufferedImage[][] initExactDieFaces() {
 		BufferedImage[][] result = new BufferedImage[6][1];
-		int myPosition = this.coreGame.getMyPartecipant().getColorPosition();
+		int row = -1;
+		
+		switch (this.coreGame.getMyPartecipant().getColor()) {
+		case "RED":
+			row = 0;
+			break;
+		case "YELLOW":
+			row = 1;
+			break;
+		case "GREEN":
+			row = 2;
+			break;
+		case "BLUE":
+			row = 3;
+			break;
+		case "VIOLET":
+			row = 4;
+			break;
+		case "BLACK":
+			row = 5;
+			break;
+		}
+		
 		int offset = 0;
 		for (int i=0; i<6; i++) {
-			result[i][0] = DieSprite.getSprite(i, myPosition, offset);
+			result[i][0] = DieSprite.getSprite(i, row, offset);
 			offset += 2;
 		}
 		return result;
