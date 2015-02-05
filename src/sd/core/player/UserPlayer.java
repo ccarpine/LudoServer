@@ -133,11 +133,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 								e.printStackTrace();
 							};
 						}
-						//System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
-						if (type==0){
+						if (type==0) {
 							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						else{
@@ -159,15 +158,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
-					if (currentTurn < coreGame.getTurn() && phase == Constants.PHASE_CYCLE) {
-						System.out.println("Esco per il current turn");
-					}
-					//if (phase == Constants.PHASE_BUILD_GUI)
-					//	System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
-					//else if (phase == Constants.PHASE_FIRST_CYCLE)
-					//	System.out.println("FIRST CYCLE. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  firstCycleDone e' a: " + firstCycleDone);
 					if (phase == Constants.PHASE_CYCLE) {
-						if (type==0){
+						if (type==0) {
 							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 						else{
@@ -177,35 +169,33 @@ public class UserPlayer extends UnicastRemoteObject implements
 					
 					if (wait <= 0 ) {
 						boolean foundPreviousAlive = false;
-						while (!foundPreviousAlive) {
+						while (!foundPreviousAlive && isPlaying) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
-								if(isPlaying){
-									if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
-										/* if you are the only one alive, you have won */
-										coreGame.incrementTurn();
-										showVictory();
-									}
-									else {
-										if (phase == Constants.PHASE_BUILD_GUI)
-											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase BUILD GUI");
-										else if (phase == Constants.PHASE_FIRST_CYCLE)
-											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase FIRST CYCLE");
-										else if (phase == Constants.PHASE_CYCLE){
-											if (type==0){
-												System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
-												System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
-											}
-											else{
-												System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
-												System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
-											}
+								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
+									/* if you are the only one alive, you have won */
+									coreGame.incrementTurn();
+									showVictory();
+								}
+								else {
+									if (phase == Constants.PHASE_BUILD_GUI)
+										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase BUILD GUI");
+									else if (phase == Constants.PHASE_FIRST_CYCLE)
+										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase FIRST CYCLE");
+									else if (phase == Constants.PHASE_CYCLE){
+										if (type==0) {
+											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
+											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
 										}
-										UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-										tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),coreGame.getTurn());
-										foundPreviousAlive = true;
-										waitFor(phase, type, isDubleTurn, coreGame.getTurn());
+										else{
+											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
+											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
+										}
 									}
+									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
+									tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(), coreGame.getTurn());
+									foundPreviousAlive = true;
+									waitFor(phase, type, isDubleTurn, coreGame.getTurn());
 								}
 							}
 							/*
