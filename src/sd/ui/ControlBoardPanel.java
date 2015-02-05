@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -76,7 +75,6 @@ public class ControlBoardPanel extends BGPanel {
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
-		containerDie.setBorder(BorderFactory.createTitledBorder(null,"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
 		containerDie.setBounds(20, 275, 170, 100);
 		this.add(containerDie);
 		this.die = new JButton();
