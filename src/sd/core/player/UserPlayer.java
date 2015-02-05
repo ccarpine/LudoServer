@@ -183,7 +183,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 									showVictory();
 								}
 								else {
-									System.out.println("mando ISALIVE a: "+ previous.getIp());
 									if (phase == Constants.PHASE_BUILD_GUI)
 										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase BUILD GUI");
 									else if (phase == Constants.PHASE_FIRST_CYCLE)
