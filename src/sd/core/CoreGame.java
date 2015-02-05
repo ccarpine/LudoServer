@@ -240,6 +240,10 @@ public class CoreGame implements Serializable {
 	public boolean isDoubleTurn() {
 		return this.isDoubleTurn;
 	}
+	
+	public void setDoubleTurn(boolean value) {
+		this.isDoubleTurn = value;
+	}
 
 	/**
 	 * 

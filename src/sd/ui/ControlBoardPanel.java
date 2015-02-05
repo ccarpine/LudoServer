@@ -164,9 +164,7 @@ public class ControlBoardPanel extends BGPanel {
 				result[index] = DieSprite.getSprite(j, i, 0);
 				index++;
 			}
-
 		}
-
 		return result;
 	}
 
@@ -339,6 +337,7 @@ public class ControlBoardPanel extends BGPanel {
 				timeOfTurn.setText("Waiting");
 				if (coreGame.isTurnActive()) {
 					coreGame.setTurnActive(false);
+					coreGame.setDoubleTurn(false);
 					userPlayer.getGamePanel().makePossibleMoveDisable();
 					userPlayer.updateNext(coreGame.getPartecipants(), coreGame
 							.getGameBoard(), coreGame.getCurrentPartecipant()
