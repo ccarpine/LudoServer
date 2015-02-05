@@ -316,7 +316,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("4 INIT TURN to: " + nextInTurnPartecipant.getIp());
+				//System.out.println("4 INIT TURN to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn();
 				foundNextAlive = true;
@@ -344,14 +344,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 		while (!foundNextAlive) {
 			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
 			try {
-				System.out.println("5 UPDATE STATUS to: " + nextInTurnPartecipant.getIp());
+				//System.out.println("5 UPDATE STATUS to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
-				System.out.println("5 UPDATE STATUS il mio dowait e':" + doWait); 
+				//System.out.println("5 UPDATE STATUS il mio dowait e':" + doWait); 
 				if (doWait) {
 				/* wait for the next message it will be a Update status message */
-					System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
+				//	System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
 					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT, isDoubleTurn);
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
