@@ -78,7 +78,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-				this.waitFor(Constants.PHASE_BUILD_GUI,-1,false);
+				this.waitFor(Constants.PHASE_BUILD_GUI,-1,false, this.coreGame.getTurn());
 			}
 		}
 
@@ -105,7 +105,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final int phase, final int type, final boolean isDubleTurn) {
+	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
 
 		new Thread(new Runnable() {
 			@Override
@@ -116,7 +116,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
 						if (wait == 0) { /* you are the last active partecipant */
-							System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
+							//System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 							startWaiting = false;
 							buildGUIAndForward(coreGame.getPartecipants());
 						}
@@ -149,9 +149,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 				
 				if (startWaiting){
-					int currentTurn = coreGame.getTurn();
-					
-					wait+=10000;
 					while (wait > 0 && isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
 							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
@@ -163,11 +160,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait -= 1000;
 					}
 					
-					if (phase == Constants.PHASE_BUILD_GUI)
-						System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
-					else if (phase == Constants.PHASE_FIRST_CYCLE)
-						System.out.println("FIRST CYCLE. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  firstCycleDone e' a: " + firstCycleDone);
-					else if (phase == Constants.PHASE_CYCLE){
+					//if (phase == Constants.PHASE_BUILD_GUI)
+					//	System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
+					//else if (phase == Constants.PHASE_FIRST_CYCLE)
+					//	System.out.println("FIRST CYCLE. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  firstCycleDone e' a: " + firstCycleDone);
+					if (phase == Constants.PHASE_CYCLE){
 						if (type==0){
 							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
@@ -176,7 +173,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 					}
 					
-					if (wait <= 0) {
+					if (wait <= 0 ) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
@@ -205,7 +202,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 										UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 										tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),coreGame.getTurn());
 										foundPreviousAlive = true;
-										waitFor(phase, type, isDubleTurn);
+										waitFor(phase, type, isDubleTurn, coreGame.getTurn());
 									}
 								}
 							}
@@ -249,7 +246,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
-						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false);
+						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,coreGame.getTurn());
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
@@ -283,6 +280,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
 		if (currentTurn == this.coreGame.getTurn() && this.isPlaying) {
+			System.out.println("I receive UPDATE STATUS");
 			this.firstCycleDone = true;
 			new Thread() {
 				public void run() {
@@ -353,7 +351,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				/* wait for the next message it will be a Update status message 
 				 * you have to wait for 1 turn and for all the update message*/
 				if (doWait)
-					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT, false);
+					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT, false, this.coreGame.getTurn());
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
 			}
@@ -382,7 +380,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				if (doWait) {
 				/* wait for the next message it will be a Update status message */
 				//	System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
-					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT, isDoubleTurn);
+					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT, isDoubleTurn, this.coreGame.getTurn());
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
 				boolean currentCrash = false;
@@ -404,6 +402,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void initTurn() throws RemoteException {
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
+			System.out.println("I receive INIT TURN");
 			this.firstCycleDone = true;
 			this.coreGame.setTurnActive(true);
 			gamePanel.drawGUI();

@@ -346,7 +346,7 @@ public class CoreGame implements Serializable {
 	public long getTimeForCycle(int type,  boolean isDubleTurn) {
 		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
 		Partecipant myPartecipant = this.getMyPartecipant();
-		if (type == Constants.UPDATE_NEXT) { /* you send a UPDATE_NEXT*/
+		if (type == Constants.UPDATE_NEXT) { 
 			if(myPartecipant.getIp().equals(this.ipCurrentPartecipant) ){ 
 				timeToWait +=  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
 			} else if (myPartecipant.getIp().equals(this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp())) {
@@ -358,6 +358,7 @@ public class CoreGame implements Serializable {
 				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
 		} else 
 				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
+		
 		return timeToWait;
 	}
 	
