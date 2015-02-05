@@ -298,7 +298,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
-						System.out.println("5 INIT TURN SEND (PLAY_NEXT)");
+						System.out.println("5 INIT TURN SEND (PLAY_NEXT) - ip current partecipant " + ipCurrentPartecipant );
 						playNext(true);
 						break;
 					// the client play again

@@ -208,17 +208,15 @@ public class CoreGame implements Serializable {
 		 * check if my ip is equals to the last that has just played, means that
 		 * you received the message that you have send
 		 */
+		if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
+			return Constants.END_GAME;
+		}
 		if (this.getMyPartecipant().getIp().equals(this.ipCurrentPartecipant)) {
-			if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
-				return Constants.END_GAME;
-			} else if (this.isDoubleTurn)
+			if (this.isDoubleTurn)
 				return Constants.PLAY_AGAIN;
 			else
 				return Constants.PLAY_NEXT;
 		} else {
-			if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
-				return Constants.END_GAME;
-			}
 			return Constants.UPDATE_NEXT;
 		}
 	}
