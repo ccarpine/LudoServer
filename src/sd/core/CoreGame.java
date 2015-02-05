@@ -317,18 +317,18 @@ public class CoreGame implements Serializable {
 		long timeToWait = 0;
 		int activePartecipantBeforeMe = 0;
 		
-		activePartecipantBeforeMe = (this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition()));
+		activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition());
 		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + 
 				this.getNrActivePartecipantAfter((this.getMyPartecipant().getColorPosition()+1)) * Constants.MAX_TIME_TO_BUILD_GUI;
 		
-		if( activePartecipantBeforeMe > 0){
+		if (activePartecipantBeforeMe > 0) {
 			timeToWait += Constants.MAX_TIME_FOR_TURN;
 			timeToWait += (activePartecipantBeforeMe -1) * Constants.MAX_TIME_FOR_UPDATE;
 		}
 		return timeToWait;
 	}
 
-	public long getTimeForCycle(){
+	public long getTimeForCycle() {
 		long timeToWait = 0;
 		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
 		timeToWait += (this.getNrActivePartecipantAfter(0)-1) * Constants.MAX_TIME_FOR_UPDATE;
