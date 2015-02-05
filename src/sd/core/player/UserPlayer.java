@@ -150,11 +150,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 				
 				if (startWaiting){
 					int currentTurn = coreGame.getTurn();
-					boolean conditionExitThread = isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
-												|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-												|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()));
+					
 					wait+=10000;
-					while (wait > 0 && conditionExitThread) {
+					while (wait > 0 && isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
+							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -176,7 +176,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 					}
 					
-					if (wait <= 0 && conditionExitThread) {
+					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
