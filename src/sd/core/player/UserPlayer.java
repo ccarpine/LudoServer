@@ -94,6 +94,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 		if (!buildGUIDone) {
 			buildGUIDone = true;
 			System.out.println("0 - BuildGui");
+			if (this.coreGame == null) {
+				System.out.println("Core game è null");
+			}
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				System.out.println("1 - BuildGui - I'm the current");
 				this.initTurn();
