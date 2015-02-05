@@ -200,7 +200,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 											}
 										}
 										UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-										tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),currentTurn);
+										tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),coreGame.getTurn());
 										foundPreviousAlive = true;
 										waitFor(phase, type, isDubleTurn);
 									}
