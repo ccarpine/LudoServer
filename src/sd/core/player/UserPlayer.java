@@ -178,7 +178,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
-								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
+								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp()) && isPlaying){
 									/* if you are the only one alive, you have won */
 									coreGame.incrementTurn();
 									showVictory();
@@ -396,7 +396,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		if (!this.coreGame.isTurnActive()) {
+		if (!this.coreGame.isTurnActive() && this.isPlaying) {
 			this.firstCycleDone = true;
 			this.coreGame.setTurnActive(true);
 			gamePanel.drawGUI();
