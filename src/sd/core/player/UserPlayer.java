@@ -114,19 +114,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
-						System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
+						//System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_FIRST_CYCLE:
 						wait = coreGame.getTimeForTheFirstCycle();
-						System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
+						//System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
 						if (type==0){
-							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+						//	System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						else{
-							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+						//	System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						break;
 					default:
@@ -192,9 +192,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 										else if (phase == Constants.PHASE_CYCLE){
 											if (type==0){
 												System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
+												System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
 											}
 											else{
 												System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
+												System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
 											}
 										}
 										UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
