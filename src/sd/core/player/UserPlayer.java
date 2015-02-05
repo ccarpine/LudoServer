@@ -184,6 +184,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 								}
 								else {
 									System.out.println("mando ISALIVE a: "+ previous.getIp());
+									if (phase == Constants.PHASE_BUILD_GUI)
+										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase BUILD GUI");
+									else if (phase == Constants.PHASE_FIRST_CYCLE)
+										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase FIRST CYCLE");
+									else if (phase == Constants.PHASE_CYCLE){
+										if (type==0){
+											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
+										}
+										else{
+											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
+										}
+									}
 									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 									tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),currentTurn);
 									foundPreviousAlive = true;
