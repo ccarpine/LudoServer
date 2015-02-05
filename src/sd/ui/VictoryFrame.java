@@ -20,10 +20,8 @@ import sd.util.MyFont;
 public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private MainFrame mainFrame;
-	private String serverIP;
-
-	public VictoryFrame(MainFrame mainFrame, String serverIP, String colorWinner) {
+	
+	public VictoryFrame(MainFrame mainFramee, final String serverIP, String colorWinner) {
 		super();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Don't Be Angry");
@@ -34,8 +32,6 @@ public class VictoryFrame extends JFrame {
 		this.setVisible(true);
 		this.getContentPane().removeAll();
 		this.setLayout(new BorderLayout());
-		this.mainFrame = mainFrame;
-		this.serverIP = serverIP;
 		BGPanel panel = new BGPanel("images/sky.png");
 		this.add(panel);
 		panel.setLayout(null);
@@ -48,7 +44,7 @@ public class VictoryFrame extends JFrame {
 		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newGame();
+				newGame(serverIP);
 			}
 		});
 		panel.add(newGame);
@@ -83,12 +79,10 @@ public class VictoryFrame extends JFrame {
 		panel.updateUI();
 	}
 
-	private void newGame() {
+	private void newGame(String serverIP) {
 		this.setVisible(false);
-		this.mainFrame.resetFrame();
-		this.mainFrame.setSize(600, 500);
-		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
-		this.mainFrame.setVisible(true);
+		MainFrame mainFrame = new MainFrame();
+		mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
 		this.dispose();
 	}
 	
