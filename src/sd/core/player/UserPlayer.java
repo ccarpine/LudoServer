@@ -485,10 +485,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 				(phase == Constants.PHASE_CYCLE)) {
 			if (currentCrashed) {
 				System.out.println("IS ALIVE: current crashed so PLAY NEXT to: "+ color);
-				this.playNext(false);
+				if (currentTurn == this.coreGame.getTurn())
+					this.playNext(false);
 			} else {
 				System.out.println("IS ALIVE: so UPDATE NEXT to: "+ color);
-				this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
+				if (currentTurn < this.coreGame.getTurn())
+					this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
 			}
 		}
 	}
