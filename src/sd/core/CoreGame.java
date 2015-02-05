@@ -161,7 +161,6 @@ public class CoreGame implements Serializable {
 	 */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
-		this.ipCurrentPartecipant = tempPartecipant.getIp();
 		if (tempPartecipant.getLastLaunch() == 6 && !this.isDoubleTurn) {
 			this.isDoubleTurn = true;
 		} else {

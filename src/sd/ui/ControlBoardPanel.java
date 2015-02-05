@@ -124,6 +124,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
+		this.coreGame.setCurrentPartecipant(this.coreGame.getMyPartecipant().getIp());
 		this.setTimer();
 	}
 
