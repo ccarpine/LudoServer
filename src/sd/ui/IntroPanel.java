@@ -54,7 +54,7 @@ public class IntroPanel extends BGPanel {
 				// try the connection to the server
 				if (!startConnection(serverIP)) {
 					JOptionPane.showMessageDialog(null,"Server is out of service. Try later!");
-					System.exit(0);
+					goOnMatch.setEnabled(true);
 				} else {
 					startCountdown();
 				}
