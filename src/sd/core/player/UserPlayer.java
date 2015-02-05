@@ -106,8 +106,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
 	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
-
-		new Thread(new Runnable() {
+		System.out.println("avremmo chiamato WAIT FOR");
+		/*new Thread(new Runnable() {
 			@Override
 			public void run() {
 				boolean startWaiting = true;
@@ -115,7 +115,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
-						if (wait == 0) { /* you are the last active partecipant */
+						if (wait == 0) { 
 							startWaiting = false;
 							buildGUIAndForward(coreGame.getPartecipants());
 						}
@@ -171,7 +171,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
 								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
-									/* if you are the only one alive, you have won */
+									// if you are the only one alive, you have won 
 									coreGame.incrementTurn();
 									showVictory();
 								}
@@ -195,9 +195,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 									waitFor(phase, type, isDubleTurn, coreGame.getTurn());
 								}
 							}
-							/*
-							 * the previous player has crashed and it must be set as unactive
-							 */
+							 // the previous player has crashed and it must be set as unactive
 							catch (MalformedURLException | RemoteException | NotBoundException e) {
 								System.out.println("WAIT FOR: set unactive" + previous.getIp()); 
 								coreGame.setUnactivePartecipant(previous.getColor());
@@ -206,7 +204,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 				}
 			}
-		}).start();
+		}).start();*/
 
 	}
 
