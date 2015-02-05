@@ -148,7 +148,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 				}
 				
-				if (startWaiting){
+				if (startWaiting) {
 					while (wait > 0 && isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
 							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
@@ -159,12 +159,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
-					
+					if (currentTurn < coreGame.getTurn() && phase == Constants.PHASE_CYCLE) {
+						System.out.println("Esco per il current turn");
+					}
 					//if (phase == Constants.PHASE_BUILD_GUI)
 					//	System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
 					//else if (phase == Constants.PHASE_FIRST_CYCLE)
 					//	System.out.println("FIRST CYCLE. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  firstCycleDone e' a: " + firstCycleDone);
-					if (phase == Constants.PHASE_CYCLE){
+					if (phase == Constants.PHASE_CYCLE) {
 						if (type==0){
 							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
