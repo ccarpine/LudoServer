@@ -116,7 +116,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
 						if (wait == 0) { /* you are the last active partecipant */
-							//System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 							startWaiting = false;
 							buildGUIAndForward(coreGame.getPartecipants());
 						}
@@ -161,13 +160,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 					if (phase == Constants.PHASE_CYCLE) {
 						if (type==0) {
 							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
-						}
-						else{
+						} else {
 							System.out.println("PHASE CYCLE--PLAY NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 					}
 					
-					if (wait <= 0 ) {
+					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive && isPlaying) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
@@ -186,8 +184,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 										if (type==0) {
 											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
 											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
-										}
-										else{
+										} else {
 											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
 											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
 										}
