@@ -295,12 +295,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 					switch (result) {
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
-						//System.out.println("4 UPDATE SEND (" + result + ")");
+						System.out.println("4 UPDATE SEND (UPDATE_NEXT)");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
-						//System.out.println("5 INIT TURN SEND (" + result + ")");
+						System.out.println("5 INIT TURN SEND (PLAY_NEXT)");
 						playNext(true);
 						break;
 					// the client play again
