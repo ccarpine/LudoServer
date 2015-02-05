@@ -21,7 +21,7 @@ public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public VictoryFrame(MainFrame mainFramee, final String serverIP, String colorWinner) {
+	public VictoryFrame(final String serverIP, String colorWinner) {
 		super();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Don't Be Angry");

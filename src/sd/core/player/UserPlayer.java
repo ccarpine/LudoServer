@@ -163,8 +163,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile buildGUIDone e' a:" + buildGUIDone);
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
 						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile firstCycleDone e' a: " + firstCycleDone);
-					else if (phase == Constants.PHASE_CYCLE)
-						System.out.println("PHASE CYCLE. ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
+					else if (phase == Constants.PHASE_CYCLE){
+						if (type==0){
+							System.out.println("PHASE CYCLE --UPDATE NEXT.  ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
+						}
+						else{
+							System.out.println("PHASE CYCLE --PLAY NEXT.  ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
+						}
+					}
 					if (wait <= 0  && ((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
 							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
@@ -172,11 +178,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
 							try {
-								System.out.println("mando ISALIVE a: "+ previous.getIp());
-								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-								tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor());
-								foundPreviousAlive = true;
-								waitFor(phase, type, isDubleTurn);
+								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
+									/* if you are the only one alive, you have won */
+									showVictory();
+								}
+								else {
+									System.out.println("mando ISALIVE a: "+ previous.getIp());
+									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
+									tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(),currentTurn);
+									foundPreviousAlive = true;
+									waitFor(phase, type, isDubleTurn);
+								}
 							}
 							/*
 							 * the previous player has crashed and it must be set as unactive
@@ -418,7 +430,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * this method, if correctly invoked tells the invoker if the player is alive; moreover 
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
 	 */
-	public void isAlive(int phase, String color) throws RemoteException {
+	public void isAlive(int phase, String color, int currentTurn) throws RemoteException {
 		boolean currentCrashed = false;
 		boolean end = false;
 		String pingerColor = color;
@@ -454,7 +466,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * otherwise you wait for the message 
 		 * */
 		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
-					(phase == Constants.PHASE_CYCLE )) {
+				(phase == Constants.PHASE_CYCLE && this.coreGame.getTurn()>currentTurn)) {
 			if (currentCrashed) {
 				this.playNext(false);
 			} else {
@@ -464,14 +476,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void showVictory() {
-		this.isPlaying = false;
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				mainFrame.setVisible(false);
-				new VictoryFrame(mainFrame, serverIP, coreGame.getCurrentPartecipant().getColor());
-			}
-		}).start();
+		this.isPlaying = false;				
+		new VictoryFrame(serverIP, coreGame.getCurrentPartecipant().getColor());
+		this.mainFrame.dispose();
 	}
 
 }

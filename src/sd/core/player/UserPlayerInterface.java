@@ -37,6 +37,6 @@ public interface UserPlayerInterface extends Remote {
 	/** ping to a client-player to check if it's alive
 	 * @ip, the client-player ip address to check
 	 */
-	void isAlive(int phase, String color) throws RemoteException;
+	void isAlive(int phase, String color, int currentTurn) throws RemoteException;
 
 }
