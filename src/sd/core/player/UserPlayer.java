@@ -148,10 +148,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 				else {
 					int currentTurn = coreGame.getTurn();
-					while (wait > 0 && isPlaying &&
+					boolean conditionExitThread = isPlaying &&
 							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
+							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()));
+					wait+=10000;
+					while (wait > 0 && conditionExitThread) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -160,20 +162,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait -= 1000;
 					}
 					if (phase == Constants.PHASE_BUILD_GUI)
-						System.out.println("BUILD GUI. ho atteso nella fase di build gui. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile buildGUIDone e' a:" + buildGUIDone);
+						System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
-						System.out.println("FIRST CYCLE. ho atteso nella fase del primo giro. Sono uscita con wait a: "+ wait/1000 + "sec -  la variabile firstCycleDone e' a: " + firstCycleDone);
+						System.out.println("FIRST CYCLE. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  firstCycleDone e' a: " + firstCycleDone);
 					else if (phase == Constants.PHASE_CYCLE){
 						if (type==0){
-							System.out.println("PHASE CYCLE --UPDATE NEXT.  ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
+							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 						else{
-							System.out.println("PHASE CYCLE --PLAY NEXT.  ho atteso nella fase giro. Sono uscita con wait a: " + wait/1000 + "sec");
+							System.out.println("PHASE CYCLE--PLAY NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 					}
-					if (wait <= 0  && ((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
-							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
+					if (wait > 0 && conditionExitThread) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
