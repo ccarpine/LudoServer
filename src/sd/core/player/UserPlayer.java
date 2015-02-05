@@ -106,7 +106,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
 	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
-		System.out.println("avremmo chiamato WAIT FOR");
+		if(phase == Constants.PHASE_BUILD_GUI){
+			System.out.println("00==PHASE_BUILD_GUI. START");
+		}
+		if(phase ==  Constants.PHASE_FIRST_CYCLE){
+			System.out.println("11==PHASE_FIRST_CYCLE. START");
+		}
+		if (phase == Constants.PHASE_CYCLE) {
+			if (type==0) {
+				System.out.println("22==PHASE CYCLE--UPDATE NEXT. START");
+			} else {
+				System.out.println("22==PHASE CYCLE--PLAY NEXT. START");
+			}
+		}
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -135,12 +147,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
-						if (type==0) {
+						/*if (type==0) {
 							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						else{
 							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
-						}
+						}*/
 						break;
 					default:
 						break;
@@ -157,11 +169,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
+					if(phase == Constants.PHASE_BUILD_GUI){
+						System.out.println("00==PHASE_BUILD_GUI. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+					}
+					if(phase ==  Constants.PHASE_FIRST_CYCLE){
+						System.out.println("11==PHASE_FIRST_CYCLE. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+					}
 					if (phase == Constants.PHASE_CYCLE) {
 						if (type==0) {
-							System.out.println("PHASE CYCLE--UPDATE NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+							System.out.println("22==PHASE CYCLE--UPDATE NEXT. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						} else {
-							System.out.println("PHASE CYCLE--PLAY NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+							System.out.println("22==PHASE CYCLE--PLAY NEXT. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 					}
 					
