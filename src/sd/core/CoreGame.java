@@ -74,6 +74,7 @@ public class CoreGame implements Serializable {
 		try {
 			return this.ipCurrentPartecipant.equals(Inet4Address.getLocalHost().getHostAddress());
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
