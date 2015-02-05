@@ -134,28 +134,20 @@ public class ControlBoardPanel extends BGPanel {
 	private BufferedImage[][] initExactDieFaces() {
 		BufferedImage[][] result = new BufferedImage[6][1];
 		int row = -1;
-		
-		switch (this.coreGame.getMyPartecipant().getColor()) {
-		case "RED":
+		String myColor = this.coreGame.getMyPartecipant().getColor();
+		if (myColor.equals(Constants.COLOR[0])) {
 			row = 0;
-			break;
-		case "YELLOW":
-			row = 1;
-			break;
-		case "GREEN":
+		} else if (myColor.equals(Constants.COLOR[1])) {
 			row = 2;
-			break;
-		case "BLUE":
-			row = 3;
-			break;
-		case "VIOLET":
+		} else if (myColor.equals(Constants.COLOR[2])) {
 			row = 4;
-			break;
-		case "BLACK":
+		} else if (myColor.equals(Constants.COLOR[3])) {
+			row = 1;
+		} else if (myColor.equals(Constants.COLOR[4])) {
 			row = 5;
-			break;
+		} else if (myColor.equals(Constants.COLOR[5])) {
+			row = 3;
 		}
-		
 		int offset = 0;
 		for (int i=0; i<6; i++) {
 			result[i][0] = DieSprite.getSprite(i, row, offset);
@@ -265,12 +257,6 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void setPlayerConnected(boolean isDoubleTurn) {
 		this.initRound();
-		/*
-		 * l'istruzione seguente illumina il giocatore corrente nel caso il
-		 * turno sia maggiore di zero. Tale giocatore è il seguente di quello
-		 * che è arrivato con l'aggiornamento il quale proprio adesso sta
-		 * giocando.
-		 */
 		String color = this.coreGame.getNextActivePartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
 			color = this.coreGame.getPartecipants().get(this.coreGame.getFirstActiveIndex()).getColor();
