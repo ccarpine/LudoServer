@@ -122,7 +122,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
-						System.out.println("PHASE CYCLE. tempo di attesa: "+ wait/1000 + "sec");
+						if (type==0){
+							System.out.println("PHASE CYCLE --UPDATE NEXT  (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+						}
+						else{
+							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+						}
 						break;
 					default:
 						break;

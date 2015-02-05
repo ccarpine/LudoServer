@@ -69,7 +69,6 @@ public class CoreGame implements Serializable {
 	 * @return boolean, TRUE if how invoke is the current partecipant
 	 */
 	public boolean amItheCurrentPartecipant() {
-		System.out.println("2 - amItheCurrentPartecipant: Mi chiedo se sono il current");
 		return this.ipCurrentPartecipant
 				.equals(this.getMyPartecipant().getIp());
 	}
@@ -87,7 +86,6 @@ public class CoreGame implements Serializable {
 	 * @return partecipant of client that invoke
 	 */
 	public Partecipant getMyPartecipant() {
-		System.out.println("3 - getMyPartecipant: Mi chiedo se sono il current");
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (this.partecipants.get(i).isMine()) {
 				return this.partecipants.get(i);
@@ -163,7 +161,6 @@ public class CoreGame implements Serializable {
 		} else {
 			this.isDoubleTurn = false;
 		}
-		System.out.println("ultimo lancio:" + tempPartecipant.getLastLaunch());
 		return this.gameBoard.suggestMoves(tempPartecipant);
 	}
 
