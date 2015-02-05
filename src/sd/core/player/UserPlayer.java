@@ -180,6 +180,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 							try {
 								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
 									/* if you are the only one alive, you have won */
+									coreGame.incrementTurn();
 									showVictory();
 								}
 								else {
