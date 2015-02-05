@@ -328,11 +328,33 @@ public class CoreGame implements Serializable {
 		return timeToWait;
 	}
 
-	public long getTimeForCycle() {
-		long timeToWait = 0;
-		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
-		timeToWait += (this.getNrActivePartecipantAfter(0)-1) * Constants.MAX_TIME_FOR_UPDATE;
-		timeToWait += Constants.MAX_TIME_FOR_TURN;
+	/***
+	 * 
+	 * @param type, can be UPDATE_NEXT or PLAY_NEXT, in the first case you send the update to the next
+	 * partecipant, otherwise you send the play
+	 * @param isDubleTurn tell if the current partecipant is also the next partecipant
+	 * @return max number of millisecond the partecipant have to wait before ask the partecipant before IsAlive
+	 * you have to wait for different time
+	 * - if you are the current or the next of the current you don't have to wait for turn time 
+	 * (you have to wait only for the update time)
+	 * otherwise you have to wait for the round and for the update 
+	 * Special case for the duble turn - the next player have to wait also for the turn time
+	 */
+	public long getTimeForCycle(int type,  boolean isDubleTurn) {
+		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
+		Partecipant myPartecipant = this.getMyPartecipant();
+		if (type == Constants.UPDATE_NEXT) { /* you send a UPDATE_NEXT*/
+			if(myPartecipant.getIp().equals(this.ipCurrentPartecipant) ){ 
+				timeToWait +=  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
+			} else if (myPartecipant.getIp().equals(this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp())) {
+				if (isDubleTurn)
+					timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
+				else 
+					timeToWait +=  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
+			} else 
+				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
+		} else 
+				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
 		return timeToWait;
 	}
 	

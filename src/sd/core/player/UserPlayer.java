@@ -78,7 +78,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
 			} else {
-				this.waitFor(Constants.PHASE_BUILD_GUI);
+				this.waitFor(Constants.PHASE_BUILD_GUI,-1,false);
 			}
 		}
 
@@ -105,7 +105,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final int phase) {
+	private void waitFor(final int phase, final int type, final boolean isDubleTurn) {
 
 		new Thread(new Runnable() {
 			@Override
@@ -121,17 +121,19 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_CYCLE:
-						wait = coreGame.getTimeForCycle();
+						wait = coreGame.getTimeForCycle(type, isDubleTurn);
 						System.out.println("PHASE CYCLE. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					default:
 						break;
 				}
 				
+				/* you are the last active partecipant */
 				if (phase == Constants.PHASE_BUILD_GUI && wait==0){
 					System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 					buildGUIAndForward(coreGame.getPartecipants());
-				} else if (phase == Constants.PHASE_FIRST_CYCLE && wait==Constants.LATENCY){
+				} 
+				else if (phase == Constants.PHASE_FIRST_CYCLE && wait==Constants.LATENCY){
 					System.out.println("BUILD GUI con wait = latency allora chiamo initTurn");
 					try {
 						initTurn();
@@ -169,7 +171,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 								tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
-								waitFor(phase);
+								waitFor(phase,type,isDubleTurn);
 							}
 							/*
 							 * the previous player has crashed and it must be set as unactive
@@ -212,7 +214,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
-						waitFor(Constants.PHASE_FIRST_CYCLE);
+						waitFor(Constants.PHASE_FIRST_CYCLE,-1,false);
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
@@ -313,9 +315,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn();
 				foundNextAlive = true;
-				/* wait for the next message it will be a Update status message */
+				/* wait for the next message it will be a Update status message 
+				 * you have to wait for 1 turn and for all the update message*/
 				if (doWait)
-					this.waitFor(Constants.PHASE_CYCLE);
+					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT, false);
 			} catch (RemoteException | MalformedURLException | NotBoundException e) {
 				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
 			}
@@ -344,7 +347,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				if (doWait) {
 				/* wait for the next message it will be a Update status message */
 					System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
-					this.waitFor(Constants.PHASE_CYCLE);
+					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT, isDoubleTurn);
 				}
 			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
 				boolean currentCrash = false;
@@ -358,7 +361,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 			}
 		}
-
 	}
 
 	@Override
