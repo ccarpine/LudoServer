@@ -88,6 +88,7 @@ public class VictoryFrame extends JFrame {
 		this.mainFrame.resetFrame();
 		this.mainFrame.setSize(600, 500);
 		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
+		this.mainFrame.setVisible(true);
 		this.dispose();
 	}
 	
