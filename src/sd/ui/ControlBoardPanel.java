@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import sd.core.Cell;
 import sd.core.CoreGame;
@@ -80,8 +81,7 @@ public class ControlBoardPanel extends BGPanel {
 		playerConnectedIntro.setForeground(Color.WHITE);
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
-		containerDie.setBorder(BorderFactory.createTitledBorder(null,
-				"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
+		containerDie.setBorder(BorderFactory.createTitledBorder(null,"Container die", 0, 0, null, new java.awt.Color(0, 0, 0)));
 		containerDie.setBounds(20, 275, 170, 100);
 		this.add(containerDie);
 		this.die = new JButton();
@@ -101,7 +101,8 @@ public class ControlBoardPanel extends BGPanel {
 			}
 		});
 		// disable the die if the partecipant has win or if is not his turn
-		if (!coreGame.isTurnActive() || coreGame.isVictory(coreGame.getMyPartecipant()))
+		if (!coreGame.isTurnActive()
+				|| coreGame.isVictory(coreGame.getMyPartecipant()))
 			this.die.setEnabled(false);
 		this.add(die);
 		JButton fold = new JButton();
@@ -123,7 +124,7 @@ public class ControlBoardPanel extends BGPanel {
 	 * enable the button for launch die
 	 */
 	public void enableTurn() {
-			this.setTimer();
+		this.setTimer();
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class ControlBoardPanel extends BGPanel {
 			row = 3;
 		}
 		int offset = 0;
-		for (int i=0; i<6; i++) {
+		for (int i = 0; i < 6; i++) {
 			result[i][0] = DieSprite.getSprite(i, row, offset);
 			offset += 2;
 		}
@@ -162,14 +163,16 @@ public class ControlBoardPanel extends BGPanel {
 	 *         die while is routing
 	 */
 	private BufferedImage[] initAnimationBuffer() {
-		BufferedImage[] result = new BufferedImage[Constants.ROTATIONS];
-		int rowSprite, colSprite;
-		Random random = new Random();
-		for (int i = 0; i < Constants.ROTATIONS; i++) {
-			rowSprite = 1 + random.nextInt(5);
-			colSprite = 1 + random.nextInt(5);
-			result[i] = DieSprite.getSprite(colSprite, rowSprite, 0);
+		BufferedImage[] result = new BufferedImage[36];
+		int index = 0;
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				result[index] = DieSprite.getSprite(j, i, 0);
+				index++;
+			}
+
 		}
+
 		return result;
 	}
 
@@ -185,48 +188,75 @@ public class ControlBoardPanel extends BGPanel {
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
 		 */
-		new Thread() {
+
+		final BufferedImage[] animationBuffer = initAnimationBuffer();
+		final BufferedImage[][] exactDieFaces = initExactDieFaces();
+		final int launchResult = coreGame.launchDie();
+		coreGame.getMyPartecipant().setLastLaunch(launchResult);
+		JLabel resultDie = new JLabel();
+		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+		this.add(resultDie);
+
+		final Runnable makeDieRoll = new Runnable() {
+
+			@Override
 			public void run() {
-				try {
-					SwingUtilities.invokeLater(new Runnable() { 
-						public void run() {
-							BufferedImage[] animationBuffer = initAnimationBuffer();
-							BufferedImage[][] exactDieFaces = initExactDieFaces();
-							int launchResult = coreGame.launchDie();
-							coreGame.getMyPartecipant().setLastLaunch(launchResult);
-							AnimationSprite animation = new AnimationSprite(animationBuffer, Constants.DIE_ANIMATION_SPEED);
-							animation.start();
-							JLabel resultDie = new JLabel();
-							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
-							for (int counter = 0; counter < Constants.DIE_ANIMATION_SPEED * 100; counter++) {
-								animation.update();
-								panel.removeAll();
-								panel.updateUI();
-								resultDie.setIcon(new ImageIcon(animationBuffer[counter % Constants.ROTATIONS]));
-								panel.add(resultDie);
-								panel.updateUI();
-								updateUI();
-							}	
+
+				Timer timer = new Timer(50, new ActionListener() {
+
+					private int counter = 0;
+					private int lastRoll;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (counter < Constants.ROTATIONS) {
+							counter++;
 							panel.removeAll();
-							panel.updateUI();
-							AnimationSprite resultAnimation = new AnimationSprite(exactDieFaces[launchResult - 1], 6);
-							resultAnimation.start();
-							resultAnimation.update();
-							resultDie.setIcon(new ImageIcon(exactDieFaces[launchResult - 1][0]));
-							resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+							JLabel resultDie = new JLabel();
+							resultDie.setBounds(60, 265, Constants.DIE_SIZE,
+									Constants.DIE_SIZE);
 							panel.add(resultDie);
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							userPlayer.getGamePanel().makePossibleMoveFlash();
+							resultDie.setIcon(new ImageIcon(
+									animationBuffer[new Random().nextInt(35)]));
 						}
-					});
-				} catch (Exception ex) {
-				}
+
+						else {
+							panel.removeAll();
+							JLabel resultDie = new JLabel();
+							resultDie.setBounds(60, 265, Constants.DIE_SIZE,
+									Constants.DIE_SIZE);
+							panel.add(resultDie);
+							resultDie.setIcon(new ImageIcon(
+									exactDieFaces[launchResult - 1][0]));
+							((Timer) e.getSource()).stop();
+							userPlayer.getGamePanel().makePossibleMoveFlash();	
+						}
+
+					}
+				});
+
+				timer.start();
+
 			}
-		}.start();
+			
+			
+		};
+		
+		Thread roller = new Thread() {
+			public void run() {
+				
+				try {
+					SwingUtilities.invokeAndWait(makeDieRoll);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+									
+			}
+		};
+		roller.start();
+		
+
 	}
 
 	/**
@@ -236,16 +266,23 @@ public class ControlBoardPanel extends BGPanel {
 		this.currentPlayer = new ArrayList<CellButton>();
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			/* a player might haven exited during the building of the GUI */
-			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],0, 0));
+			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"
+					+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],
+					0, 0));
 			button.setBounds(20 + (i * 33), 208, 20, 20);
 			this.currentPlayer.add(button);
 			this.add(button);
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				JLabel lastDie = new JLabel();
 				lastDie.setBounds(20 + (i * 33), 233, 20, 20);
-				int lastLaunch = this.coreGame.getPartecipants().get(i).getLastLaunch();
+				int lastLaunch = this.coreGame.getPartecipants().get(i)
+						.getLastLaunch();
 				if (lastLaunch > 0) {
-					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/dice/"+ this.coreGame.getPartecipants().get(i).getColor() + "_"+ lastLaunch + ".png")));
+					lastDie.setIcon(new javax.swing.ImageIcon(ClassLoader
+							.getSystemResource("sd/ui/images/dice/"
+									+ this.coreGame.getPartecipants().get(i)
+											.getColor() + "_" + lastLaunch
+									+ ".png")));
 					this.add(lastDie);
 				}
 			}
@@ -257,16 +294,19 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void setPlayerConnected(boolean isDoubleTurn) {
 		this.initRound();
-		String color = this.coreGame.getNextActivePartecipant(this.coreGame.getCurrentPartecipant().getIp()).getColor();
+		String color = this.coreGame.getNextActivePartecipant(
+				this.coreGame.getCurrentPartecipant().getIp()).getColor();
 		if (this.coreGame.getTurn() == 0) {
-			color = this.coreGame.getPartecipants().get(this.coreGame.getFirstActiveIndex()).getColor();
+			color = this.coreGame.getPartecipants()
+					.get(this.coreGame.getFirstActiveIndex()).getColor();
 		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
 		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				if (!Constants.COLOR[i].equals(color)) {
-					this.currentPlayer.get(i)
+					this.currentPlayer
+							.get(i)
 							.setIcon(
 									new javax.swing.ImageIcon(
 											ClassLoader
@@ -276,8 +316,7 @@ public class ControlBoardPanel extends BGPanel {
 				} else {
 					this.currentPlayer.get(i).changeState();
 				}
-			}
-			else {
+			} else {
 				this.currentPlayer.get(i).setVisible(false);
 			}
 		}
@@ -299,9 +338,9 @@ public class ControlBoardPanel extends BGPanel {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					countdown-=1000;
-					int seconds = (int) (countdown/1000);
-					timeOfTurn.setText(String.valueOf(seconds)+" sec");
+					countdown -= 1000;
+					int seconds = (int) (countdown / 1000);
+					timeOfTurn.setText(String.valueOf(seconds) + " sec");
 				}
 				die.setEnabled(false);
 				timeOfTurn.setText("Waiting");

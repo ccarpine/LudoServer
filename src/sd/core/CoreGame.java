@@ -422,5 +422,7 @@ public class CoreGame implements Serializable {
 		if (this.getNrActivePartecipantAfter(0) == 1)
 			return true;
 		return this.gameBoard.isVictory(partecipant);
+		/* per giocare da soli commentare tutto il corpo del metodo e lasciare solo il seguente*/
+		//return false;
 	}
 }

@@ -105,13 +105,11 @@ public class Constants {
 	public static final int[][] STARTS_BENCH_COLORS = {START_PATH_BENCH_RED, START_PATH_BENCH_GREEN, START_PATH_BENCH_VIOLET, START_PATH_BENCH_YELLOW, START_PATH_BENCH_BLACK, START_PATH_BENCH_BLUE};
 	
 	/* number of times the die rotates when launched */
-	public static final int ROTATIONS = 10;
+	public static final int ROTATIONS = 30;
 	
 	public static final int PHASE_BUILD_GUI = 0;
 	public static final int PHASE_FIRST_CYCLE = 1;
 	public static final int PHASE_CYCLE = 2;
 	
-	
-	public static final int DIE_ANIMATION_SPEED = 40;
 	
 }
