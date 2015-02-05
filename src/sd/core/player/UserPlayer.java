@@ -123,7 +123,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
 						if (type==0){
-							System.out.println("PHASE CYCLE --UPDATE NEXT  (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						else{
 							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
@@ -134,7 +134,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 				
 				/* you are the last active partecipant */
-				if (phase == Constants.PHASE_BUILD_GUI && wait==0){
+				if (phase == Constants.PHASE_BUILD_GUI && wait==0) {
 					System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
 					buildGUIAndForward(coreGame.getPartecipants());
 				} 
@@ -176,7 +176,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 								UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
 								tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor());
 								foundPreviousAlive = true;
-								waitFor(phase,type,isDubleTurn);
+								waitFor(phase, type, isDubleTurn);
 							}
 							/*
 							 * the previous player has crashed and it must be set as unactive
@@ -215,11 +215,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 				while (!foundNextAlive) {
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
-						System.out.println("BUIL GUI AND FORWORD: chiamo la BUILD GUI su" + partecipant.getIp());
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
-						waitFor(Constants.PHASE_FIRST_CYCLE,-1,false);
+						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false);
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
