@@ -107,7 +107,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	/* it handles the lack of message buildGUI from the previous player ONLY */
 	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
 		System.out.println("avremmo chiamato WAIT FOR");
-		/*new Thread(new Runnable() {
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				boolean startWaiting = true;
@@ -204,7 +204,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					}
 				}
 			}
-		}).start();*/
+		}).start();
 
 	}
 
