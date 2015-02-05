@@ -2,7 +2,7 @@ package sd.util;
 
 public class Constants {
 
-	public static final int MAX_PLAYER = 2;
+	public static final int MAX_PLAYER = 3;
 	public static final long MAX_WAIT_FOR_MATCH = 9000L;
 	public static final int BENCH_DIMENSION = 4;
 	
@@ -10,8 +10,8 @@ public class Constants {
 	 * crash happens plus the latency */
 	public static final long MAX_TIME_TO_BUILD_GUI = 4000L;
 	public static final long MAX_TIME_FOR_TURN = 60000L;
-	public static final long LATENCY = 1000L;
-	public static final long MAX_TIME_FOR_UPDATE = 3000L; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
+	public static final long LATENCY = 2000L;
+	public static final long MAX_TIME_FOR_UPDATE = 5000L; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
 	
 	public static final int SUCCESS = 0;
 	public static final int WALL = 1;

@@ -478,7 +478,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 * otherwise you wait for the message 
 		 * */
 		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
-				(phase == Constants.PHASE_CYCLE && this.coreGame.getTurn()>currentTurn)) {
+				(phase == Constants.PHASE_CYCLE)) {
 			if (currentCrashed) {
 				this.playNext(false);
 			} else {
