@@ -148,7 +148,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 				else {
 					int currentTurn = coreGame.getTurn();
-					while (wait > 0 && 
+					while (wait > 0 && isPlaying &&
 							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
 							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
@@ -275,7 +275,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
-		if (currentTurn == this.coreGame.getTurn()) {
+		if (currentTurn == this.coreGame.getTurn() && this.isPlaying) {
 			this.firstCycleDone = true;
 			new Thread() {
 				public void run() {
