@@ -1,6 +1,8 @@
 package sd.core;
 
 import java.io.Serializable;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -69,8 +71,11 @@ public class CoreGame implements Serializable {
 	 * @return boolean, TRUE if how invoke is the current partecipant
 	 */
 	public boolean amItheCurrentPartecipant() {
-		return this.ipCurrentPartecipant
-				.equals(this.getMyPartecipant().getIp());
+		try {
+			return this.ipCurrentPartecipant.equals(Inet4Address.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			return false;
+		}
 	}
 
 	/**
