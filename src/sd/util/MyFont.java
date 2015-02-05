@@ -19,7 +19,7 @@ public class MyFont {
 	            GraphicsEnvironment.getLocalGraphicsEnvironment();
 	        ge.registerFont(font);
 	        return font;
-		} catch (FontFormatException | IOException e) {
+		} catch (FontFormatException | IOException | NullPointerException e) {
 			//e.printStackTrace();
 			return new Font("Helvetica", style, size);
 		}
