@@ -110,48 +110,49 @@ public class UserPlayer extends UnicastRemoteObject implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				boolean startWaiting = true;
 				long wait = 0;
 				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
+						if (wait == 0) { /* you are the last active partecipant */
+							System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
+							startWaiting = false;
+							buildGUIAndForward(coreGame.getPartecipants());
+						}
 						//System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_FIRST_CYCLE:
 						wait = coreGame.getTimeForTheFirstCycle();
+						if (wait == Constants.LATENCY) {
+							System.out.println("BUILD GUI con wait = latency allora chiamo initTurn");
+							startWaiting = false;
+							try {
+								initTurn();
+							} catch (RemoteException e) {
+								e.printStackTrace();
+							};
+						}
 						//System.out.println("FIRST CYCLE. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
 						if (type==0){
-						//	System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						else{
-						//	System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
+							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
 						}
 						break;
 					default:
 						break;
 				}
 				
-				/* you are the last active partecipant */
-				if (phase == Constants.PHASE_BUILD_GUI && wait==0) {
-					System.out.println("BUILD GUI con wait = 0 allora chiamo buildGUIAndForward");
-					buildGUIAndForward(coreGame.getPartecipants());
-				} 
-				else if (phase == Constants.PHASE_FIRST_CYCLE && wait==Constants.LATENCY){
-					System.out.println("BUILD GUI con wait = latency allora chiamo initTurn");
-					try {
-						initTurn();
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					};
-				}
-				else {
+				if (startWaiting){
 					int currentTurn = coreGame.getTurn();
-					boolean conditionExitThread = isPlaying &&
-							((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
-							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()));
+					boolean conditionExitThread = isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
+												|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
+												|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()));
 					wait+=10000;
 					while (wait > 0 && conditionExitThread) {
 						try {
@@ -161,6 +162,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						}
 						wait -= 1000;
 					}
+					
 					if (phase == Constants.PHASE_BUILD_GUI)
 						System.out.println("BUILD GUI. ho atteso. TURNO"+currentTurn+"- Sono uscita con wait a: "+ wait/1000 + "sec -  buildGUIDone e' a:" + buildGUIDone);
 					else if (phase == Constants.PHASE_FIRST_CYCLE)
@@ -173,7 +175,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 							System.out.println("PHASE CYCLE--PLAY NEXT. TURNO"+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
 						}
 					}
-					if (wait > 0 && conditionExitThread) {
+					
+					if (wait <= 0 && conditionExitThread) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive) {
 							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
@@ -484,13 +487,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
 				(phase == Constants.PHASE_CYCLE)) {
 			if (currentCrashed) {
-				System.out.println("IS ALIVE: current crashed so PLAY NEXT to: "+ color);
-				if (currentTurn == this.coreGame.getTurn())
+				if (currentTurn == this.coreGame.getTurn()){
+					System.out.println("IS ALIVE: current crashed so PLAY NEXT to: "+ color);
 					this.playNext(false);
+				}
 			} else {
-				System.out.println("IS ALIVE: so UPDATE NEXT to: "+ color);
-				if (currentTurn < this.coreGame.getTurn())
+				if (currentTurn < this.coreGame.getTurn()){
+					System.out.println("IS ALIVE: so UPDATE NEXT to: "+ color);
 					this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
+				}
 			}
 		}
 	}
