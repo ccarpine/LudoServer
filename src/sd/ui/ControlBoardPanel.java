@@ -137,7 +137,7 @@ public class ControlBoardPanel extends BGPanel {
 		String myColor = this.coreGame.getMyPartecipant().getColor();
 		for(int i = 0; i < 6; i++) {
 			try {
-				this.exactDieFaces[i][0] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+myColor+"_"+i+1+".png"));
+				this.exactDieFaces[i][0] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+myColor+"_"+(i+1)+".png"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,7 +156,7 @@ public class ControlBoardPanel extends BGPanel {
 		for (int i = 0; i < Constants.COLOR.length; i++) {
 			for (int j = 0; j < 6; j++) {
 				try {
-					this.animationBuffer[index] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+Constants.COLOR[i]+"_"+j+1+".png"));
+					this.animationBuffer[index] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+Constants.COLOR[i]+"_"+(j+1)+".png"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
