@@ -138,7 +138,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.PHASE_FIRST_CYCLE:
 						wait = coreGame.getTimeForTheFirstCycle();
 						System.out.println("wait:"+wait);
-						if (wait == Constants.LATENCY) {
+						if (coreGame.getNrActivePartecipantBefore(coreGame.getIDMyPartecipant()) == 0) {
 							startWaiting = false;
 							startTurn();
 						}
@@ -399,7 +399,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	
 	private void startTurn() {
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
-			System.out.println("I receive INIT TURN");
 			this.firstCycleDone = true;
 			this.coreGame.setTurnActive(true);
 			gamePanel.drawGUI();
