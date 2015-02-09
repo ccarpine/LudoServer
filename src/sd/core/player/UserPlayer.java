@@ -276,6 +276,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
+		if (this.coreGame.getIDMyPartecipant()==1)
+			System.exit(0);
 		if (currentTurn == this.coreGame.getTurn() && this.isPlaying) {
 			System.out.println("I receive UPDATE STATUS");
 			this.firstCycleDone = true;
