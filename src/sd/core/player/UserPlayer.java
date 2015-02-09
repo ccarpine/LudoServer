@@ -97,6 +97,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
 		int activeBeforeMe = this.coreGame.getNrActivePartecipantBefore(this.coreGame.getIDMyPartecipant());
+		System.out.println("Ricevo buil gui e ho "+ activeBeforeMe +" numeri attivi prima di me ");
 		if (!buildGUIDone || activeBeforeMe == 0) {
 			buildGUIDone = true;
 			if (activeBeforeMe == 0) {
@@ -239,10 +240,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
+						System.out.println("I send Init buil GUI to " +partecipant.getIp());
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
 						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,coreGame.getTurn());
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
+						System.out.println("Non c'era lo metto come inattivo e passo al successivo " +partecipant.getIp());
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
 				}
