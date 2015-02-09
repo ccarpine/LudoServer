@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
@@ -488,9 +490,11 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
-			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
+			Registry registry = LocateRegistry.createRegistry( 1099 );
+			registry.rebind("RMIGameClient", client);
+			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			//Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
+		} catch ( RemoteException exc) {
 			exc.printStackTrace();
 		}
 	}

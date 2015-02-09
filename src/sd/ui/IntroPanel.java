@@ -143,12 +143,9 @@ public class IntroPanel extends BGPanel {
 	
 	private void exit(String ipServer) {
 		try {
-			RegisterInterface server = (RegisterInterface) Naming
-					.lookup("rmi://" + ipServer + "/RMILudoServer");
-			server.deletePartecipant(Inet4Address.getLocalHost()
-					.getHostAddress());
-		} catch (RemoteException | MalformedURLException
-				| UnknownHostException | NotBoundException exc) {
+			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" + ipServer + "/RMILudoServer");
+			server.deletePartecipant(Inet4Address.getLocalHost().getHostAddress());
+		} catch (RemoteException | MalformedURLException | UnknownHostException | NotBoundException exc) {
 			exc.printStackTrace();
 		} finally {
 			System.exit(0);

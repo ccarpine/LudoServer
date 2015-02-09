@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +126,11 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	public static void main(String[] args) {
 		try {
 			RegisterInterface server = (RegisterInterface) new Register();
-			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
-		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
+			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			Registry registry = LocateRegistry.createRegistry( 1099 );
+			registry.rebind("RMILudoServer", server);
+			//Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
