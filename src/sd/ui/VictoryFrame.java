@@ -52,7 +52,7 @@ public class VictoryFrame extends JFrame {
 		panel.add(newGame);
 		String sentence = "<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>";
 		if (colorWinner.equals(coreGame.getMyPartecipant().getColor())) {
-			sentence = "<html><center>You are<br>is the<br>winner!</center></html>";
+			sentence = "<html><center>You<br>are the<br>winner!</center></html>";
 		}
 		JLabel message = new JLabel(sentence);
 		message.setBounds(215, -5, 200, 250);
