@@ -82,6 +82,7 @@ public class ControlBoardPanel extends BGPanel {
 		this.add(playerConnectedIntro);
 		final JPanel containerDie = new JPanel();
 		containerDie.setBounds(20, 275, 170, 100);
+		containerDie.setOpaque(false);
 		this.add(containerDie);
 		this.die = new JButton();
 		this.die.setBounds(20, 385, 170, 50);
@@ -183,7 +184,7 @@ public class ControlBoardPanel extends BGPanel {
 		final int launchResult = coreGame.launchDie();
 		coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		JLabel resultDie = new JLabel();
-		resultDie.setBounds(60, 285, Constants.DIE_SIZE, Constants.DIE_SIZE);
+		resultDie.setBounds(60, 305, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		this.add(resultDie);
 
 		final Runnable makeDieRoll = new Runnable() {
@@ -201,7 +202,7 @@ public class ControlBoardPanel extends BGPanel {
 							counter++;
 							panel.removeAll();
 							JLabel resultDie = new JLabel();
-							resultDie.setBounds(60, 265, Constants.DIE_SIZE,
+							resultDie.setBounds(60, 305, Constants.DIE_SIZE,
 									Constants.DIE_SIZE);
 							panel.add(resultDie);
 							resultDie.setIcon(new ImageIcon(
@@ -212,7 +213,7 @@ public class ControlBoardPanel extends BGPanel {
 							((Timer) e.getSource()).stop();
 							panel.removeAll();
 							JLabel resultDie = new JLabel();
-							resultDie.setBounds(60, 285, Constants.DIE_SIZE,
+							resultDie.setBounds(60, 305, Constants.DIE_SIZE,
 									Constants.DIE_SIZE);
 							panel.add(resultDie);
 							resultDie.setIcon(new ImageIcon(
