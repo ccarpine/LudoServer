@@ -252,7 +252,7 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	 */
 	private void initInterface() {
 		this.mainFrame.resetFrame();
-		this.mainFrame.setSize(new Dimension(775, 532));
+		this.mainFrame.setSize(new Dimension(775, 510));
 		this.mainFrame.addPanel(this.gamePanel, BorderLayout.WEST);
 		this.mainFrame.addPanel(this.controlBoardPanel, BorderLayout.CENTER);
 		this.gamePanel.drawGUI();

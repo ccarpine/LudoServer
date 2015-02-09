@@ -1,5 +1,6 @@
 package sd.ui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class GamePanel extends BGPanel {
 	 */
 	public GamePanel(CoreGame coreGame, UserPlayer userPlayer) {
 		super("images/table1.jpg");
-		this.setPreferredSize(new java.awt.Dimension(570, 532));
+		this.setPreferredSize(new Dimension(570, 510));
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.possibleMoves = new ArrayList<Move>();
