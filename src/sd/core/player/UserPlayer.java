@@ -306,12 +306,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (UPDATE_NEXT)");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
-						System.out.println("UPDATE NEXT turn====" + coreGame.getTurn());
-						if (coreGame.getIDMyPartecipant()==0 && coreGame.getTurn()==2){
-							System.out.println("Esco per test !!!");
-							System.exit(1);
-							
-						}
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
@@ -348,6 +342,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn(this.coreGame.getPartecipants());
 				foundNextAlive = true;
+				if (coreGame.getIDMyPartecipant()==1){
+					System.out.println("Esco per test !!!");
+					System.exit(1);
+					
+				}
+				
 				/* wait for the next message it will be a Update status message 
 				 * you have to wait for 1 turn and for all the update message*/
 				if (doWait)
