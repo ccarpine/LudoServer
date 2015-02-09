@@ -490,18 +490,13 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	
 	public static void main(String[] args) {
 		try {
-			try {
-				Runtime.getRuntime().exec("rmiregistry", null, new File("."));
-				System.out.println("buon fine");
-			} catch (IOException e) {
-				System.out.println("errore nella rmiregistry");
-				e.printStackTrace();
-			}
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
-			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-		} catch ( RemoteException | UnknownHostException | MalformedURLException exc) {
+			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			//Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
+			Registry registry  = LocateRegistry.createRegistry( 1099 );
+			registry.rebind("RMIGameClient", client);
+		} catch ( RemoteException /*| UnknownHostException | MalformedURLException*/ exc) {
 			exc.printStackTrace();
 		}
 	}

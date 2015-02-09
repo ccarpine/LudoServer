@@ -128,17 +128,12 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	 */
 	public static void main(String[] args) throws IOException {
 		try {
-			try {
-				Runtime.getRuntime().exec("rmiregistry", null, new File("."));
-				System.out.println("buon fine");
-			} catch (IOException e) {
-				System.out.println("errore nella rmiregistry");
-				e.printStackTrace();
-			}
 			RegisterInterface server = (RegisterInterface) new Register();
-			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
-		} catch (RemoteException | /*MalformedURLException |*/ UnknownHostException e) {
+			Registry registry  = LocateRegistry.createRegistry( 1099 );
+			registry.rebind("RMILudoServer", server);
+			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			//Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
+		} catch (RemoteException /*| MalformedURLException | UnknownHostException*/ e) {
 			System.out.println("errore nella rebind");
 			e.printStackTrace();
 		}
