@@ -391,17 +391,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
-		// TODO
-		if(this.whenCrash==5){
-			if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
-				System.out.println("crash for test");
-				System.exit(0);
-			}
-		}
 		this.startTurn();
 	}
 	
 	private void startTurn() {
+		// TODO
+				if(this.whenCrash==5){
+					if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
+						System.out.println("crash for test");
+						System.exit(0);
+					}
+				}
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
 			System.out.println("I receive INIT TURN");
 			this.firstCycleDone = true;
