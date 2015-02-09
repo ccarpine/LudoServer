@@ -56,7 +56,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
 		this.whenCrash = 4;
 		this.turnCrash = 0;
-		this.whoCrash = 0;
+		this.whoCrash = 1;
 	}
 
 	/**
@@ -97,7 +97,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
 		int activeBeforeMe = this.coreGame.getNrActivePartecipantBefore(this.coreGame.getIDMyPartecipant());
-		System.out.println("Ricevo messaggio di build gui e sono il current?: "+activeBeforeMe);
 		if (!buildGUIDone || activeBeforeMe == 0) {
 			buildGUIDone = true;
 			if (activeBeforeMe == 0) {
