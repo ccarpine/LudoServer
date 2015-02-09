@@ -97,7 +97,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
 		int activeBeforeMe = this.coreGame.getNrActivePartecipantBefore(this.coreGame.getIDMyPartecipant());
-		System.out.println("Ricevo buil gui e ho "+ activeBeforeMe +" numeri attivi prima di me ");
 		if (!buildGUIDone || activeBeforeMe == 0) {
 			buildGUIDone = true;
 			if (activeBeforeMe == 0) {
@@ -399,13 +398,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 	
 	private void startTurn() {
-		// TODO
-				if(this.whenCrash==5){
-					if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
-						System.out.println("crash for test");
-						System.exit(0);
-					}
-				}
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
 			System.out.println("I receive INIT TURN");
 			this.firstCycleDone = true;
