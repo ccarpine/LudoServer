@@ -276,8 +276,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
 			final boolean isDoubleTurn, final int currentTurn)
 			throws RemoteException {
-		if (this.coreGame.getIDMyPartecipant()==2)
-			System.exit(0);
 		if (currentTurn == this.coreGame.getTurn() && this.isPlaying) {
 			System.out.println("I receive UPDATE STATUS");
 			this.firstCycleDone = true;
@@ -343,6 +341,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn();
 				foundNextAlive = true;
+				if (this.coreGame.getIDMyPartecipant()==0){
+					System.out.println("Ho chiamato init turn su "+ nextInTurnPartecipant.getIp() +" esco!!!");
+					System.exit(1);
+					
+				}
 				/* wait for the next message it will be a Update status message 
 				 * you have to wait for 1 turn and for all the update message*/
 				if (doWait)
