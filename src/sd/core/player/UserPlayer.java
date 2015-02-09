@@ -319,11 +319,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					// the client play again
 					case Constants.PLAY_AGAIN:
-						try {
-							initTurn();
-						} catch (RemoteException e) {
-							e.printStackTrace();
-						}
+						startTurn();
 						break;
 					case Constants.END_GAME:
 						showVictory();
@@ -404,6 +400,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
 	public void initTurn() throws RemoteException {
+		this.startTurn();
+	}
+	
+	private void startTurn() {
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
 			System.out.println("I receive INIT TURN");
 			this.firstCycleDone = true;
@@ -418,8 +418,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			}
 		}
 	}
-	
-	
 
 	/**
 	 * @return the game panel
