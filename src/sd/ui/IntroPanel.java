@@ -123,7 +123,7 @@ public class IntroPanel extends BGPanel {
 					} catch (InterruptedException e) {
 					}
 				}
-				countdown.setText("Ready! Starting game...");
+				countdown.setText("Ready, Starting game!");
 			}
 		}).start();
 		new Thread(new Runnable() {
