@@ -21,6 +21,7 @@ import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
 import sd.ui.VictoryFrame;
 import sd.util.Constants;
+import sd.util.ConstantsForTest;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
  * che avviene tutto nella classe MainGame */
@@ -81,21 +82,22 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			//TODO togliere
-			if (this.whenCrash == 0){
-				if (this.whoCrash==this.coreGame.getIDMyPartecipant())
+			if (this.whenCrash == ConstantsForTest.AFTER_START){
+				if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
 					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 					System.exit(0);
-			}else if(this.whenCrash == 1){
+				}
+			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C1C2){
 				if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
 					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 					System.exit(0);
 				}
-			}else if(this.whenCrash == 2){
+			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C2C3){
 				if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==3){
 					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 					System.exit(0);
 				}
-			}else if(this.whenCrash == 3){
+			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C3C1){
 					if (this.coreGame.getIDMyPartecipant()==3 ||this.coreGame.getIDMyPartecipant()==1){
 						System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 						System.exit(0);
