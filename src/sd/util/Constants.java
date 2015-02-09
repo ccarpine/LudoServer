@@ -13,7 +13,7 @@ public class Constants {
 	public static final long MAX_TIME_TO_BUILD_GUI = 10000L;
 	public static final long MAX_TIME_FOR_TURN = 30000L;
 	public static final long LATENCY = 3000L;
-	public static final long MAX_TIME_FOR_UPDATE = 9000L; /* TO-DO: se usiamo la movePawn questo timer va abbassato */
+	public static final long MAX_TIME_FOR_UPDATE = 9000L;
 	
 	public static final int SUCCESS = 0;
 	public static final int WALL = 1;
