@@ -2,6 +2,7 @@ package sd.core.player;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
@@ -490,9 +491,11 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	public static void main(String[] args) {
 		try {
 			try {
-				Runtime.getRuntime().exec("rmiregistry");
+				Runtime.getRuntime().exec("rmiregistry", null, new File("/Users/Claudia/Documents/workspace/Ludo/bin"));
+				System.out.println("buon fine");
 			} catch (IOException e) {
-				//e.printStackTrace();
+				System.out.println("errore nella rmiregistry");
+				e.printStackTrace();
 			}
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
