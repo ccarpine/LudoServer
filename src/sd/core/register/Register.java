@@ -129,7 +129,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	public static void main(String[] args) throws IOException {
 		try {
 			try {
-				Runtime.getRuntime().exec("rmiregistry", null, new File("/Users/Claudia/Documents/workspace/Ludo/bin"));
+				Runtime.getRuntime().exec("rmiregistry", null, new File("."));
 				System.out.println("buon fine");
 			} catch (IOException e) {
 				System.out.println("errore nella rmiregistry");

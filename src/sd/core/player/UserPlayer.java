@@ -491,7 +491,7 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	public static void main(String[] args) {
 		try {
 			try {
-				Runtime.getRuntime().exec("rmiregistry", null, new File("/Users/Claudia/Documents/workspace/Ludo/bin"));
+				Runtime.getRuntime().exec("rmiregistry", null, new File("."));
 				System.out.println("buon fine");
 			} catch (IOException e) {
 				System.out.println("errore nella rmiregistry");
