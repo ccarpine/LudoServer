@@ -429,4 +429,9 @@ public class CoreGame implements Serializable {
 		/* per giocare da soli commentare tutto il corpo del metodo e lasciare solo il seguente*/
 		//return false;
 	}
+	
+	public int getIDMyPartecipant() {
+		return this.getIDPartecipantByColor(this.getMyPartecipant().getColor());
+	}
+	
 }
