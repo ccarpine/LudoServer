@@ -32,7 +32,7 @@ public interface UserPlayerInterface extends Remote {
 	/** it allows partcipant to start a turn
 	 * @throws RemoteException
 	 */
-	void initTurn() throws RemoteException;
+	void initTurn(List<Partecipant> partecipants) throws RemoteException;
 	
 	/** ping to a client-player to check if it's alive
 	 * @ip, the client-player ip address to check

@@ -96,14 +96,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
-		int activeBeforeMe = this.coreGame.getNrActivePartecipantBefore(this.coreGame.getIDMyPartecipant());
-		if (!buildGUIDone || activeBeforeMe == 0) {
+		if (!buildGUIDone) {
 			buildGUIDone = true;
-			if (activeBeforeMe == 0) {
-				this.startTurn();
-			} else {
-				this.buildGUIAndForward();
-			}
+			this.buildGUIAndForward();
 		}
 	}
 
@@ -239,8 +234,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
-						System.out.println("I send Init buil GUI to " +partecipant.getIp());
-						nextInTurn.buildGUI(coreGame.getPartecipants());
+						if (coreGame.getCurrentPartecipant().getIp().equals(partecipant.getIp())){
+							System.out.println("I send Init TURN to " +partecipant.getIp());
+							nextInTurn.initTurn(coreGame.getPartecipants());
+						}
+						else{
+							System.out.println("I send Init buil GUI to " +partecipant.getIp());
+							nextInTurn.buildGUI(coreGame.getPartecipants());
+						}
 						foundNextAlive = true;
 						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,coreGame.getTurn());
 					} catch (MalformedURLException | NotBoundException | RemoteException e) {
@@ -345,7 +346,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			try {
 				//System.out.println("4 INIT TURN to: " + nextInTurnPartecipant.getIp());
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
-				nextPlayer.initTurn();
+				nextPlayer.initTurn(this.coreGame.getPartecipants());
 				foundNextAlive = true;
 				/* wait for the next message it will be a Update status message 
 				 * you have to wait for 1 turn and for all the update message*/
@@ -399,7 +400,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 	/**
 	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
 	 */
-	public void initTurn() throws RemoteException {
+	public void initTurn(List<Partecipant> partecipants) throws RemoteException {
+		this.coreGame.setPartecipants(partecipants);
 		this.startTurn();
 	}
 	
