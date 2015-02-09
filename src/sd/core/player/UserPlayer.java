@@ -143,6 +143,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
+						System.out.println("Wait build gui: "+wait);
 						if (wait == 0) { 
 							startWaiting = false;
 							buildGUIAndForward(coreGame.getPartecipants());
