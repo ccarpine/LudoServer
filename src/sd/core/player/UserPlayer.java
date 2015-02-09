@@ -72,8 +72,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            server for a match
 	 */
 	public void start(List<String> gamersIp) {
-		
-		
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			// init core game
@@ -97,11 +95,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
-		if (!buildGUIDone) {
+		boolean iAmTheCurrent = this.coreGame.amItheCurrentPartecipant();
+		if (!buildGUIDone || iAmTheCurrent) {
 			buildGUIDone = true;
-			System.out.println("0 - BuildGui");
-			if (this.coreGame.amItheCurrentPartecipant()) {
-				this.initTurn();
+			if (iAmTheCurrent) {
+				this.startTurn();
 			} else {
 				this.buildGUIAndForward(partecipants);
 			}
@@ -248,7 +246,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				while (!foundNextAlive) {
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
-						System.out.println("Mando build gui a "+partecipant.getIp());
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
