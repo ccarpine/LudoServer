@@ -55,9 +55,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
-		this.whenCrash = 3;
+		this.whenCrash = 4;
 		this.turnCrash = 0;
-		this.whoCrash = 2;
+		this.whoCrash = 0;
 	}
 
 	/**
@@ -81,28 +81,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame = new CoreGame(gamersIp);
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
-			//TODO togliere
-			if (this.whenCrash == ConstantsForTest.AFTER_START){
-				if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
-					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-					System.exit(0);
-				}
-			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C1C2){
-				if (this.coreGame.getIDMyPartecipant()==0 ||this.coreGame.getIDMyPartecipant()==1){
-					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-					System.exit(0);
-				}
-			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C2C3){
-				if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
-					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-					System.exit(0);
-				}
-			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C3C1){
-					if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==0){
-						System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-						System.exit(0);
-				}
-			}
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
@@ -130,6 +108,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 				System.out.println("1 - BuildGui - I'm NOT the current");
 				this.buildGUIAndForward(partecipants);
 			}
+		
+			if(this.whenCrash==4){
+				if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
+					System.out.println("crash for test");
+					System.exit(0);
+				}
+			}
+		
+		
 		}
 	}
 
