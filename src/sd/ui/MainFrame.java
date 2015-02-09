@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 		this.setTitle("Do Not Be Angry");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(600, 500);
+		this.setSize(new Dimension(600, 500));
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.resetFrame();

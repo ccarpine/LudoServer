@@ -29,7 +29,7 @@ public class VictoryFrame extends JFrame {
 		this.setTitle("Do Not Be Angry");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(400, 400);
+		this.setSize(new Dimension(400, 400));
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.getContentPane().removeAll();
