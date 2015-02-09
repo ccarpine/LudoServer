@@ -438,17 +438,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		return this.controlBoardPanel;
 	}
 
-	public static void main(String[] args) {
-		try {
-			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
-			/* get the ip */
-			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
-			exc.printStackTrace();
-		}
-	}
-
 	@Override
 	/**
 	 * this method, if correctly invoked tells the invoker if the player is alive; moreover 
@@ -509,6 +498,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.isPlaying = false;				
 		new VictoryFrame(coreGame.getCurrentPartecipant().getColor());
 		this.mainFrame.dispose();
+	}
+	
+	public static void main(String[] args) {
+		try {
+			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
+			/* get the ip */
+			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
+		} catch (UnknownHostException | RemoteException | MalformedURLException exc) {
+			exc.printStackTrace();
+		}
 	}
 
 }
