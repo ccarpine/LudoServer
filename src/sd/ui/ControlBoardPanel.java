@@ -183,7 +183,7 @@ public class ControlBoardPanel extends BGPanel {
 		final int launchResult = coreGame.launchDie();
 		coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		JLabel resultDie = new JLabel();
-		resultDie.setBounds(60, 265, Constants.DIE_SIZE, Constants.DIE_SIZE);
+		resultDie.setBounds(60, 285, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		this.add(resultDie);
 
 		final Runnable makeDieRoll = new Runnable() {
@@ -211,12 +211,16 @@ public class ControlBoardPanel extends BGPanel {
 						else {
 							panel.removeAll();
 							JLabel resultDie = new JLabel();
-							resultDie.setBounds(60, 265, Constants.DIE_SIZE,
+							resultDie.setBounds(60, 285, Constants.DIE_SIZE,
 									Constants.DIE_SIZE);
 							panel.add(resultDie);
 							resultDie.setIcon(new ImageIcon(
 									exactDieFaces[launchResult - 1][0]));
 							((Timer) e.getSource()).stop();
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e1) {
+							}
 							userPlayer.getGamePanel().makePossibleMoveFlash();	
 						}
 
