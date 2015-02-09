@@ -36,6 +36,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private int result;
 	private boolean buildGUIDone;
 	private boolean firstCycleDone;
+	/* variable for test */
+	private int whenCrash;
+	private int turnCrash;
 	/**
 	 * when launched, it creates a future game player giving him the possibility
 	 * to register at the server
@@ -50,6 +53,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
+		this.whenCrash = -1;
+		this.turnCrash = 0;
 	}
 
 	/**
