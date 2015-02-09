@@ -5,10 +5,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,6 +33,8 @@ public class ControlBoardPanel extends BGPanel {
 	private JLabel timeOfTurn;
 	private long countdown;
 	private JButton die;
+	private BufferedImage[] animationBuffer;
+	private BufferedImage[][] exactDieFaces;
 
 	/**
 	 * 
@@ -44,6 +48,8 @@ public class ControlBoardPanel extends BGPanel {
 		this.coreGame = coreGame;
 		this.userPlayer = userPlayer;
 		this.countdown = Constants.MAX_TIME_FOR_TURN;
+		this.initAnimationBuffer();
+		this.initExactDieFaces();
 	}
 
 	public void drawControlBoardGUI(boolean isDoubleTurn) {
@@ -126,29 +132,17 @@ public class ControlBoardPanel extends BGPanel {
 	 * @return multidimensional array of buffered images for the 6 final image
 	 *         representing the die luaunch
 	 */
-	private BufferedImage[][] initExactDieFaces() {
-		BufferedImage[][] result = new BufferedImage[6][1];
-		int row = -1;
+	private void initExactDieFaces() {
+		this.exactDieFaces = new BufferedImage[6][1];
 		String myColor = this.coreGame.getMyPartecipant().getColor();
-		if (myColor.equals(Constants.COLOR[0])) {
-			row = 0;
-		} else if (myColor.equals(Constants.COLOR[1])) {
-			row = 2;
-		} else if (myColor.equals(Constants.COLOR[2])) {
-			row = 4;
-		} else if (myColor.equals(Constants.COLOR[3])) {
-			row = 1;
-		} else if (myColor.equals(Constants.COLOR[4])) {
-			row = 5;
-		} else if (myColor.equals(Constants.COLOR[5])) {
-			row = 3;
+		for(int i = 0; i < 6; i++) {
+			try {
+				this.exactDieFaces[i][0] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+myColor+"_"+i+1+".png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		int offset = 0;
-		for (int i = 0; i < 6; i++) {
-			result[i][0] = DieSprite.getSprite(i, row, offset);
-			offset += 2;
-		}
-		return result;
 	}
 
 	/**
@@ -156,16 +150,21 @@ public class ControlBoardPanel extends BGPanel {
 	 * @return create array of buffered image with all possibile image for the
 	 *         die while is routing
 	 */
-	private BufferedImage[] initAnimationBuffer() {
-		BufferedImage[] result = new BufferedImage[36];
+	private void initAnimationBuffer() {
+		this.animationBuffer = new BufferedImage[36];
 		int index = 0;
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < Constants.COLOR.length; i++) {
 			for (int j = 0; j < 6; j++) {
-				result[index] = DieSprite.getSprite(j, i, 0);
+				try {
+					this.animationBuffer[index] = ImageIO.read(ClassLoader.getSystemResource("sd/ui/images/bigDice/"+Constants.COLOR[i]+"_"+j+1+".png"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				index++;
 			}
 		}
-		return result;
+		
 	}
 
 	/**
@@ -181,8 +180,6 @@ public class ControlBoardPanel extends BGPanel {
 		 * because of the call to initTurn()
 		 */
 
-		final BufferedImage[] animationBuffer = initAnimationBuffer();
-		final BufferedImage[][] exactDieFaces = initExactDieFaces();
 		final int launchResult = coreGame.launchDie();
 		coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		JLabel resultDie = new JLabel();
