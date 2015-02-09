@@ -2,6 +2,7 @@ package sd.core.player;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -488,13 +489,16 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	
 	public static void main(String[] args) {
 		try {
+			try {
+				Runtime.getRuntime().exec("rmiregistry");
+			} catch (IOException e) {
+				//e.printStackTrace();
+			}
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
-			Registry registry = LocateRegistry.createRegistry( 1099 );
-			registry.rebind("RMIGameClient", client);
-			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			//Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
-		} catch ( RemoteException exc) {
+			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
+		} catch ( RemoteException | UnknownHostException | MalformedURLException exc) {
 			exc.printStackTrace();
 		}
 	}
