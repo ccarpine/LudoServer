@@ -209,6 +209,7 @@ public class ControlBoardPanel extends BGPanel {
 						}
 
 						else {
+							((Timer) e.getSource()).stop();
 							panel.removeAll();
 							JLabel resultDie = new JLabel();
 							resultDie.setBounds(60, 285, Constants.DIE_SIZE,
@@ -216,7 +217,7 @@ public class ControlBoardPanel extends BGPanel {
 							panel.add(resultDie);
 							resultDie.setIcon(new ImageIcon(
 									exactDieFaces[launchResult - 1][0]));
-							((Timer) e.getSource()).stop();
+							
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e1) {
