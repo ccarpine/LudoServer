@@ -318,11 +318,8 @@ public class CoreGame implements Serializable {
 	 * 			exept for the fist player that wait for init turn (he has to receive the last buil gui message)
 	 */
 	public long getTimeForTheFirstCycle() {
-		long timeToWait = 0;
-		int activePartecipantBeforeMe = 0;
-		
-		activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition());
-		timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + 
+		int activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition());
+		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + 
 				this.getNrActivePartecipantAfter((this.getMyPartecipant().getColorPosition()+1)) * Constants.MAX_TIME_TO_BUILD_GUI;
 		
 		if (activePartecipantBeforeMe > 0) {

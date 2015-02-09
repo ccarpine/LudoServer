@@ -21,7 +21,6 @@ import sd.ui.IntroPanel;
 import sd.ui.MainFrame;
 import sd.ui.VictoryFrame;
 import sd.util.Constants;
-import sd.util.ConstantsForTest;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
  * che avviene tutto nella classe MainGame */
@@ -102,13 +101,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 			buildGUIDone = true;
 			System.out.println("0 - BuildGui");
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				System.out.println("1 - BuildGui - I'm the current");
 				this.initTurn();
 			} else {
-				System.out.println("1 - BuildGui - I'm NOT the current");
 				this.buildGUIAndForward(partecipants);
 			}
-		
+			// TODO
 			if(this.whenCrash==4){
 				if (this.whoCrash==this.coreGame.getIDMyPartecipant()){
 					System.out.println("crash for test");
@@ -143,38 +140,24 @@ public class UserPlayer extends UnicastRemoteObject implements
 				switch (phase) {
 					case Constants.PHASE_BUILD_GUI:
 						wait = coreGame.getTimeForBuildGUI();
-						System.out.println("Wait build gui: "+wait);
 						if (wait == 0) { 
 							startWaiting = false;
 							buildGUIAndForward(coreGame.getPartecipants());
 						}
-						//System.out.println("BUILD GUI. tempo di attesa: "+ wait/1000 + "sec");
 						break;
 					case Constants.PHASE_FIRST_CYCLE:
 						wait = coreGame.getTimeForTheFirstCycle();
 						if (wait == Constants.LATENCY) {
-							System.out.println("BUILD GUI con wait = latency allora chiamo initTurn");
 							startWaiting = false;
-							try {
-								initTurn();
-							} catch (RemoteException e) {
-								e.printStackTrace();
-							};
+							startTurn();
 						}
 						break;
 					case Constants.PHASE_CYCLE:
 						wait = coreGame.getTimeForCycle(type, isDubleTurn);
-						/*if (type==0) {
-							System.out.println("PHASE CYCLE --UPDATE NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
-						}
-						else{
-							System.out.println("PHASE CYCLE --PLAY NEXT (duble turn "+ isDubleTurn +"). tempo di attesa: "+ wait/1000 + "sec");
-						}*/
 						break;
 					default:
 						break;
 				}
-				
 				if (startWaiting) {
 					while (wait > 0 && isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
 							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
@@ -265,6 +248,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				while (!foundNextAlive) {
 					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
 					try {
+						System.out.println("Mando build gui a "+partecipant.getIp());
 						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
 						nextInTurn.buildGUI(coreGame.getPartecipants());
 						foundNextAlive = true;
