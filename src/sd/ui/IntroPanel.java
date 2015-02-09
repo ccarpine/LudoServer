@@ -120,11 +120,10 @@ public class IntroPanel extends BGPanel {
 					try {
 						Thread.sleep(1000);
 						timeToStart -= 1000;
-
 					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
 				}
+				countdown.setText("Ready! Starting game...");
 			}
 		}).start();
 		new Thread(new Runnable() {
@@ -135,9 +134,9 @@ public class IntroPanel extends BGPanel {
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
 				}
+				waitingLabel.setVisible(false);
 			}
 		}).start();
 	}
