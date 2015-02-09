@@ -137,6 +137,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						break;
 					case Constants.PHASE_FIRST_CYCLE:
 						wait = coreGame.getTimeForTheFirstCycle();
+						System.out.println("wait:"+wait);
 						if (wait == Constants.LATENCY) {
 							startWaiting = false;
 							startTurn();

@@ -319,6 +319,7 @@ public class CoreGame implements Serializable {
 	 */
 	public long getTimeForTheFirstCycle() {
 		int activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition());
+		System.out.println("active before me"+ activePartecipantBeforeMe);
 		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + 
 				this.getNrActivePartecipantAfter((this.getMyPartecipant().getColorPosition()+1)) * Constants.MAX_TIME_TO_BUILD_GUI;
 		
