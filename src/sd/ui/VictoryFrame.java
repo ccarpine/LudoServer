@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import sd.core.CoreGame;
 import sd.util.Constants;
 import sd.util.MyFont;
 
@@ -21,8 +22,9 @@ public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public VictoryFrame(String colorWinner) {
+	public VictoryFrame(CoreGame coreGame) {
 		super();
+		String colorWinner = coreGame.getCurrentPartecipant().getColor();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Do not Be Angry");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +50,11 @@ public class VictoryFrame extends JFrame {
 			}
 		});
 		panel.add(newGame);
-		JLabel message = new JLabel("<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>");
+		String sentence = "<html><center>"+colorWinner+"<br>is the<br>winner!</center></html>";
+		if (colorWinner.equals(coreGame.getMyPartecipant().getColor())) {
+			sentence = "<html><center>You are<br>is the<br>winner!</center></html>";
+		}
+		JLabel message = new JLabel(sentence);
 		message.setBounds(215, -5, 200, 250);
 		message.setFont(new MyFont().getMyFont(Font.PLAIN, 32));
 		if (colorWinner.equals(Constants.COLOR[0])) {

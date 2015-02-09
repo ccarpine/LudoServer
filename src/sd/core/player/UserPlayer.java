@@ -479,7 +479,7 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	
 	private void showVictory() {
 		this.isPlaying = false;				
-		new VictoryFrame(coreGame.getCurrentPartecipant().getColor());
+		new VictoryFrame(coreGame);
 		this.mainFrame.dispose();
 	}
 	
