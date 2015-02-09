@@ -24,8 +24,7 @@ import sd.util.Constants;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
  * che avviene tutto nella classe MainGame */
-public class UserPlayer extends UnicastRemoteObject implements
-		UserPlayerInterface {
+public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterface {
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
@@ -36,10 +35,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	private int result;
 	private boolean buildGUIDone;
 	private boolean firstCycleDone;
-	/* variable for test */
-	private int whenCrash;
-	private int turnCrash;
-	private int whoCrash;
+
 	/**
 	 * when launched, it creates a future game player giving him the possibility
 	 * to register at the server
@@ -54,9 +50,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
-		this.whenCrash = 5;
-		this.turnCrash = 0;
-		this.whoCrash = 0;
 	}
 
 	/**
@@ -342,12 +335,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
 				nextPlayer.initTurn(this.coreGame.getPartecipants());
 				foundNextAlive = true;
-				if (coreGame.getIDMyPartecipant()==1){
-					System.out.println("Esco per test !!!");
-					System.exit(1);
-					
-				}
-				
 				/* wait for the next message it will be a Update status message 
 				 * you have to wait for 1 turn and for all the update message*/
 				if (doWait)
