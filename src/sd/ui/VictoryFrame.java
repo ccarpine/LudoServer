@@ -26,7 +26,7 @@ public class VictoryFrame extends JFrame {
 		super();
 		String colorWinner = coreGame.getCurrentPartecipant().getColor();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
-		this.setTitle("Do not Be Angry");
+		this.setTitle("Do Not Be Angry");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(400, 400);

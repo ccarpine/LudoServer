@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
-		this.setTitle("Do not Be Angry");
+		this.setTitle("Do Not Be Angry");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(600, 500);
