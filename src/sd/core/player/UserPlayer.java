@@ -72,26 +72,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            server for a match
 	 */
 	public void start(List<String> gamersIp) {
-		if (this.whenCrash == 0){
-			if (this.whoCrash==this.coreGame.getIDMyPartecipant())
-				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-				System.exit(0);
-		}else if(this.whenCrash == 1){
-			if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
-				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-				System.exit(0);
-			}
-		}else if(this.whenCrash == 2){
-			if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==3){
-				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-				System.exit(0);
-			}
-		}else if(this.whenCrash == 3){
-				if (this.coreGame.getIDMyPartecipant()==3 ||this.coreGame.getIDMyPartecipant()==1){
-					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
-					System.exit(0);
-			}
-		}
+		
 		
 		if (!this.isPlaying) {
 			this.isPlaying = true;
@@ -99,6 +80,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.coreGame = new CoreGame(gamersIp);
 			this.gamePanel = new GamePanel(this.coreGame, this);
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
+			//TODO togliere
+			if (this.whenCrash == 0){
+				if (this.whoCrash==this.coreGame.getIDMyPartecipant())
+					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+					System.exit(0);
+			}else if(this.whenCrash == 1){
+				if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
+					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+					System.exit(0);
+				}
+			}else if(this.whenCrash == 2){
+				if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==3){
+					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+					System.exit(0);
+				}
+			}else if(this.whenCrash == 3){
+					if (this.coreGame.getIDMyPartecipant()==3 ||this.coreGame.getIDMyPartecipant()==1){
+						System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+						System.exit(0);
+				}
+			}
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward(this.coreGame.getPartecipants());
