@@ -56,7 +56,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
 		this.whenCrash = 4;
 		this.turnCrash = 0;
-		this.whoCrash = 1;
+		this.whoCrash = 2;
 	}
 
 	/**
