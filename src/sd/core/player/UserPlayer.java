@@ -39,6 +39,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	/* variable for test */
 	private int whenCrash;
 	private int turnCrash;
+	private int whoCrash;
 	/**
 	 * when launched, it creates a future game player giving him the possibility
 	 * to register at the server
@@ -55,6 +56,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
 		this.whenCrash = -1;
 		this.turnCrash = 0;
+		this.whoCrash = 0;
 	}
 
 	/**
@@ -70,7 +72,27 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            server for a match
 	 */
 	public void start(List<String> gamersIp) {
-
+		if (this.whenCrash == 0){
+			if (this.whoCrash==this.coreGame.getIDMyPartecipant())
+				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+				System.exit(0);
+		}else if(this.whenCrash == 1){
+			if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
+				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+				System.exit(0);
+			}
+		}else if(this.whenCrash == 2){
+			if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==3){
+				System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+				System.exit(0);
+			}
+		}else if(this.whenCrash == 3){
+				if (this.coreGame.getIDMyPartecipant()==3 ||this.coreGame.getIDMyPartecipant()==1){
+					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
+					System.exit(0);
+			}
+		}
+		
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			// init core game
