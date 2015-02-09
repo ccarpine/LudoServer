@@ -490,7 +490,7 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
-			Registry registry = LocateRegistry.createRegistry( 1098 );
+			Registry registry = LocateRegistry.createRegistry( 1099 );
 			registry.rebind("RMIGameClient", client);
 			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			//Naming.rebind("//" + ipAddress + "/RMIGameClient", client);

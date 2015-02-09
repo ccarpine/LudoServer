@@ -4,7 +4,7 @@ public class Constants {
 	
 	public static final String IP_SERVER = "192.168.1.64";
 
-	public static final int MAX_PLAYER = 3;
+	public static final int MAX_PLAYER = 2;
 	public static final long MAX_WAIT_FOR_MATCH = 30000L;
 	public static final int BENCH_DIMENSION = 4;
 	
