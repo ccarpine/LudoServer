@@ -80,7 +80,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			this.controlBoardPanel = new ControlBoardPanel(this.coreGame, this);
 			// init GUI here
 			if (this.coreGame.amItheCurrentPartecipant()) {
-				this.buildGUIAndForward(this.coreGame.getPartecipants());
+				this.buildGUIAndForward();
 			} else {
 				this.waitFor(Constants.PHASE_BUILD_GUI,-1,false, this.coreGame.getTurn());
 			}
@@ -95,14 +95,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * have finished buildind their GUI. The first player can start the game
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
-		boolean iAmTheCurrent = this.coreGame.amItheCurrentPartecipant();
-		System.out.println("Ricevo messaggio di build gui e sono il current?: "+iAmTheCurrent);
-		if (!buildGUIDone || iAmTheCurrent) {
+		this.coreGame.setPartecipants(partecipants);
+		int activeBeforeMe = this.coreGame.getNrActivePartecipantBefore(this.coreGame.getIDMyPartecipant());
+		System.out.println("Ricevo messaggio di build gui e sono il current?: "+activeBeforeMe);
+		if (!buildGUIDone || activeBeforeMe == 0) {
 			buildGUIDone = true;
-			if (iAmTheCurrent) {
+			if (activeBeforeMe == 0) {
 				this.startTurn();
 			} else {
-				this.buildGUIAndForward(partecipants);
+				this.buildGUIAndForward();
 			}
 			// TODO
 			if(this.whenCrash==4){
@@ -141,7 +142,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						wait = coreGame.getTimeForBuildGUI();
 						if (wait == 0) { 
 							startWaiting = false;
-							buildGUIAndForward(coreGame.getPartecipants());
+							buildGUIAndForward();
 						}
 						break;
 					case Constants.PHASE_FIRST_CYCLE:
@@ -230,8 +231,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * permission to the one next to him in the list of the partecipants for
 	 * that match.
 	 */
-	private void buildGUIAndForward(final List<Partecipant> partecipants) {
-		this.coreGame.setPartecipants(partecipants);
+	private void buildGUIAndForward() {
 		new Thread() {
 			public void run() {
 				try {
