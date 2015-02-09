@@ -307,7 +307,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 						System.out.println("4 UPDATE SEND (UPDATE_NEXT)");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
 						System.out.println("UPDATE NEXT turn====" + coreGame.getTurn());
-						if (coreGame.getIDMyPartecipant()==2 && coreGame.getTurn()==1){
+						if (coreGame.getIDMyPartecipant()==0 && coreGame.getTurn()==2){
 							System.out.println("Esco per test !!!");
 							System.exit(1);
 							
