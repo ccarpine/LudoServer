@@ -96,6 +96,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		boolean iAmTheCurrent = this.coreGame.amItheCurrentPartecipant();
+		System.out.println("Ricevo messaggio di build gui e sono il current?: "+iAmTheCurrent);
 		if (!buildGUIDone || iAmTheCurrent) {
 			buildGUIDone = true;
 			if (iAmTheCurrent) {
