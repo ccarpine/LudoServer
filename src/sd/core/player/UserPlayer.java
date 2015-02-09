@@ -88,17 +88,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 					System.exit(0);
 				}
 			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C1C2){
-				if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
+				if (this.coreGame.getIDMyPartecipant()==0 ||this.coreGame.getIDMyPartecipant()==1){
 					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 					System.exit(0);
 				}
 			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C2C3){
-				if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==3){
+				if (this.coreGame.getIDMyPartecipant()==1 ||this.coreGame.getIDMyPartecipant()==2){
 					System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 					System.exit(0);
 				}
 			}else if(this.whenCrash == ConstantsForTest.AFTER_START_C3C1){
-					if (this.coreGame.getIDMyPartecipant()==3 ||this.coreGame.getIDMyPartecipant()==1){
+					if (this.coreGame.getIDMyPartecipant()==2 ||this.coreGame.getIDMyPartecipant()==0){
 						System.out.println("Esco per test. Partecipante: " +this.whoCrash );
 						System.exit(0);
 				}
