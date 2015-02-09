@@ -29,7 +29,6 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
-	private String serverIP;
 	private GamePanel gamePanel;
 	private ControlBoardPanel controlBoardPanel;
 	private CoreGame coreGame;
@@ -45,13 +44,12 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 *            , the ip address of the register server
 	 * 
 	 */
-	public UserPlayer(String ServerIP) throws RemoteException {
+	public UserPlayer() throws RemoteException {
 		this.buildGUIDone = false;
 		this.firstCycleDone = false;
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
-		this.serverIP = ServerIP;
-		this.mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
+		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
 	}
 
 	/**
@@ -439,7 +437,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	public static void main(String[] args) {
 		try {
-			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer(args[0]);
+			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			/* get the ip */
 			String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			Naming.rebind("//" + ipAddress + "/RMIGameClient", client);
@@ -506,7 +504,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	
 	private void showVictory() {
 		this.isPlaying = false;				
-		new VictoryFrame(serverIP, coreGame.getCurrentPartecipant().getColor());
+		new VictoryFrame(coreGame.getCurrentPartecipant().getColor());
 		this.mainFrame.dispose();
 	}
 

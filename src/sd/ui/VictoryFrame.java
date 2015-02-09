@@ -21,7 +21,7 @@ public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public VictoryFrame(final String serverIP, String colorWinner) {
+	public VictoryFrame(String colorWinner) {
 		super();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
 		this.setTitle("Don't Be Angry");
@@ -44,7 +44,7 @@ public class VictoryFrame extends JFrame {
 		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newGame(serverIP);
+				newGame();
 			}
 		});
 		panel.add(newGame);
@@ -79,10 +79,10 @@ public class VictoryFrame extends JFrame {
 		panel.updateUI();
 	}
 
-	private void newGame(String serverIP) {
+	private void newGame() {
 		this.setVisible(false);
 		MainFrame mainFrame = new MainFrame();
-		mainFrame.addPanel(new IntroPanel(serverIP), BorderLayout.CENTER);
+		mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
 		this.dispose();
 	}
 	

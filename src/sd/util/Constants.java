@@ -1,6 +1,8 @@
 package sd.util;
 
 public class Constants {
+	
+	public static final String IP_SERVER = "192.168.1.64";
 
 	public static final int MAX_PLAYER = 3;
 	public static final long MAX_WAIT_FOR_MATCH = 9000L;
@@ -110,6 +112,5 @@ public class Constants {
 	public static final int PHASE_BUILD_GUI = 0;
 	public static final int PHASE_FIRST_CYCLE = 1;
 	public static final int PHASE_CYCLE = 2;
-	
 	
 }
