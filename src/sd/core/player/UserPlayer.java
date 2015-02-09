@@ -305,6 +305,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (UPDATE_NEXT)");
 						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
+						System.out.println("UPDATE NEXT turn====" + coreGame.getTurn());
 						if (coreGame.getIDMyPartecipant()==1 && coreGame.getTurn()==2){
 							System.out.println("Esco per test !!!");
 							System.exit(1);
