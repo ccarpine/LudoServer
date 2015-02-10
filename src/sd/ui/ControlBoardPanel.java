@@ -143,8 +143,6 @@ public class ControlBoardPanel extends BGPanel {
 						.getSystemResource("sd/ui/images/bigDice/" + myColor
 								+ "_" + (i + 1) + ".png"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
@@ -165,8 +163,6 @@ public class ControlBoardPanel extends BGPanel {
 									+ Constants.COLOR[i] + "_" + (j + 1)
 									+ ".png"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 				index++;
 			}
@@ -186,22 +182,16 @@ public class ControlBoardPanel extends BGPanel {
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
 		 */
-
 		final int launchResult = coreGame.launchDie();
 		coreGame.getMyPartecipant().setLastLaunch(launchResult);
 		JLabel resultDie = new JLabel();
 		resultDie.setBounds(60, 305, Constants.DIE_SIZE, Constants.DIE_SIZE);
 		this.add(resultDie);
-
 		final Runnable makeDieRoll = new Runnable() {
-
 			@Override
 			public void run() {
-
 				Timer timer = new Timer(50, new ActionListener() {
-
 					private int counter = 0;
-
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						if (counter <= Constants.ROTATIONS) {
@@ -211,7 +201,6 @@ public class ControlBoardPanel extends BGPanel {
 							resultDie.setBounds(60, 305, Constants.DIE_SIZE,
 									Constants.DIE_SIZE);
 							panel.add(resultDie);
-
 							if (counter != Constants.ROTATIONS)
 								resultDie.setIcon(new ImageIcon(
 										animationBuffer[new Random()
@@ -219,10 +208,7 @@ public class ControlBoardPanel extends BGPanel {
 							if (counter == Constants.ROTATIONS)
 								resultDie.setIcon(new ImageIcon(
 										exactDieFaces[launchResult - 1][0]));
-
-						}
-
-						else {
+						} else {
 							((Timer) e.getSource()).stop();
 							panel.removeAll();
 							JLabel resultDie = new JLabel();
@@ -231,36 +217,23 @@ public class ControlBoardPanel extends BGPanel {
 							panel.add(resultDie);
 							resultDie.setIcon(new ImageIcon(
 									exactDieFaces[launchResult - 1][0]));
-
-							/*
-							 * try { Thread.sleep(1000); } catch
-							 * (InterruptedException e1) { }
-							 */
 							userPlayer.getGamePanel().makePossibleMoveFlash();
 						}
 
 					}
 				});
-
 				timer.start();
-
 			}
-
 		};
-
 		Thread roller = new Thread() {
 			public void run() {
-
 				try {
 					SwingUtilities.invokeAndWait(makeDieRoll);
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
-
 			}
 		};
 		roller.start();
-
 	}
 
 	/**
@@ -324,7 +297,6 @@ public class ControlBoardPanel extends BGPanel {
 				this.currentPlayer.get(i).setVisible(false);
 			}
 		}
-
 	}
 
 	/**
@@ -340,7 +312,6 @@ public class ControlBoardPanel extends BGPanel {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
 					countdown -= 1000;
 					int seconds = (int) (countdown / 1000);

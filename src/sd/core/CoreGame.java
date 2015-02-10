@@ -75,7 +75,6 @@ public class CoreGame implements Serializable {
 			return this.ipCurrentPartecipant.equals(Inet4Address.getLocalHost()
 					.getHostAddress());
 		} catch (UnknownHostException | NullPointerException e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -262,14 +261,11 @@ public class CoreGame implements Serializable {
 						.getMyPartecipant().getIp()))) {
 					result++;
 				}
-
 				else
 					return result;
 			}
 		}
-
 		return result;
-
 	}
 
 	/***
@@ -364,10 +360,6 @@ public class CoreGame implements Serializable {
 	public long getTimeForCycle(int type, boolean isDubleTurn) {
 		long timeToWait = this.getNrActivePartecipantAfter(0)
 				* Constants.LATENCY;
-		// timeToWait += Constants.MAX_TIME_FOR_TURN +
-		// (this.getNrActivePartecipantAfter(0) - 1) *
-		// Constants.MAX_TIME_FOR_UPDATE;
-
 		Partecipant myPartecipant = this.getMyPartecipant();
 		if (type == Constants.UPDATE_NEXT) {
 			if (myPartecipant.getIp().equals(this.ipCurrentPartecipant)) {
@@ -410,17 +402,13 @@ public class CoreGame implements Serializable {
 		Partecipant partecipant = this.getPartecipants().get(
 				(position + this.getPartecipants().size() - difference)
 						% this.getPartecipants().size());
-
 		while (!partecipant.isStatusActive()) {
-
 			difference++;
 			partecipant = this.getPartecipants().get(
 					(position + this.getPartecipants().size() - difference)
 							% this.getPartecipants().size());
 		}
-
 		return partecipant;
-
 	}
 
 	/**
@@ -458,9 +446,6 @@ public class CoreGame implements Serializable {
 		if (this.getNrActivePartecipantAfter(0) == 1)
 			return true;
 		return this.gameBoard.isVictory(partecipant);
-		// /* per giocare da soli commentare tutto il corpo del metodo e
-		// lasciare solo il seguente*/
-		// return false;
 	}
 
 	public int getIDMyPartecipant() {

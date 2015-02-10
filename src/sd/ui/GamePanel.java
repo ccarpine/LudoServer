@@ -118,12 +118,10 @@ public class GamePanel extends BGPanel {
 				if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()){
 					if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1 ) {
 						colorPawn = Constants.COLOR[i]+"_"+Constants.COLOR[i];
-					}
-					else {
+					} else {
 						colorPawn = Constants.COLOR[i];
 					}
-				}
-				else {
+				} else {
 					colorPawn = Constants.COLOR[i];
 				}
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
@@ -134,7 +132,6 @@ public class GamePanel extends BGPanel {
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
 		}
-		
 		this.updateUI();
 	}
 	

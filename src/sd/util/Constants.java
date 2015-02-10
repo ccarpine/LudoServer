@@ -1,6 +1,8 @@
 package sd.util;
 
 public class Constants {
+	
+	public static final String NAME_GAME = "Do Not Be Angry";
 
 	public static final String IP_SERVER = "130.136.4.207";
 	public static final int MAX_PLAYER = 6;

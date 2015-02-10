@@ -572,13 +572,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 		new VictoryFrame(coreGame);
 		this.mainFrame.dispose();
 	}
-
+	
 	public static void main(String[] args) {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			System.out.println("Provo la Create registry");
 			Registry registry = LocateRegistry.createRegistry(6000);
-			registry.rebind("rmi://"+Inet4Address.getLocalHost().getHostAddress()+"RMIGameClient", client);
+			registry.rebind("rmi://"+Inet4Address.getLocalHost().getHostAddress()+"/RMIGameClient", client);
 		} catch (IOException e) {
 			System.out.println("Registry not called");
 		}

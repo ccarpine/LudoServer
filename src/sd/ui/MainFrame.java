@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import sd.util.Constants;
+
 
 public class MainFrame extends JFrame {
 
@@ -17,7 +19,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
-		this.setTitle("Do Not Be Angry");
+		this.setTitle(Constants.NAME_GAME);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(new Dimension(600, 500));
