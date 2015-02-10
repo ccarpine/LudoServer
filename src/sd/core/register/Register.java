@@ -172,13 +172,13 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			Registry registry = null;
 			try {
 				System.out.println("Provo la Create registry");
-				registry = LocateRegistry.createRegistry(1099);
+				registry = LocateRegistry.createRegistry(6000);
 			} catch (ConnectException e) {
 				System.out.println("Create registry fallita");
-				registry = LocateRegistry.getRegistry(1099);
+				// registry = LocateRegistry.getRegistry(6000);
 				System.out.println("Get registry riuscita");
 			} finally {
-				// registry.rebind("RMILudoServer", server);
+				registry.rebind("RMILudoServer", server);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
