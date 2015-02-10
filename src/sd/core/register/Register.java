@@ -2,6 +2,7 @@ package sd.core.register;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -119,23 +120,6 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		return false;
 	}
 	
-	/** the main that allow the server to reacheable for a client
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
-		try {
-			RegisterInterface server = (RegisterInterface) new Register();
-			Registry registry  = LocateRegistry.getRegistry();
-			registry.rebind("RMILudoServer", server);
-			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
-			//Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
-		} catch (RemoteException /*| MalformedURLException | UnknownHostException*/ e) {
-			System.out.println("errore nella rebind");
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public void deletePartecipant(String ip) throws RemoteException {
 		for(int i=0; i<this.gamersIp.size(); i++) {
@@ -153,5 +137,27 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		System.out.println(ip + " exited");
 		
 	}
+
+	/** the main that allow the server to reacheable for a client
+	 * @param args
+	 * @throws IOException 
+	 */
+	public static void main(String[] args) {
+		try {
+			RegisterInterface server = (RegisterInterface) new Register();
+			Registry registry = null;
+			try {
+				registry  = LocateRegistry.createRegistry(1099);
+			} catch ( ConnectException e) {
+				registry  = LocateRegistry.getRegistry();
+			}
+			finally{
+				registry.rebind("RMILudoServer", server);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }
