@@ -601,7 +601,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				registry = LocateRegistry.createRegistry(1099);
 			} catch (Exception e) {
 				System.out.println("Create registry fallita");
-				registry = LocateRegistry.getRegistry();
+				registry = LocateRegistry.getRegistry(1099);
 				System.out.println("Get registry riuscita");
 			} finally {
 				registry.rebind("RMIGameClient", client);
