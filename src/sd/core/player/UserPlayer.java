@@ -600,7 +600,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				LocateRegistry.createRegistry(1099);
 			} catch (RemoteException e) {
 				System.out.println("Create registry fallita");
-				LocateRegistry.getRegistry();
+				// LocateRegistry.getRegistry();
 				System.out.println("Get registry riuscita");
 
 			} finally {
