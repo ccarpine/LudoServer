@@ -2,8 +2,6 @@ package sd.core.register;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -43,15 +41,9 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
 					counter += 1000;
 				}
-				if (resetTimer)
-					System.out.println("reset del timer!!");
-				else
-					System.out.println("readyToPlay " + readyToPlay
-							+ " - counter " + counter);
 				startGame();
 				initVariable();
 			}
@@ -70,26 +62,25 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	/**
 	 * allows the registred player to start the match
+	 * @throws RemoteException 
 	 */
 	private void startGame() {
 		List<UserPlayerInterface> UsersPlayer = new ArrayList<UserPlayerInterface>();
 		// loockup with all gamers and send request to all
 		for (int i = 0; i < this.gamersIp.size(); i++) {
 			try {
-				UsersPlayer.add((UserPlayerInterface) Naming.lookup("rmi://"
+				Registry registry = LocateRegistry.getRegistry(this.gamersIp.get(i), 6000);
+				UsersPlayer.add((UserPlayerInterface) registry.lookup("rmi://"
 						+ this.gamersIp.get(i) + "/RMIGameClient"));
-			} catch (MalformedURLException | RemoteException
-					| NotBoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (RemoteException | NotBoundException e) {
+				System.out.println("The user "+this.gamersIp.get(i)+" is not reacheable!");
 			}
 		}
 		for (int i = this.gamersIp.size() - 1; i >= 0; i--) {
 			try {
 				UsersPlayer.get(i).start(this.gamersIp);
 			} catch (RemoteException e) {
-				System.out.println("L'utente " + this.gamersIp.get(i)
-						+ " non è raggiungibile!");
+				System.out.println("The user "+this.gamersIp.get(i)+" is not reacheable!");
 			}
 		}
 	}
@@ -169,8 +160,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	public static void main(String[] args) {
 		try {
 			RegisterInterface server = (RegisterInterface) new Register();
-			LocateRegistry.createRegistry(6000);
-			Registry registry = LocateRegistry.getRegistry(6000);
+			Registry registry = LocateRegistry.createRegistry(6000);
 			registry.rebind("rmi://"+Inet4Address.getLocalHost().getHostAddress()+"/RMILudoServer", server);
 		} catch (IOException e) {
 			System.out.println("Registry not called");

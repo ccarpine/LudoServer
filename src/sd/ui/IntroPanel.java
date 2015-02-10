@@ -5,9 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Inet4Address;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -108,7 +106,7 @@ public class IntroPanel extends BGPanel {
 					.getHostAddress());
 			return true;
 		} catch (RemoteException
-				| /* MalformedURLException | */NotBoundException
+				| NotBoundException
 				| UnknownHostException e) {
 			e.printStackTrace();
 			return false;
@@ -151,13 +149,14 @@ public class IntroPanel extends BGPanel {
 		}).start();
 	}
 
-	private void exit(String ipServer) {
+	private void exit(String serverIP) {
 		try {
-			RegisterInterface server = (RegisterInterface) Naming
-					.lookup("rmi://" + ipServer + "/RMILudoServer");
+			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
+			RegisterInterface server = (RegisterInterface) registry
+					.lookup("rmi://" + serverIP + "/RMILudoServer");
 			server.deletePartecipant(Inet4Address.getLocalHost()
 					.getHostAddress());
-		} catch (RemoteException | MalformedURLException | UnknownHostException
+		} catch (RemoteException | UnknownHostException
 				| NotBoundException exc) {
 			exc.printStackTrace();
 		} finally {

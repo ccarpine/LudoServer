@@ -3,8 +3,7 @@ package sd.core.player;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
+import java.net.Inet4Address;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,8 +23,6 @@ import sd.ui.MainFrame;
 import sd.ui.VictoryFrame;
 import sd.util.Constants;
 
-/* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
- * che avviene tutto nella classe MainGame */
 public class UserPlayer extends UnicastRemoteObject implements
 		UserPlayerInterface {
 
@@ -225,7 +222,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 													+ coreGame.getTurn());
 										}
 									}
-									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
+									Registry registry = LocateRegistry.getRegistry(previous.getIp(), 6000);
+									UserPlayerInterface tryPrevious = (UserPlayerInterface) registry
 											.lookup("rmi://" + previous.getIp()
 													+ "/RMIGameClient");
 									tryPrevious.isAlive(phase, coreGame
@@ -238,12 +236,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 							}
 							// the previous player has crashed and it must be
 							// set as unactive
-							catch (MalformedURLException | RemoteException
-									| NotBoundException e) {
-								System.out.println("WAIT FOR: set unactive"
-										+ previous.getIp());
-								coreGame.setUnactivePartecipant(previous
-										.getColor());
+							catch (RemoteException | NotBoundException e) {
+								System.out.println("User "+previous.getIp()+" unreacheable, i set him as inactive");
+								coreGame.setUnactivePartecipant(previous.getColor());
 							}
 						}
 					}
@@ -276,7 +271,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 							.getNextActivePartecipant(coreGame
 									.getMyPartecipant().getIp());
 					try {
-						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+						Registry registry = LocateRegistry.getRegistry(partecipant.getIp(), 6000);
+						UserPlayerInterface nextInTurn = (UserPlayerInterface) registry
 								.lookup("rmi://" + partecipant.getIp()
 										+ "/RMIGameClient");
 						if (coreGame.getCurrentPartecipant().getIp()
@@ -292,12 +288,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 						foundNextAlive = true;
 						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,
 								coreGame.getTurn());
-					} catch (MalformedURLException | NotBoundException
-							| RemoteException e) {
-						System.out
-								.println("Non c'era lo metto come inattivo e passo al successivo "
-										+ partecipant.getIp());
-						coreGame.setUnactivePartecipant(partecipant.getColor());
+					} catch (NotBoundException | RemoteException e) {
+						System.out.println("User "+partecipant.getIp()+" unreacheable, i set him as inactive");
 					}
 				}
 			}
@@ -400,9 +392,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 					.getNextActivePartecipant(this.coreGame.getMyPartecipant()
 							.getIp());
 			try {
-				// System.out.println("4 INIT TURN to: " +
-				// nextInTurnPartecipant.getIp());
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+				Registry registry = LocateRegistry.getRegistry(nextInTurnPartecipant.getIp(), 6000);
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) registry
 						.lookup("rmi://" + nextInTurnPartecipant.getIp()
 								+ "/RMIGameClient");
 				nextPlayer.initTurn(this.coreGame.getPartecipants());
@@ -414,8 +405,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				if (doWait)
 					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT,
 							false, this.coreGame.getTurn());
-			} catch (RemoteException | MalformedURLException
-					| NotBoundException e) {
+			} catch (RemoteException | NotBoundException e) {
 				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant
 						.getColor());
 			}
@@ -440,28 +430,18 @@ public class UserPlayer extends UnicastRemoteObject implements
 					.getNextActivePartecipant(this.coreGame.getMyPartecipant()
 							.getIp());
 			try {
-				// System.out.println("5 UPDATE STATUS to: " +
-				// nextInTurnPartecipant.getIp());
-				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+				Registry registry = LocateRegistry.getRegistry(nextInTurnPartecipant.getIp(), 6000);
+				UserPlayerInterface nextInTurn = (UserPlayerInterface) registry
 						.lookup("rmi://" + nextInTurnPartecipant.getIp()
 								+ "/RMIGameClient");
 				nextInTurn.updateStatus(partecipants, gameBoard,
 						ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
-				// System.out.println("5 UPDATE STATUS il mio dowait e':" +
-				// doWait);
 				if (doWait) {
-					/*
-					 * wait for the next message it will be a Update status
-					 * message
-					 */
-					// System.out.println("5 UPDATE STATUS faccio wait con dowait: "
-					// + doWait);
 					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT,
 							isDoubleTurn, this.coreGame.getTurn());
 				}
-			} catch (MalformedURLException | NotBoundException
-					| RemoteException e1) {
+			} catch (NotBoundException | RemoteException e1) {
 				boolean currentCrash = false;
 				if (nextInTurnPartecipant.getIp().equals(
 						coreGame.getCurrentPartecipant().getIp())) {
@@ -549,12 +529,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 				try {
 					System.out.println("IS ALIVE: invio la BUILD GUI a "
 							+ color);
-					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) Naming
+					Registry registry = LocateRegistry.getRegistry(nextInTurn.getIp(), 6000);
+					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) registry
 							.lookup("rmi://" + nextInTurn.getIp()
 									+ "/RMIGameClient");
 					nextInTurnPlayer.buildGUI(this.coreGame.getPartecipants());
 					foundNextAlive = true;
-				} catch (MalformedURLException | NotBoundException e) {
+				} catch (NotBoundException e) {
 					this.coreGame.setUnactivePartecipant(nextInTurn.getColor());
 				}
 			}
@@ -597,7 +578,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			System.out.println("Provo la Create registry");
 			Registry registry = LocateRegistry.createRegistry(6000);
-			registry.rebind("RMIGameClient", client);
+			registry.rebind("rmi://"+Inet4Address.getLocalHost().getHostAddress()+"RMIGameClient", client);
 		} catch (IOException e) {
 			System.out.println("Registry not called");
 		}
