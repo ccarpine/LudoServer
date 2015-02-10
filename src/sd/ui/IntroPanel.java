@@ -97,7 +97,7 @@ public class IntroPanel extends BGPanel {
 	 */
 	private boolean startConnection(String serverIP) {
 		try {
-			Registry registry = LocateRegistry.getRegistry(6000);
+			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
 			RegisterInterface server = (RegisterInterface) registry
 					.lookup("rmi://" + serverIP + "/RMILudoServer");
 			this.timeToStart = server.register(Inet4Address.getLocalHost()
