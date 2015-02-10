@@ -8,7 +8,6 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
@@ -595,17 +594,17 @@ public class UserPlayer extends UnicastRemoteObject implements
 	public static void main(String[] args) {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
-			Registry registry = null;
+			// Registry registry = null;
 			try {
 				System.out.println("Provo la Create registry");
-				registry = LocateRegistry.createRegistry(1099);
+				LocateRegistry.createRegistry(1099);
 			} catch (RemoteException e) {
 				System.out.println("Create registry fallita");
-				registry = LocateRegistry.getRegistry();
+				LocateRegistry.getRegistry();
 				System.out.println("Get registry riuscita");
 
 			} finally {
-				registry.rebind("RMIGameClient", client);
+				Naming.rebind("RMIGameClient", client);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
