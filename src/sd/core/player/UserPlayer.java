@@ -594,9 +594,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	public static void main(String[] args) {
 		try {
-			UserPlayerInterface client = new UserPlayer();
-			UserPlayerInterface stub = (UserPlayerInterface) UnicastRemoteObject
-					.exportObject(client, 0);
+			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			Registry registry = null;
 			try {
 				System.out.println("Provo la Create registry");
@@ -607,7 +605,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				System.out.println("Get registry riuscita");
 
 			} finally {
-				registry.rebind("RMIGameClient", stub);
+				registry.rebind("RMIGameClient", client);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
