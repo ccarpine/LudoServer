@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -16,6 +17,7 @@ import javax.swing.SwingUtilities;
 import sd.core.CoreGame;
 import sd.core.GameBoard;
 import sd.core.Partecipant;
+import sd.core.register.RegisterInterface;
 import sd.ui.ControlBoardPanel;
 import sd.ui.GamePanel;
 import sd.ui.IntroPanel;
@@ -49,7 +51,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		this.firstCycleDone = false;
 		this.isPlaying = false;
 		this.mainFrame = new MainFrame();
-		this.mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
+		this.mainFrame.addPanel(new IntroPanel(this), BorderLayout.CENTER);
 	}
 
 	/**
@@ -569,8 +571,36 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	private void showVictory() {
 		this.isPlaying = false;
-		new VictoryFrame(coreGame);
+		new VictoryFrame(this, coreGame);
 		this.mainFrame.dispose();
+	}
+	
+	public long startConnection(String serverIP) {
+		try {
+			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
+			RegisterInterface server = (RegisterInterface) registry
+					.lookup("rmi://" + serverIP + "/RMILudoServer");
+			return server.register(Inet4Address.getLocalHost()
+					.getHostAddress());
+		} catch (RemoteException
+				| NotBoundException
+				| UnknownHostException e) {
+			return -1L;
+		}
+	}
+	
+	public void exit(String serverIP) {
+		try {
+			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
+			RegisterInterface server = (RegisterInterface) registry
+					.lookup("rmi://" + serverIP + "/RMILudoServer");
+			server.deletePartecipant(Inet4Address.getLocalHost()
+					.getHostAddress());
+		} catch (RemoteException | UnknownHostException
+				| NotBoundException e) {
+		} finally {
+			System.exit(0);
+		}
 	}
 	
 	public static void main(String[] args) {

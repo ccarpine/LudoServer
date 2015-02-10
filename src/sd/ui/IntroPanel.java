@@ -4,25 +4,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import sd.core.register.RegisterInterface;
+import sd.core.player.UserPlayer;
 import sd.util.Constants;
 import sd.util.MyFont;
 
 public class IntroPanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
+	private UserPlayer userPlayer;
 	private JLabel waitingLabel;
 	private JLabel countdown;
 	private long timeToStart;
@@ -33,9 +28,10 @@ public class IntroPanel extends BGPanel {
 	 * @param serverIP
 	 *            , the ip of the server
 	 */
-	public IntroPanel() {
+	public IntroPanel(UserPlayer userPlayer) {
 		super("images/intro.jpg");
 		this.setLayout(null);
+		this.userPlayer = userPlayer;
 		JLabel ipServer = new JLabel("IP Server");
 		ipServer.setFont(new MyFont().getMyFont(Font.PLAIN, 12));
 		ipServer.setForeground(Color.WHITE);
@@ -98,18 +94,13 @@ public class IntroPanel extends BGPanel {
 	 * @return boolean, the result of the connection to the server
 	 */
 	private boolean startConnection(String serverIP) {
-		try {
-			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
-			RegisterInterface server = (RegisterInterface) registry
-					.lookup("rmi://" + serverIP + "/RMILudoServer");
-			this.timeToStart = server.register(Inet4Address.getLocalHost()
-					.getHostAddress());
+		long resultConnection = this.userPlayer.startConnection(serverIP);
+		if (resultConnection > 0) {
+			this.timeToStart = resultConnection;
 			return true;
-		} catch (RemoteException
-				| NotBoundException
-				| UnknownHostException e) {
-			e.printStackTrace();
-			return false;
+		} else {
+			this.timeToStart = 0;
+			return true;
 		}
 	}
 
@@ -150,18 +141,7 @@ public class IntroPanel extends BGPanel {
 	}
 
 	private void exit(String serverIP) {
-		try {
-			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
-			RegisterInterface server = (RegisterInterface) registry
-					.lookup("rmi://" + serverIP + "/RMILudoServer");
-			server.deletePartecipant(Inet4Address.getLocalHost()
-					.getHostAddress());
-		} catch (RemoteException | UnknownHostException
-				| NotBoundException exc) {
-			exc.printStackTrace();
-		} finally {
-			System.exit(0);
-		}
+		this.userPlayer.exit(serverIP);
 	}
 
 }

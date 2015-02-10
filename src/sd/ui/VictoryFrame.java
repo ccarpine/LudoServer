@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import sd.core.CoreGame;
+import sd.core.player.UserPlayer;
 import sd.util.Constants;
 import sd.util.MyFont;
 
@@ -22,7 +23,7 @@ public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public VictoryFrame(CoreGame coreGame) {
+	public VictoryFrame(UserPlayer userPlayer, CoreGame coreGame) {
 		super();
 		String colorWinner = coreGame.getCurrentPartecipant().getColor();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
@@ -46,7 +47,7 @@ public class VictoryFrame extends JFrame {
 		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newGame();
+				newGame(userPlayer);
 			}
 		});
 		panel.add(newGame);
@@ -85,10 +86,10 @@ public class VictoryFrame extends JFrame {
 		panel.updateUI();
 	}
 
-	private void newGame() {
+	private void newGame(UserPlayer userPlayer) {
 		this.setVisible(false);
 		MainFrame mainFrame = new MainFrame();
-		mainFrame.addPanel(new IntroPanel(), BorderLayout.CENTER);
+		mainFrame.addPanel(new IntroPanel(userPlayer), BorderLayout.CENTER);
 		this.dispose();
 	}
 	
