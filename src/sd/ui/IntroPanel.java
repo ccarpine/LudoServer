@@ -106,6 +106,7 @@ public class IntroPanel extends BGPanel {
 			return true;
 		} catch (RemoteException | /*MalformedURLException | */NotBoundException
 				| UnknownHostException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
