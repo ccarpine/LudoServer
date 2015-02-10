@@ -2,7 +2,6 @@ package sd.core.register;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -169,19 +168,10 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	public static void main(String[] args) {
 		try {
 			RegisterInterface server = (RegisterInterface) new Register();
-			Registry registry = null;
-			try {
-				System.out.println("Provo la Create registry");
-				registry = LocateRegistry.createRegistry(6000);
-			} catch (ConnectException e) {
-				System.out.println("Create registry fallita");
-				// registry = LocateRegistry.getRegistry(6000);
-				System.out.println("Get registry riuscita");
-			} finally {
-				registry.rebind("RMILudoServer", server);
-			}
+			Registry registry = LocateRegistry.createRegistry(6000);
+			registry.rebind("RMILudoServer", server);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Registry not called");
 		}
 	}
 
