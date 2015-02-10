@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -606,15 +605,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 				System.out.println("Create registry fallita");
 				registry = LocateRegistry.getRegistry();
 				System.out.println("Get registry riuscita");
-				try {
-					registry.bind("RMIGameClient", client);
-				} catch (AlreadyBoundException e1) {
-					System.out.println("AlreadyBoundException");
 
-				}
 			} finally {
-				registry.list();
-				System.out.println("List registry riuscita");
 				registry.rebind("RMIGameClient", stub);
 			}
 		} catch (IOException e) {
