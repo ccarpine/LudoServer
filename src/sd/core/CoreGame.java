@@ -32,7 +32,7 @@ public class CoreGame implements Serializable {
 		this.turnActive = false;
 		// generate the partecipants giving them a color according to their
 		// registration order
-		for (int i=0; i<ipGamers.size(); i++) {
+		for (int i = 0; i < ipGamers.size(); i++) {
 			Partecipant partecipant = new Partecipant(ipGamers.get(i),
 					Constants.COLOR[i], i);
 			this.partecipants.add(partecipant);
@@ -41,7 +41,7 @@ public class CoreGame implements Serializable {
 		this.ipCurrentPartecipant = ipGamers.get(0);
 		this.gameBoard = new GameBoard();
 	}
-	
+
 	public void setCurrentPartecipant(String ip) {
 		this.ipCurrentPartecipant = ip;
 	}
@@ -72,7 +72,8 @@ public class CoreGame implements Serializable {
 	 */
 	public boolean amItheCurrentPartecipant() {
 		try {
-			return this.ipCurrentPartecipant.equals(Inet4Address.getLocalHost().getHostAddress());
+			return this.ipCurrentPartecipant.equals(Inet4Address.getLocalHost()
+					.getHostAddress());
 		} catch (UnknownHostException | NullPointerException e) {
 			e.printStackTrace();
 			return false;
@@ -123,12 +124,15 @@ public class CoreGame implements Serializable {
 	public Partecipant getNextActivePartecipant(String ip) {
 		for (int i = 0; i < this.partecipants.size(); i++) {
 			if (ip.equals(this.partecipants.get(i).getIp())) {
-				
-				for(int j=0; j<this.partecipants.size(); j++) {
-					if (this.partecipants.get((i + 1 + j) % this.partecipants.size()).isStatusActive())
-						return this.partecipants.get((i + 1 + j) % this.partecipants.size());
+
+				for (int j = 0; j < this.partecipants.size(); j++) {
+					if (this.partecipants.get(
+							(i + 1 + j) % this.partecipants.size())
+							.isStatusActive())
+						return this.partecipants.get((i + 1 + j)
+								% this.partecipants.size());
 				}
-				
+
 			}
 
 		}
@@ -240,7 +244,7 @@ public class CoreGame implements Serializable {
 	public boolean isDoubleTurn() {
 		return this.isDoubleTurn;
 	}
-	
+
 	public void setDoubleTurn(boolean value) {
 		this.isDoubleTurn = value;
 	}
@@ -254,7 +258,8 @@ public class CoreGame implements Serializable {
 		int result = 0;
 		for (int i = 0; i < this.getPartecipants().size(); i++) {
 			if (this.getPartecipants().get(i).isStatusActive()) {
-				if (!(this.getPartecipants().get(i).getIp().equals(this.getMyPartecipant().getIp()))) {
+				if (!(this.getPartecipants().get(i).getIp().equals(this
+						.getMyPartecipant().getIp()))) {
 					result++;
 				}
 
@@ -266,38 +271,41 @@ public class CoreGame implements Serializable {
 		return result;
 
 	}
-	
+
 	/***
 	 * 
-	 * @param position of the invoking player (if the param is equal to size return the 
-	 * number of all active partecipants)
+	 * @param position
+	 *            of the invoking player (if the param is equal to size return
+	 *            the number of all active partecipants)
 	 * @return the number of the active partecipant before a specific position
 	 */
-	public int getNrActivePartecipantBefore(int position){
+	public int getNrActivePartecipantBefore(int position) {
 		int nrActivePartecipant = 0;
-		for (int i = 0; i < position; i++ ){
-			if (this.partecipants.get(i).isStatusActive()){
+		for (int i = 0; i < position; i++) {
+			if (this.partecipants.get(i).isStatusActive()) {
 				nrActivePartecipant++;
 			}
 		}
-		return nrActivePartecipant; 
+		return nrActivePartecipant;
 	}
-	
+
 	/***
 	 * 
-	 * @param position of the invoking player  (if the param is equal to  return the 
-	 * number of all active partecipants)
+	 * @param position
+	 *            of the invoking player (if the param is equal to return the
+	 *            number of all active partecipants)
 	 * @return the number of the active partecipant after a specific position
 	 */
-	public int getNrActivePartecipantAfter(int position){
+	public int getNrActivePartecipantAfter(int position) {
 		int nrActivePartecipant = 0;
-		for (int i = position; i < this.partecipants.size(); i++ ){
-			if (this.partecipants.get(i).isStatusActive()){
+		for (int i = position; i < this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).isStatusActive()) {
 				nrActivePartecipant++;
 			}
 		}
-		return nrActivePartecipant; 
+		return nrActivePartecipant;
 	}
+
 	/**
 	 * 
 	 * @return, the maximum time that the invoking partecipant MUST wait to
@@ -308,61 +316,85 @@ public class CoreGame implements Serializable {
 	public long getTimeForBuildGUI() {
 		/* for active partecipants ONLY */
 		int numberPreviousAlive = this.getPreviousActivePartecipants();
-		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)* numberPreviousAlive;
+		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)
+				* numberPreviousAlive;
 	}
-	
+
 	/***
 	 * 
-	 * @return, the maximun time that the invoking partecipant have to wait
-	 * 			to recevice a messagge for the first update after the first turn
-	 * 			exept for the fist player that wait for init turn (he has to receive the last buil gui message)
+	 * @return, the maximun time that the invoking partecipant have to wait to
+	 *          recevice a messagge for the first update after the first turn
+	 *          exept for the fist player that wait for init turn (he has to
+	 *          receive the last buil gui message)
 	 */
 	public long getTimeForTheFirstCycle() {
-		int activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this.getMyPartecipant().getColorPosition());
-		System.out.println("active before me"+ activePartecipantBeforeMe);
-		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY + 
-				this.getNrActivePartecipantAfter((this.getMyPartecipant().getColorPosition()+1)) * Constants.MAX_TIME_TO_BUILD_GUI;
-		
+		int activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this
+				.getMyPartecipant().getColorPosition());
+		System.out.println("active before me" + activePartecipantBeforeMe);
+		long timeToWait = this.getNrActivePartecipantAfter(0)
+				* Constants.LATENCY
+				+ this.getNrActivePartecipantAfter((this.getMyPartecipant()
+						.getColorPosition() + 1))
+				* Constants.MAX_TIME_TO_BUILD_GUI;
+
 		if (activePartecipantBeforeMe > 0) {
 			timeToWait += Constants.MAX_TIME_FOR_TURN;
-			timeToWait += (activePartecipantBeforeMe -1) * Constants.MAX_TIME_FOR_UPDATE;
+			timeToWait += (activePartecipantBeforeMe - 1)
+					* Constants.MAX_TIME_FOR_UPDATE;
 		}
 		return timeToWait;
 	}
 
 	/***
 	 * 
-	 * @param type, can be UPDATE_NEXT or PLAY_NEXT, in the first case you send the update to the next
-	 * partecipant, otherwise you send the play
-	 * @param isDubleTurn tell if the current partecipant is also the next partecipant
-	 * @return max number of millisecond the partecipant have to wait before ask the partecipant before IsAlive
-	 * you have to wait for different time
-	 * - if you are the current or the next of the current you don't have to wait for turn time 
-	 * (you have to wait only for the update time)
-	 * otherwise you have to wait for the round and for the update 
-	 * Special case for the duble turn - the next player have to wait also for the turn time
+	 * @param type
+	 *            , can be UPDATE_NEXT or PLAY_NEXT, in the first case you send
+	 *            the update to the next partecipant, otherwise you send the
+	 *            play
+	 * @param isDubleTurn
+	 *            tell if the current partecipant is also the next partecipant
+	 * @return max number of millisecond the partecipant have to wait before ask
+	 *         the partecipant before IsAlive you have to wait for different
+	 *         time - if you are the current or the next of the current you
+	 *         don't have to wait for turn time (you have to wait only for the
+	 *         update time) otherwise you have to wait for the round and for the
+	 *         update Special case for the duble turn - the next player have to
+	 *         wait also for the turn time
 	 */
-	public long getTimeForCycle(int type,  boolean isDubleTurn) {
-		long timeToWait = this.getNrActivePartecipantAfter(0) * Constants.LATENCY;
-		//timeToWait += Constants.MAX_TIME_FOR_TURN +  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
-		
+	public long getTimeForCycle(int type, boolean isDubleTurn) {
+		long timeToWait = this.getNrActivePartecipantAfter(0)
+				* Constants.LATENCY;
+		// timeToWait += Constants.MAX_TIME_FOR_TURN +
+		// (this.getNrActivePartecipantAfter(0) - 1) *
+		// Constants.MAX_TIME_FOR_UPDATE;
+
 		Partecipant myPartecipant = this.getMyPartecipant();
-		if (type == Constants.UPDATE_NEXT) { 
-			if(myPartecipant.getIp().equals(this.ipCurrentPartecipant) ){ 
-				timeToWait +=  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
-			} else if (myPartecipant.getIp().equals(this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp())) {
+		if (type == Constants.UPDATE_NEXT) {
+			if (myPartecipant.getIp().equals(this.ipCurrentPartecipant)) {
+				timeToWait += (this.getNrActivePartecipantAfter(0) - 1)
+						* Constants.MAX_TIME_FOR_UPDATE;
+			} else if (myPartecipant.getIp().equals(
+					this.getNextActivePartecipant(this.ipCurrentPartecipant)
+							.getIp())) {
 				if (isDubleTurn)
-					timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
-				else 
-					timeToWait +=  (this.getNrActivePartecipantAfter(0) - 1)  * Constants.MAX_TIME_FOR_UPDATE;
-			} else 
-				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
-		} else 
-				timeToWait += Constants.MAX_TIME_FOR_TURN + (this.getNrActivePartecipantAfter(0) - 2)  * Constants.MAX_TIME_FOR_UPDATE;
-		
+					timeToWait += Constants.MAX_TIME_FOR_TURN
+							+ (this.getNrActivePartecipantAfter(0) - 2)
+							* Constants.MAX_TIME_FOR_UPDATE;
+				else
+					timeToWait += (this.getNrActivePartecipantAfter(0) - 1)
+							* Constants.MAX_TIME_FOR_UPDATE;
+			} else
+				timeToWait += Constants.MAX_TIME_FOR_TURN
+						+ (this.getNrActivePartecipantAfter(0) - 2)
+						* Constants.MAX_TIME_FOR_UPDATE;
+		} else
+			timeToWait += Constants.MAX_TIME_FOR_TURN
+					+ (this.getNrActivePartecipantAfter(0) - 2)
+					* Constants.MAX_TIME_FOR_UPDATE;
+
 		return timeToWait;
 	}
-	
+
 	/**
 	 * 
 	 * @param color
@@ -402,34 +434,37 @@ public class CoreGame implements Serializable {
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
 		this.partecipants.get(position).setStatusActive(false);
-		if (this.partecipants.get(position).getIp().equals(this.ipCurrentPartecipant)) {
-			this.ipCurrentPartecipant = this.getNextActivePartecipant(this.ipCurrentPartecipant).getIp();
+		if (this.partecipants.get(position).getIp()
+				.equals(this.ipCurrentPartecipant)) {
+			this.ipCurrentPartecipant = this.getNextActivePartecipant(
+					this.ipCurrentPartecipant).getIp();
 		}
 		this.gameBoard.clearPawnByColor(color);
 	}
-	
+
 	/**
 	 * 
-	 * @return, the index/position of the first active player 
+	 * @return, the index/position of the first active player
 	 */
 	public int getFirstActiveIndex() {
-		for(int i=0; i<this.partecipants.size(); i++) {
-			if(this.partecipants.get(i).isStatusActive())
+		for (int i = 0; i < this.partecipants.size(); i++) {
+			if (this.partecipants.get(i).isStatusActive())
 				return i;
 		}
 		return -1;
 	}
-	
-	public boolean isVictory(Partecipant partecipant){
+
+	public boolean isVictory(Partecipant partecipant) {
 		if (this.getNrActivePartecipantAfter(0) == 1)
 			return true;
 		return this.gameBoard.isVictory(partecipant);
-		/* per giocare da soli commentare tutto il corpo del metodo e lasciare solo il seguente*/
-		//return false;
+		// /* per giocare da soli commentare tutto il corpo del metodo e
+		// lasciare solo il seguente*/
+		// return false;
 	}
-	
+
 	public int getIDMyPartecipant() {
 		return this.getIDPartecipantByColor(this.getMyPartecipant().getColor());
 	}
-	
+
 }

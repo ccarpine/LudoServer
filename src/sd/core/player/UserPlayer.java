@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,7 +26,8 @@ import sd.util.Constants;
 
 /* si occupa di registrarsi ed in seguito avviare la partita e visualizzare interfaccia --> elabora il gioco che 
  * che avviene tutto nella classe MainGame */
-public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterface {
+public class UserPlayer extends UnicastRemoteObject implements
+		UserPlayerInterface {
 
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainFrame;
@@ -78,7 +78,8 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 			if (this.coreGame.amItheCurrentPartecipant()) {
 				this.buildGUIAndForward();
 			} else {
-				this.waitFor(Constants.PHASE_BUILD_GUI,-1,false, this.coreGame.getTurn());
+				this.waitFor(Constants.PHASE_BUILD_GUI, -1, false,
+						this.coreGame.getTurn());
 			}
 		}
 
@@ -99,15 +100,16 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	}
 
 	/* it handles the lack of message buildGUI from the previous player ONLY */
-	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
-		if(phase == Constants.PHASE_BUILD_GUI){
+	private void waitFor(final int phase, final int type,
+			final boolean isDubleTurn, final int currentTurn) {
+		if (phase == Constants.PHASE_BUILD_GUI) {
 			System.out.println("00==PHASE_BUILD_GUI. START");
 		}
-		if(phase ==  Constants.PHASE_FIRST_CYCLE){
+		if (phase == Constants.PHASE_FIRST_CYCLE) {
 			System.out.println("11==PHASE_FIRST_CYCLE. START");
 		}
 		if (phase == Constants.PHASE_CYCLE) {
-			if (type==0) {
+			if (type == 0) {
 				System.out.println("22==PHASE CYCLE--UPDATE NEXT. START");
 			} else {
 				System.out.println("22==PHASE CYCLE--PLAY NEXT. START");
@@ -119,31 +121,34 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 				boolean startWaiting = true;
 				long wait = 0;
 				switch (phase) {
-					case Constants.PHASE_BUILD_GUI:
-						wait = coreGame.getTimeForBuildGUI();
-						if (wait == 0) { 
-							startWaiting = false;
-							buildGUIAndForward();
-						}
-						break;
-					case Constants.PHASE_FIRST_CYCLE:
-						wait = coreGame.getTimeForTheFirstCycle();
-						System.out.println("wait:"+wait);
-						if (coreGame.getNrActivePartecipantBefore(coreGame.getIDMyPartecipant()) == 0) {
-							startWaiting = false;
-							startTurn();
-						}
-						break;
-					case Constants.PHASE_CYCLE:
-						wait = coreGame.getTimeForCycle(type, isDubleTurn);
-						break;
-					default:
-						break;
+				case Constants.PHASE_BUILD_GUI:
+					wait = coreGame.getTimeForBuildGUI();
+					if (wait == 0) {
+						startWaiting = false;
+						buildGUIAndForward();
+					}
+					break;
+				case Constants.PHASE_FIRST_CYCLE:
+					wait = coreGame.getTimeForTheFirstCycle();
+					System.out.println("wait:" + wait);
+					if (coreGame.getNrActivePartecipantBefore(coreGame
+							.getIDMyPartecipant()) == 0) {
+						startWaiting = false;
+						startTurn();
+					}
+					break;
+				case Constants.PHASE_CYCLE:
+					wait = coreGame.getTimeForCycle(type, isDubleTurn);
+					break;
+				default:
+					break;
 				}
 				if (startWaiting) {
-					while (wait > 0 && isPlaying &&((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone) 
-							|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone)
-							|| (phase == Constants.PHASE_CYCLE && currentTurn == coreGame.getTurn()))) {
+					while (wait > 0
+							&& isPlaying
+							&& ((phase == Constants.PHASE_BUILD_GUI && !buildGUIDone)
+									|| (phase == Constants.PHASE_FIRST_CYCLE && !firstCycleDone) || (phase == Constants.PHASE_CYCLE && currentTurn == coreGame
+									.getTurn()))) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -151,54 +156,94 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 						}
 						wait -= 1000;
 					}
-					if(phase == Constants.PHASE_BUILD_GUI){
-						System.out.println("00==PHASE_BUILD_GUI. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+					if (phase == Constants.PHASE_BUILD_GUI) {
+						System.out.println("00==PHASE_BUILD_GUI. TURNO "
+								+ currentTurn + "- Sono uscita con wait a: "
+								+ wait / 1000 + "sec");
 					}
-					if(phase ==  Constants.PHASE_FIRST_CYCLE){
-						System.out.println("11==PHASE_FIRST_CYCLE. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+					if (phase == Constants.PHASE_FIRST_CYCLE) {
+						System.out.println("11==PHASE_FIRST_CYCLE. TURNO "
+								+ currentTurn + "- Sono uscita con wait a: "
+								+ wait / 1000 + "sec");
 					}
 					if (phase == Constants.PHASE_CYCLE) {
-						if (type==0) {
-							System.out.println("22==PHASE CYCLE--UPDATE NEXT. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+						if (type == 0) {
+							System.out
+									.println("22==PHASE CYCLE--UPDATE NEXT. TURNO "
+											+ currentTurn
+											+ "- Sono uscita con wait a: "
+											+ wait / 1000 + "sec");
 						} else {
-							System.out.println("22==PHASE CYCLE--PLAY NEXT. TURNO "+currentTurn+"- Sono uscita con wait a: " + wait/1000 + "sec");
+							System.out
+									.println("22==PHASE CYCLE--PLAY NEXT. TURNO "
+											+ currentTurn
+											+ "- Sono uscita con wait a: "
+											+ wait / 1000 + "sec");
 						}
 					}
-					
+
 					if (wait <= 0) {
 						boolean foundPreviousAlive = false;
 						while (!foundPreviousAlive && isPlaying) {
-							Partecipant previous = coreGame.getPreviousActive(coreGame.getMyPartecipant().getColor());
+							Partecipant previous = coreGame
+									.getPreviousActive(coreGame
+											.getMyPartecipant().getColor());
 							try {
-								if (previous.getIp().equals(coreGame.getMyPartecipant().getIp())){
-									// if you are the only one alive, you have won 
+								if (previous.getIp().equals(
+										coreGame.getMyPartecipant().getIp())) {
+									// if you are the only one alive, you have
+									// won
 									coreGame.incrementTurn();
 									showVictory();
-								}
-								else {
+								} else {
 									if (phase == Constants.PHASE_BUILD_GUI)
-										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase BUILD GUI");
+										System.out.println("mando ISALIVE a: "
+												+ previous.getIp()
+												+ "nella fase BUILD GUI");
 									else if (phase == Constants.PHASE_FIRST_CYCLE)
-										System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase FIRST CYCLE");
-									else if (phase == Constants.PHASE_CYCLE){
-										if (type==0) {
-											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --UPDATE NEXT");
-											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
+										System.out.println("mando ISALIVE a: "
+												+ previous.getIp()
+												+ "nella fase FIRST CYCLE");
+									else if (phase == Constants.PHASE_CYCLE) {
+										if (type == 0) {
+											System.out
+													.println("mando ISALIVE a: "
+															+ previous.getIp()
+															+ "nella fase PHASE CYCLE --UPDATE NEXT");
+											System.out.println("current turn: "
+													+ currentTurn
+													+ " Turn in coregame: "
+													+ coreGame.getTurn());
 										} else {
-											System.out.println("mando ISALIVE a: "+ previous.getIp() + "nella fase PHASE CYCLE --PLAY NEXT");
-											System.out.println("current turn: " +currentTurn+ " Turn in coregame: "+coreGame.getTurn());
+											System.out
+													.println("mando ISALIVE a: "
+															+ previous.getIp()
+															+ "nella fase PHASE CYCLE --PLAY NEXT");
+											System.out.println("current turn: "
+													+ currentTurn
+													+ " Turn in coregame: "
+													+ coreGame.getTurn());
 										}
 									}
-									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming.lookup("rmi://" + previous.getIp()	+ "/RMIGameClient");
-									tryPrevious.isAlive(phase, coreGame.getMyPartecipant().getColor(), coreGame.getTurn());
+									UserPlayerInterface tryPrevious = (UserPlayerInterface) Naming
+											.lookup("rmi://" + previous.getIp()
+													+ "/RMIGameClient");
+									tryPrevious.isAlive(phase, coreGame
+											.getMyPartecipant().getColor(),
+											coreGame.getTurn());
 									foundPreviousAlive = true;
-									waitFor(phase, type, isDubleTurn, coreGame.getTurn());
+									waitFor(phase, type, isDubleTurn,
+											coreGame.getTurn());
 								}
 							}
-							 // the previous player has crashed and it must be set as unactive
-							catch (MalformedURLException | RemoteException | NotBoundException e) {
-								System.out.println("WAIT FOR: set unactive" + previous.getIp()); 
-								coreGame.setUnactivePartecipant(previous.getColor());
+							// the previous player has crashed and it must be
+							// set as unactive
+							catch (MalformedURLException | RemoteException
+									| NotBoundException e) {
+								System.out.println("WAIT FOR: set unactive"
+										+ previous.getIp());
+								coreGame.setUnactivePartecipant(previous
+										.getColor());
 							}
 						}
 					}
@@ -227,21 +272,31 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 				}
 				boolean foundNextAlive = false;
 				while (!foundNextAlive) {
-					Partecipant partecipant = coreGame.getNextActivePartecipant(coreGame.getMyPartecipant().getIp());
+					Partecipant partecipant = coreGame
+							.getNextActivePartecipant(coreGame
+									.getMyPartecipant().getIp());
 					try {
-						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + partecipant.getIp()+ "/RMIGameClient");
-						if (coreGame.getCurrentPartecipant().getIp().equals(partecipant.getIp())){
-							System.out.println("I send Init TURN to " +partecipant.getIp());
+						UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+								.lookup("rmi://" + partecipant.getIp()
+										+ "/RMIGameClient");
+						if (coreGame.getCurrentPartecipant().getIp()
+								.equals(partecipant.getIp())) {
+							System.out.println("I send Init TURN to "
+									+ partecipant.getIp());
 							nextInTurn.initTurn(coreGame.getPartecipants());
-						}
-						else{
-							System.out.println("I send Init buil GUI to " +partecipant.getIp());
+						} else {
+							System.out.println("I send Init buil GUI to "
+									+ partecipant.getIp());
 							nextInTurn.buildGUI(coreGame.getPartecipants());
 						}
 						foundNextAlive = true;
-						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,coreGame.getTurn());
-					} catch (MalformedURLException | NotBoundException | RemoteException e) {
-						System.out.println("Non c'era lo metto come inattivo e passo al successivo " +partecipant.getIp());
+						waitFor(Constants.PHASE_FIRST_CYCLE, -1, false,
+								coreGame.getTurn());
+					} catch (MalformedURLException | NotBoundException
+							| RemoteException e) {
+						System.out
+								.println("Non c'era lo metto come inattivo e passo al successivo "
+										+ partecipant.getIp());
 						coreGame.setUnactivePartecipant(partecipant.getColor());
 					}
 				}
@@ -283,11 +338,14 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 							@Override
 							public void run() {
 								/*
-								 * the internal memory status and the gui of the game is updated
+								 * the internal memory status and the gui of the
+								 * game is updated
 								 */
-								result = coreGame.updateStatus(partecipants,gameBoard, ipCurrentPartecipant);
+								result = coreGame.updateStatus(partecipants,
+										gameBoard, ipCurrentPartecipant);
 								coreGame.incrementTurn();
-								controlBoardPanel.drawControlBoardGUI(isDoubleTurn);
+								controlBoardPanel
+										.drawControlBoardGUI(isDoubleTurn);
 								gamePanel.drawGUI();
 							}
 						});
@@ -301,11 +359,15 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 					/* sending the update to the next player */
 					case Constants.UPDATE_NEXT:
 						System.out.println("4 UPDATE SEND (UPDATE_NEXT)");
-						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
+						updateNext(partecipants, gameBoard,
+								ipCurrentPartecipant, isDoubleTurn,
+								currentTurn, true);
 						break;
 					/* giving the next player the permission to play */
 					case Constants.PLAY_NEXT:
-						System.out.println("5 INIT TURN SEND (PLAY_NEXT) - ip current partecipant " + ipCurrentPartecipant );
+						System.out
+								.println("5 INIT TURN SEND (PLAY_NEXT) - ip current partecipant "
+										+ ipCurrentPartecipant);
 						playNext(true);
 						break;
 					// the client play again
@@ -314,14 +376,16 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 						break;
 					case Constants.END_GAME:
 						showVictory();
-						updateNext(partecipants, gameBoard, ipCurrentPartecipant, isDoubleTurn, currentTurn, true);
+						updateNext(partecipants, gameBoard,
+								ipCurrentPartecipant, isDoubleTurn,
+								currentTurn, true);
 						break;
 					default:
 						break;
 					}
 				}
 			}.start();
-			
+
 		}
 	}
 
@@ -332,18 +396,28 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	private void playNext(boolean doWait) {
 		boolean foundNextAlive = false;
 		while (!foundNextAlive) {
-			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
+			Partecipant nextInTurnPartecipant = this.coreGame
+					.getNextActivePartecipant(this.coreGame.getMyPartecipant()
+							.getIp());
 			try {
-				//System.out.println("4 INIT TURN to: " + nextInTurnPartecipant.getIp());
-				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
+				// System.out.println("4 INIT TURN to: " +
+				// nextInTurnPartecipant.getIp());
+				UserPlayerInterface nextPlayer = (UserPlayerInterface) Naming
+						.lookup("rmi://" + nextInTurnPartecipant.getIp()
+								+ "/RMIGameClient");
 				nextPlayer.initTurn(this.coreGame.getPartecipants());
 				foundNextAlive = true;
-				/* wait for the next message it will be a Update status message 
-				 * you have to wait for 1 turn and for all the update message*/
+				/*
+				 * wait for the next message it will be a Update status message
+				 * you have to wait for 1 turn and for all the update message
+				 */
 				if (doWait)
-					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT, false, this.coreGame.getTurn());
-			} catch (RemoteException | MalformedURLException | NotBoundException e) {
-				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
+					this.waitFor(Constants.PHASE_CYCLE, Constants.PLAY_NEXT,
+							false, this.coreGame.getTurn());
+			} catch (RemoteException | MalformedURLException
+					| NotBoundException e) {
+				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant
+						.getColor());
 			}
 		}
 	}
@@ -357,27 +431,44 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	 *            , the current state of the game board in the current match
 	 * @param ipCurrentPartecipant
 	 */
-	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard, String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn, boolean doWait) {
+	public void updateNext(List<Partecipant> partecipants, GameBoard gameBoard,
+			String ipCurrentPartecipant, boolean isDoubleTurn, int currentTurn,
+			boolean doWait) {
 		boolean foundNextAlive = false;
 		while (!foundNextAlive) {
-			Partecipant nextInTurnPartecipant = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
+			Partecipant nextInTurnPartecipant = this.coreGame
+					.getNextActivePartecipant(this.coreGame.getMyPartecipant()
+							.getIp());
 			try {
-				//System.out.println("5 UPDATE STATUS to: " + nextInTurnPartecipant.getIp());
-				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming.lookup("rmi://" + nextInTurnPartecipant.getIp() + "/RMIGameClient");
-				nextInTurn.updateStatus(partecipants, gameBoard,ipCurrentPartecipant, isDoubleTurn, currentTurn);
+				// System.out.println("5 UPDATE STATUS to: " +
+				// nextInTurnPartecipant.getIp());
+				UserPlayerInterface nextInTurn = (UserPlayerInterface) Naming
+						.lookup("rmi://" + nextInTurnPartecipant.getIp()
+								+ "/RMIGameClient");
+				nextInTurn.updateStatus(partecipants, gameBoard,
+						ipCurrentPartecipant, isDoubleTurn, currentTurn);
 				foundNextAlive = true;
-				//System.out.println("5 UPDATE STATUS il mio dowait e':" + doWait); 
+				// System.out.println("5 UPDATE STATUS il mio dowait e':" +
+				// doWait);
 				if (doWait) {
-				/* wait for the next message it will be a Update status message */
-				//	System.out.println("5 UPDATE STATUS faccio wait con dowait: " + doWait);
-					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT, isDoubleTurn, this.coreGame.getTurn());
+					/*
+					 * wait for the next message it will be a Update status
+					 * message
+					 */
+					// System.out.println("5 UPDATE STATUS faccio wait con dowait: "
+					// + doWait);
+					this.waitFor(Constants.PHASE_CYCLE, Constants.UPDATE_NEXT,
+							isDoubleTurn, this.coreGame.getTurn());
 				}
-			} catch (MalformedURLException | NotBoundException | RemoteException e1) {
+			} catch (MalformedURLException | NotBoundException
+					| RemoteException e1) {
 				boolean currentCrash = false;
-				if (nextInTurnPartecipant.getIp().equals(coreGame.getCurrentPartecipant().getIp())) {
+				if (nextInTurnPartecipant.getIp().equals(
+						coreGame.getCurrentPartecipant().getIp())) {
 					currentCrash = true;
 				}
-				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant.getColor());
+				this.coreGame.setUnactivePartecipant(nextInTurnPartecipant
+						.getColor());
 				if (currentCrash) {
 					foundNextAlive = true;
 					this.playNext(doWait);
@@ -394,14 +485,14 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 		this.coreGame.setPartecipants(partecipants);
 		this.startTurn();
 	}
-	
+
 	private void startTurn() {
 		if (!this.coreGame.isTurnActive() && this.isPlaying) {
 			this.firstCycleDone = true;
 			this.coreGame.setTurnActive(true);
 			gamePanel.drawGUI();
 			controlBoardPanel.drawControlBoardGUI(coreGame.isDoubleTurn());
-			if (this.coreGame.isVictory(this.coreGame.getMyPartecipant())){
+			if (this.coreGame.isVictory(this.coreGame.getMyPartecipant())) {
 				showVictory();
 			} else {
 				System.out.println("I play");
@@ -429,16 +520,20 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 	 * this method, if correctly invoked tells the invoker if the player is alive; moreover 
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
 	 */
-	public void isAlive(int phase, String color, int currentTurn) throws RemoteException {
+	public void isAlive(int phase, String color, int currentTurn)
+			throws RemoteException {
 		boolean currentCrashed = false;
 		boolean end = false;
 		String pingerColor = color;
 		while (!end) {
-			Partecipant partecipant = this.coreGame.getPreviousActive(pingerColor);
-			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor()))
+			Partecipant partecipant = this.coreGame
+					.getPreviousActive(pingerColor);
+			if (partecipant.getColor().equals(
+					this.coreGame.getMyPartecipant().getColor()))
 				end = true;
 			else {
-				if (partecipant.getIp().equals(this.coreGame.getCurrentPartecipant().getIp())) {
+				if (partecipant.getIp().equals(
+						this.coreGame.getCurrentPartecipant().getIp())) {
 					currentCrashed = true;
 				}
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
@@ -448,10 +543,15 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 		if (buildGUIDone && phase == Constants.PHASE_BUILD_GUI) {
 			boolean foundNextAlive = false;
 			while (!foundNextAlive) {
-				Partecipant nextInTurn = this.coreGame.getNextActivePartecipant(this.coreGame.getMyPartecipant().getIp());
+				Partecipant nextInTurn = this.coreGame
+						.getNextActivePartecipant(this.coreGame
+								.getMyPartecipant().getIp());
 				try {
-					System.out.println("IS ALIVE: invio la BUILD GUI a " + color);
-					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) Naming.lookup("rmi://"+ nextInTurn.getIp() +"/RMIGameClient");
+					System.out.println("IS ALIVE: invio la BUILD GUI a "
+							+ color);
+					UserPlayerInterface nextInTurnPlayer = (UserPlayerInterface) Naming
+							.lookup("rmi://" + nextInTurn.getIp()
+									+ "/RMIGameClient");
 					nextInTurnPlayer.buildGUI(this.coreGame.getPartecipants());
 					foundNextAlive = true;
 				} catch (MalformedURLException | NotBoundException e) {
@@ -460,42 +560,47 @@ public class UserPlayer extends UnicastRemoteObject implements UserPlayerInterfa
 			}
 		}
 		/* *
-		 * if you receive a isAlive message during the first cycle 
-		 * if you have alredy received the message you forward intiTurn to the invoker
-		 * otherwise you wait for the message 
-		 * */
-		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone) || 
-				(phase == Constants.PHASE_CYCLE)) {
+		 * if you receive a isAlive message during the first cycle if you have
+		 * alredy received the message you forward intiTurn to the invoker
+		 * otherwise you wait for the message
+		 */
+		else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone)
+				|| (phase == Constants.PHASE_CYCLE)) {
 			if (currentCrashed) {
-				if (currentTurn == this.coreGame.getTurn()){
-					System.out.println("IS ALIVE: current crashed so PLAY NEXT to: "+ color);
+				if (currentTurn == this.coreGame.getTurn()) {
+					System.out
+							.println("IS ALIVE: current crashed so PLAY NEXT to: "
+									+ color);
 					this.playNext(false);
 				}
 			} else {
-				if (currentTurn < this.coreGame.getTurn()){
-					System.out.println("IS ALIVE: so UPDATE NEXT to: "+ color);
-					this.updateNext(this.coreGame.getPartecipants(), this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(), this.coreGame.isDoubleTurn(), this.coreGame.getTurn(), false);
+				if (currentTurn < this.coreGame.getTurn()) {
+					System.out.println("IS ALIVE: so UPDATE NEXT to: " + color);
+					this.updateNext(this.coreGame.getPartecipants(),
+							this.coreGame.getGameBoard(), this.coreGame
+									.getCurrentPartecipant().getIp(),
+							this.coreGame.isDoubleTurn(), this.coreGame
+									.getTurn(), false);
 				}
 			}
 		}
 	}
-	
+
 	private void showVictory() {
-		this.isPlaying = false;				
+		this.isPlaying = false;
 		new VictoryFrame(coreGame);
 		this.mainFrame.dispose();
 	}
-	
+
 	public static void main(String[] args) {
 		try {
 			UserPlayerInterface client = (UserPlayerInterface) new UserPlayer();
 			Registry registry = null;
 			try {
-				registry  = LocateRegistry.createRegistry(1099);
-			} catch ( ConnectException e) {
-				registry  = LocateRegistry.getRegistry();
-			}
-			finally{
+				registry = LocateRegistry.createRegistry(1099);
+			} catch (Exception e) {
+				registry = LocateRegistry.getRegistry();
+			} finally {
 				registry.rebind("RMIGameClient", client);
 			}
 		} catch (IOException e) {
