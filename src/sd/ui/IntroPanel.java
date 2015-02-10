@@ -21,7 +21,6 @@ import javax.swing.JTextField;
 import sd.core.register.RegisterInterface;
 import sd.util.Constants;
 import sd.util.MyFont;
-import sun.util.locale.provider.LocaleResources;
 
 public class IntroPanel extends BGPanel {
 
