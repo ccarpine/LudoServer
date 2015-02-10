@@ -3,6 +3,8 @@ package sd.util;
 public class Constants {
 
 	public static final String IP_SERVER = "130.136.4.207";
+	private static final int PORT_SERVER = 6000;
+	private static final int PORT_CLIENT = 5000;
 
 	public static final int MAX_PLAYER = 6;
 	public static final long MAX_WAIT_FOR_MATCH = 30000L;

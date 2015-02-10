@@ -10,6 +10,8 @@ import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +21,7 @@ import javax.swing.JTextField;
 import sd.core.register.RegisterInterface;
 import sd.util.Constants;
 import sd.util.MyFont;
+import sun.util.locale.provider.LocaleResources;
 
 public class IntroPanel extends BGPanel {
 
@@ -95,12 +98,13 @@ public class IntroPanel extends BGPanel {
 	 */
 	private boolean startConnection(String serverIP) {
 		try {
-			RegisterInterface server = (RegisterInterface) Naming
+			Registry registry = LocateRegistry.getRegistry(6000);
+			RegisterInterface server = (RegisterInterface) registry
 					.lookup("rmi://" + serverIP + "/RMILudoServer");
 			this.timeToStart = server.register(Inet4Address.getLocalHost()
 					.getHostAddress());
 			return true;
-		} catch (RemoteException | MalformedURLException | NotBoundException
+		} catch (RemoteException | /*MalformedURLException | */NotBoundException
 				| UnknownHostException e) {
 			return false;
 		}
