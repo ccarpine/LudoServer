@@ -126,7 +126,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	public static void main(String[] args) throws IOException {
 		try {
 			RegisterInterface server = (RegisterInterface) new Register();
-			Registry registry  = LocateRegistry.createRegistry( 1099 );
+			Registry registry  = LocateRegistry.getRegistry();
 			registry.rebind("RMILudoServer", server);
 			//String ipAddress = Inet4Address.getLocalHost().getHostAddress();
 			//Naming.rebind("//" + ipAddress + "/RMILudoServer", server);
