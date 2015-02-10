@@ -49,14 +49,17 @@ public class IntroPanel extends BGPanel {
 		this.add(ipServerField);
 		final JButton goOnMatch = new javax.swing.JButton();
 		goOnMatch.setBounds(380, 300, 170, 50);
-		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/start.png")));
+		goOnMatch.setIcon(new javax.swing.ImageIcon(ClassLoader
+				.getSystemResource("sd/ui/images/start.png")));
 		goOnMatch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				goOnMatch.setEnabled(false);
 				// try the connection to the server
 				if (!startConnection(ipServerField.getText())) {
-					JOptionPane.showMessageDialog(null,"Server at "+ipServerField.getText()+" is out of service. Try later!");
+					JOptionPane.showMessageDialog(null, "Server at "
+							+ ipServerField.getText()
+							+ " is out of service. Try later!");
 					goOnMatch.setEnabled(true);
 				} else {
 					startCountdown();
@@ -66,7 +69,8 @@ public class IntroPanel extends BGPanel {
 		this.add(goOnMatch);
 		JButton exit = new javax.swing.JButton();
 		exit.setBounds(380, 360, 170, 50);
-		exit.setIcon(new javax.swing.ImageIcon(ClassLoader.getSystemResource("sd/ui/images/exit.png")));
+		exit.setIcon(new javax.swing.ImageIcon(ClassLoader
+				.getSystemResource("sd/ui/images/exit.png")));
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -103,7 +107,8 @@ public class IntroPanel extends BGPanel {
 			this.timeToStart = server.register(Inet4Address.getLocalHost()
 					.getHostAddress());
 			return true;
-		} catch (RemoteException | /*MalformedURLException | */NotBoundException
+		} catch (RemoteException
+				| /* MalformedURLException | */NotBoundException
 				| UnknownHostException e) {
 			e.printStackTrace();
 			return false;
@@ -120,7 +125,8 @@ public class IntroPanel extends BGPanel {
 			public void run() {
 				while (timeToStart > 0) {
 					int seconds = (int) (timeToStart / 1000);
-					countdown.setText("Start in "+String.valueOf(seconds)+" sec");
+					countdown.setText("Start in " + String.valueOf(seconds)
+							+ " sec");
 					try {
 						Thread.sleep(1000);
 						timeToStart -= 1000;
@@ -144,16 +150,19 @@ public class IntroPanel extends BGPanel {
 			}
 		}).start();
 	}
-	
+
 	private void exit(String ipServer) {
 		try {
-			RegisterInterface server = (RegisterInterface) Naming.lookup("rmi://" + ipServer + "/RMILudoServer");
-			server.deletePartecipant(Inet4Address.getLocalHost().getHostAddress());
-		} catch (RemoteException | MalformedURLException | UnknownHostException | NotBoundException exc) {
+			RegisterInterface server = (RegisterInterface) Naming
+					.lookup("rmi://" + ipServer + "/RMILudoServer");
+			server.deletePartecipant(Inet4Address.getLocalHost()
+					.getHostAddress());
+		} catch (RemoteException | MalformedURLException | UnknownHostException
+				| NotBoundException exc) {
 			exc.printStackTrace();
 		} finally {
 			System.exit(0);
 		}
 	}
-	
+
 }
