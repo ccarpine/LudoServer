@@ -248,26 +248,6 @@ public class CoreGame implements Serializable {
 		this.isDoubleTurn = value;
 	}
 
-	/**
-	 * 
-	 * @return, the number of ACTIVE partecipants before the caller
-	 */
-	private int getPreviousActivePartecipants() {
-
-		int result = 0;
-		for (int i = 0; i < this.getPartecipants().size(); i++) {
-			if (this.getPartecipants().get(i).isStatusActive()) {
-				if (!(this.getPartecipants().get(i).getIp().equals(this
-						.getMyPartecipant().getIp()))) {
-					result++;
-				}
-				else
-					return result;
-			}
-		}
-		return result;
-	}
-
 	/***
 	 * 
 	 * @param position
@@ -311,7 +291,7 @@ public class CoreGame implements Serializable {
 	 */
 	public long getTimeForBuildGUI() {
 		/* for active partecipants ONLY */
-		int numberPreviousAlive = this.getPreviousActivePartecipants();
+		int numberPreviousAlive = this.getNrActivePartecipantBefore(this.partecipants.size());
 		return (Constants.MAX_TIME_TO_BUILD_GUI + Constants.LATENCY)
 				* numberPreviousAlive;
 	}
@@ -446,10 +426,6 @@ public class CoreGame implements Serializable {
 		if (this.getNrActivePartecipantAfter(0) == 1)
 			return true;
 		return this.gameBoard.isVictory(partecipant);
-	}
-
-	public int getIDMyPartecipant() {
-		return this.getIDPartecipantByColor(this.getMyPartecipant().getColor());
 	}
 
 }

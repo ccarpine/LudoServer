@@ -61,7 +61,7 @@ public class GameBoard implements Serializable{
 		if (cellsOccupiedByPartecipant.size() > 0) {
 			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
-				Move move = getMoveByDie(startCell, partecipant.getLastLaunch(), partecipant.getColor());
+				Move move = getMoveByDie(startCell, partecipant);
 				if (move != null) {
 					moves.add(move);
 				}
@@ -114,8 +114,10 @@ public class GameBoard implements Serializable{
 	 * @param partecipantColor, the color of the partecipant
 	 * @return Move, return the Move obtained by a launch of die in according to the current cell
 	 */
-	private Move getMoveByDie(Cell startCell, int die, String partecipantColor) {
+	private Move getMoveByDie(Cell startCell, Partecipant partecipant) {
 		Cell newStartCell = startCell;
+		int die = partecipant.getLastLaunch();
+		String partecipantColor = partecipant.getColor();
 		for (int d = 1; d <= die; d++) {
 			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), partecipantColor);
 			if (nextCell != null) {

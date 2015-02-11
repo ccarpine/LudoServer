@@ -134,7 +134,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				case Constants.PHASE_FIRST_CYCLE:
 					wait = coreGame.getTimeForTheFirstCycle();
 					if (coreGame.getNrActivePartecipantBefore(coreGame
-							.getIDMyPartecipant()) == 0) {
+							.getIDPartecipantByColor(coreGame.getMyPartecipant().getColor())) == 0) {
 						startWaiting = false;
 						startTurn();
 					}
