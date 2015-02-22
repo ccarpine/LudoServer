@@ -20,7 +20,6 @@ public class MyFont {
 	        ge.registerFont(font);
 	        return font;
 		} catch (FontFormatException | IOException | NullPointerException e) {
-			//e.printStackTrace();
 			return new Font("Helvetica", style, size);
 		}
 	}

@@ -23,10 +23,8 @@ public class IntroPanel extends BGPanel {
 	private long timeToStart;
 
 	/**
-	 * create the intro panel
-	 * 
-	 * @param serverIP
-	 *            , the ip of the server
+	 * Create the intro panel
+	 * @param serverIP, the ip of the server
 	 */
 	public IntroPanel(UserPlayer userPlayer) {
 		super("images/intro.jpg");
@@ -87,10 +85,8 @@ public class IntroPanel extends BGPanel {
 	}
 
 	/**
-	 * start the connection with the server
-	 * 
-	 * @param serverIP
-	 *            , the ip of the server
+	 * Start the connection with the server
+	 * @param serverIP, the ip of the server
 	 * @return boolean, the result of the connection to the server
 	 */
 	private boolean startConnection(String serverIP) {
@@ -105,7 +101,7 @@ public class IntroPanel extends BGPanel {
 	}
 
 	/**
-	 * launch a thread to show the countdown related to the start of the match
+	 * Launch a thread to show the countdown related to the start of the match
 	 */
 	private void startCountdown() {
 		this.countdown.setVisible(true);

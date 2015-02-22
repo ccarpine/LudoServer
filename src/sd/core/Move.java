@@ -8,7 +8,8 @@ public class Move implements Serializable{
 	private Cell start;
 	private Cell destination;
 	
-	/** Creates a move for a pawn from a cell to another
+	/** 
+	 * Creates a move for a pawn from a cell to another
 	 * @param start, the cell from which the move will be performed
 	 * @param destination, the cell into which the move will get
 	 */

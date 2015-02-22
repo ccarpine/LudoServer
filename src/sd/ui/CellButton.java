@@ -14,8 +14,8 @@ public class CellButton extends JButton implements Runnable {
 	private String folder;
 	private String basePath;
 
-	/** it creates a graphical cel and associates it to the corresponding one in memory
-	 * 
+	/** 
+	 * It creates a graphical cel and associates it to the corresponding one in memory
 	 * @param pRow, the row of the GUI in which the cell will be inserted
 	 * @param pCol, the col of the GUI in which the cell will be inserted
 	 * @param basePath, path to an icon representing the cell as on

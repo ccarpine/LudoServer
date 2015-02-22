@@ -14,21 +14,18 @@ import sd.core.player.UserPlayer;
 import sd.util.Constants;
 
 /**
- * 
  * Game Panel, portion of GUI for the Board, manage
- *
  */
 public class GamePanel extends BGPanel {
 
 	private static final long serialVersionUID = 1L;
-
 	private CoreGame coreGame;
 	private UserPlayer userPlayer;
 	private CellButton[][] cellsButton;
 	private List<Move> possibleMoves;
 
 	/**
-	 * create a gameBoard, each cell is a cell button with a specific look and listener
+	 * Create a gameBoard, each cell is a cell button with a specific look and listener
 	 * @param coreGame
 	 */
 	public GamePanel(CoreGame coreGame, UserPlayer userPlayer) {
@@ -43,9 +40,9 @@ public class GamePanel extends BGPanel {
 		size[0] = new double[Constants.GUI_COLS];
 		size[1] = new double[Constants.GUI_ROWS];
 		/* set the panel dimension, and display */
-		for (int i = 0; i < Constants.GUI_COLS; i++)
+		for (int i=0; i<Constants.GUI_COLS; i++)
 			size[0][i] = Constants.CELL_SIZE;
-		for (int i = 0; i < Constants.GUI_ROWS; i++)
+		for (int i=0; i<Constants.GUI_ROWS; i++)
 			size[1][i] = Constants.CELL_SIZE;
 		this.setLayout(new TableLayout(size));
 	}
@@ -56,7 +53,7 @@ public class GamePanel extends BGPanel {
 		/* create all cell and button in the panel */
 		CellButton buttonPosition = null;
 		int[] currentPosition = new int[2];
-		for (int i = 0; i < Constants.COLOR.length; i++) { /* loop in colors */
+		for (int i=0; i<Constants.COLOR.length; i++) { /* loop in colors */
 			/* creating starting cells for current color */
 			buttonPosition = new CellButton(Constants.STARTS_COLORS[i][0], Constants.STARTS_COLORS[i][1], 
 					getPathIcon(this.coreGame.getGameBoard().getCell(i, 0)), 
@@ -66,7 +63,7 @@ public class GamePanel extends BGPanel {
 			currentPosition[1] = Constants.STARTS_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
 			/* creating remaining cells for current color */
-			for (int j = 0; j < Constants.PATHS_COLORS[i].length; j++) {
+			for (int j=0; j<Constants.PATHS_COLORS[i].length; j++) {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
@@ -80,30 +77,28 @@ public class GamePanel extends BGPanel {
 			/* creating starting cell for the win path for current color */
 			buttonPosition = new CellButton(
 					Constants.STARTS_WIN_COLORS[i][0], Constants.STARTS_WIN_COLORS[i][1], 
-					getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.COLOR.length - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
-					this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION));
-			this.cellsButton[(i + Constants.ROWS - 1 )% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
+					getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.COLOR.length - 1)% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION)), 
+					this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1)% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION));
+			this.cellsButton[(i + Constants.ROWS - 1)% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION] = buttonPosition;
 			currentPosition[0] = Constants.STARTS_WIN_COLORS[i][0];
 			currentPosition[1] = Constants.STARTS_WIN_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
 			/* creating remaning cell for the win path for current color */
-			for (int j = 0; j < Constants.PATHS_WIN_COLORS[i].length; j++) {
+			for (int j=0; j<Constants.PATHS_WIN_COLORS[i].length; j++) {
 				int[] nextPosition = this.getPositionButton(currentPosition,
 						Constants.PATHS_WIN_COLORS[i][j]);
 				buttonPosition = new CellButton(nextPosition[0], nextPosition[1], 
-						getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
-						this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1 )% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
-				this.cellsButton[(i + Constants.ROWS - 1 )% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
+						getPathIcon(this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1)% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1)), 
+						this.coreGame.getGameBoard().getCell((i + Constants.ROWS - 1)% Constants.COLOR.length, Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1));
+				this.cellsButton[(i + Constants.ROWS - 1)% Constants.ROWS][Constants.COLUMNS - Constants.BENCH_DIMENSION + j + 1]  = buttonPosition;
 				currentPosition[0] = nextPosition[0];
 				currentPosition[1] = nextPosition[1];
 				this.add(buttonPosition, this.positionToString(nextPosition));
 			}
-			
 			/* creating starting cell for the bench path for current color */
 			String colorPawn = Constants.COLOR[i];
-			
-			if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()){
-				if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > 0 ) {
+			if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()) {
+				if (this.coreGame.getPartecipants().get(i).getPawnsInBench() > 0) {
 					colorPawn += "_"+Constants.COLOR[i];
 				}
 			}
@@ -113,10 +108,10 @@ public class GamePanel extends BGPanel {
 			currentPosition[1] = Constants.STARTS_BENCH_COLORS[i][1];
 			this.add(buttonPosition, this.positionToString(currentPosition));
 			/* creating remaning cell for the bench path for current color */
-			for (int j = 0; j < Constants.PATH_BENCH.length; j++) {
+			for (int j=0; j<Constants.PATH_BENCH.length; j++) {
 				int[] nextPosition = this.getPositionButton(currentPosition, Constants.PATH_BENCH[j]);
-				if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()){
-					if( this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1 ) {
+				if (i < this.coreGame.getPartecipants().size() && this.coreGame.getPartecipants().get(i).isStatusActive()) {
+					if (this.coreGame.getPartecipants().get(i).getPawnsInBench() > j+1) {
 						colorPawn = Constants.COLOR[i]+"_"+Constants.COLOR[i];
 					} else {
 						colorPawn = Constants.COLOR[i];
@@ -157,7 +152,6 @@ public class GamePanel extends BGPanel {
 	}
 
 	/**
-	 *  
 	 * @param currentPosition, current position (cell index) while we are building the GUI
 	 * @param moveDirection, the direction of the next cell
 	 * @return the nextPosition (cell index) of the next cell in according to moveDirecetion
@@ -204,7 +198,6 @@ public class GamePanel extends BGPanel {
 	}
 
 	/**
-	 * 
 	 * @param position, position in size
 	 * @return position converted to string
 	 */
@@ -214,7 +207,7 @@ public class GamePanel extends BGPanel {
 	}
 	
 	/**
-	 * make move chosen by partecipant
+	 * Make move chosen by partecipant
 	 * @param row, int the row in gameBoard of destination cell
 	 * @param column, int the column in gameBoard of destination cell
 	 */
@@ -248,7 +241,7 @@ public class GamePanel extends BGPanel {
 	}
 	
 	/**
-	 * set all the destination cell of possibile move disabled, the partecipant have already choose
+	 * Set all the destination cell of possibile move disabled, the partecipant have already choose
 	 */
 	public void makePossibleMoveDisable() {
 		for (int i=0; i<possibleMoves.size(); i++) {
@@ -261,7 +254,7 @@ public class GamePanel extends BGPanel {
 	}
 
 	/**
-	 * change the panel according to value of launch die
+	 * Change the panel according to value of launch die
 	 * so the player can choose a move
 	 * @param resultDie, int the result of launch die
 	 */
@@ -277,8 +270,9 @@ public class GamePanel extends BGPanel {
 				this.cellsButton[possibleMoves.get(i).getDestination().getRow()][possibleMoves.get(i).getDestination().getColumn()].addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if (coreGame.isTurnActive())
+						if (coreGame.isTurnActive()) {
 							applyMove(possibleMoves.get(moveIndex).getDestination().getRow(), possibleMoves.get(moveIndex).getDestination().getColumn());
+						}
 					}
 				});
 			}

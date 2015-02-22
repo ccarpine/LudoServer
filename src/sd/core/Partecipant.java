@@ -16,10 +16,9 @@ public class Partecipant implements Serializable {
 	private int lastLaunch;
 	private boolean statusActive;
 
-	/**
+	/** 
 	 * Creates a user game player taking part into the game and setting his
 	 * bench as full
-	 * 
 	 * @param ip, the ip address of that game player
 	 * @param color, the color of the pawns assigned to that game player
 	 * @param colorPosition, the position of the color in the relative array
@@ -41,16 +40,18 @@ public class Partecipant implements Serializable {
 	 * increments of 1 the number of the partecipant's pawns in his bench
 	 */
 	public void addPawnsInBench() {
-		if (this.pawnsInBench < Constants.BENCH_DIMENSION)
+		if (this.pawnsInBench < Constants.BENCH_DIMENSION) {
 			this.pawnsInBench++;
+		}
 	}
 
 	/**
 	 * decrements of 1 the number of the partecipant's pawns in his bench
 	 */
 	public void removePawnsInBench() {
-		if (this.pawnsInBench > 0)
+		if (this.pawnsInBench > 0) {
 			this.pawnsInBench--;
+		}
 	}
 
 	public String getIp() {

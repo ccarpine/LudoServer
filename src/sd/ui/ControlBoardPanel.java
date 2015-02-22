@@ -37,7 +37,6 @@ public class ControlBoardPanel extends BGPanel {
 	private BufferedImage[][] exactDieFaces;
 
 	/**
-	 * 
 	 * @param gamePanel
 	 * @param coreGame
 	 */
@@ -102,8 +101,9 @@ public class ControlBoardPanel extends BGPanel {
 		});
 		// disable the die if the partecipant has win or if is not his turn
 		if (!coreGame.isTurnActive()
-				|| coreGame.isVictory(coreGame.getMyPartecipant()))
+				|| coreGame.isVictory(coreGame.getMyPartecipant())) {
 			this.die.setEnabled(false);
+		}
 		this.add(die);
 		JButton fold = new JButton();
 		fold.setIcon(new javax.swing.ImageIcon(ClassLoader
@@ -121,7 +121,7 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * enable the button for launch die
+	 * Enable the button for launch die
 	 */
 	public void enableTurn() {
 		this.coreGame.setCurrentPartecipant(this.coreGame.getMyPartecipant()
@@ -130,14 +130,13 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * 
 	 * @return multidimensional array of buffered images for the 6 final image
 	 *         representing the die luaunch
 	 */
 	private void initExactDieFaces() {
 		this.exactDieFaces = new BufferedImage[6][1];
 		String myColor = this.coreGame.getMyPartecipant().getColor();
-		for (int i = 0; i < 6; i++) {
+		for (int i=0; i<6; i++) {
 			try {
 				this.exactDieFaces[i][0] = ImageIO.read(ClassLoader
 						.getSystemResource("sd/ui/images/bigDice/" + myColor
@@ -148,15 +147,14 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * 
 	 * @return create array of buffered image with all possibile image for the
 	 *         die while is routing
 	 */
 	private void initAnimationBuffer() {
 		this.animationBuffer = new BufferedImage[36];
 		int index = 0;
-		for (int i = 0; i < Constants.COLOR.length; i++) {
-			for (int j = 0; j < 6; j++) {
+		for (int i=0; i<Constants.COLOR.length; i++) {
+			for (int j=0; j<6; j++) {
 				try {
 					this.animationBuffer[index] = ImageIO.read(ClassLoader
 							.getSystemResource("sd/ui/images/bigDice/"
@@ -171,14 +169,12 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * make the animation of launch die in a specific container and set the
+	 * Make the animation of launch die in a specific container and set the
 	 * possible destination for the result in the game panel
-	 * 
-	 * @param Jpanel
-	 *            , the container for the die animation
+	 * @param Jpanel, the container for the die animation
 	 */
 	private void startAnimationDie(final JPanel panel) {
-		/*
+		/**
 		 * I become the current partecipant only AFTER having launched the die,
 		 * because of the call to initTurn()
 		 */
@@ -241,7 +237,7 @@ public class ControlBoardPanel extends BGPanel {
 	 */
 	private void initRound() {
 		this.currentPlayer = new ArrayList<CellButton>();
-		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
+		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			/* a player might haven exited during the building of the GUI */
 			CellButton button = new CellButton(0, 0, "images/turnMarkers/on/"
 					+ Constants.COLOR[i] + ".png", new Cell(Constants.COLOR[i],
@@ -267,7 +263,7 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * set the icon for the current player as on, the other as off
+	 * Set the icon for the current player as on, the other as off
 	 */
 	private void setPlayerConnected(boolean isDoubleTurn) {
 		this.initRound();
@@ -279,17 +275,13 @@ public class ControlBoardPanel extends BGPanel {
 		} else if (isDoubleTurn) {
 			color = this.coreGame.getCurrentPartecipant().getColor();
 		}
-		for (int i = 0; i < this.coreGame.getPartecipants().size(); i++) {
+		for (int i=0; i<this.coreGame.getPartecipants().size(); i++) {
 			if (this.coreGame.getPartecipants().get(i).isStatusActive()) {
 				if (!Constants.COLOR[i].equals(color)) {
 					this.currentPlayer
-							.get(i)
-							.setIcon(
-									new javax.swing.ImageIcon(
-											ClassLoader
-													.getSystemResource("sd/ui/images/turnMarkers/off/"
-															+ Constants.COLOR[i]
-															+ ".png")));
+							.get(i).setIcon(new javax.swing.ImageIcon(ClassLoader
+									.getSystemResource("sd/ui/images/turnMarkers/off/"
+									+Constants.COLOR[i]+".png")));
 				} else {
 					this.currentPlayer.get(i).changeState();
 				}
@@ -300,7 +292,7 @@ public class ControlBoardPanel extends BGPanel {
 	}
 
 	/**
-	 * set the timer for the turn of single player. When timer end the turn pass
+	 * Set the timer for the turn of single player. When timer end the turn pass
 	 * to the next player
 	 */
 	private void setTimer() {
@@ -315,7 +307,7 @@ public class ControlBoardPanel extends BGPanel {
 					}
 					countdown -= 1000;
 					int seconds = (int) (countdown / 1000);
-					timeOfTurn.setText(String.valueOf(seconds) + " sec");
+					timeOfTurn.setText(String.valueOf(seconds)+" sec");
 				}
 				die.setEnabled(false);
 				timeOfTurn.setText("Waiting");

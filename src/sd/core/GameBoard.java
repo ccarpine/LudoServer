@@ -11,7 +11,8 @@ public class GameBoard implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Cell[][] cells;
 
-	/** create an empty game board
+	/** 
+	 * Create an empty game board
 	 */
 	public GameBoard() {
 		int victory = Constants.COLUMNS - Constants.BENCH_DIMENSION;
@@ -23,8 +24,7 @@ public class GameBoard implements Serializable{
 				} else if (c < victory) {
 					this.cells[r][c] = new Cell(Constants.BLANK, r, c);
 				} else {
-					this.cells[r][c] = new Cell(Constants.COLOR[(r + 1)
-							% Constants.ROWS], r, c);
+					this.cells[r][c] = new Cell(Constants.COLOR[(r + 1) % Constants.ROWS], r, c);
 				}
 			}
 		}
@@ -34,7 +34,8 @@ public class GameBoard implements Serializable{
 		return this.cells[row][col];
 	}
 
-	/** suggest the possible moves for a given partecipant and a given die
+	/** 
+	 * Suggest the possible moves for a given partecipant and a given die
 	 * @param partecipant, the partecipant the require the possible moves
 	 * @param die, the number of the die
 	 * @return the list of possible moves
@@ -55,11 +56,11 @@ public class GameBoard implements Serializable{
 					break;
 				default:
 					break;
-				}
+			}
 		}
 		// rules for other die values
 		if (cellsOccupiedByPartecipant.size() > 0) {
-			for (int i = 0; i < cellsOccupiedByPartecipant.size(); i++) {
+			for (int i=0; i<cellsOccupiedByPartecipant.size(); i++) {
 				Cell startCell = cellsOccupiedByPartecipant.get(i);
 				Move move = getMoveByDie(startCell, partecipant);
 				if (move != null) {
@@ -70,14 +71,15 @@ public class GameBoard implements Serializable{
 		return moves;
 	}
 
-	/** get the cells of the pawns of that color
+	/** 
+	 * Get the cells of the pawns of that color
 	 * @param color, the color of pawn
 	 * @return List<Cell>, the list of the pawns of that color
 	 */
 	private List<Cell> getPawnsPositionByColor(String color) {
 		List<Cell> cells = new ArrayList<Cell>();
-		for (int r = 0; r < Constants.ROWS; r++) {
-			for (int c = 0; c < Constants.COLUMNS; c++) {
+		for (int r=0; r<Constants.ROWS; r++) {
+			for (int c=0; c<Constants.COLUMNS; c++) {
 				if (this.cells[r][c].getPawns().size() > 0) {
 					if (this.cells[r][c].getPawns().get(0).equals(color)) {
 						cells.add(this.cells[r][c]);
@@ -88,7 +90,8 @@ public class GameBoard implements Serializable{
 		return cells;
 	}
 
-	/** get the next cell
+	/** 
+	 * Get the next cell
 	 * @param currentRow, the row of the current cell
 	 * @param currentColumn, the column of current cell
 	 * @param currentColorPawn, the color the current
@@ -98,9 +101,8 @@ public class GameBoard implements Serializable{
 		// return null if no other moves are possible
 		if (currentColumn == Constants.COLUMNS - 1) {
 			return null;
-		}
 		// return the next cell according to position and color of the pawn
-		else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
+		} else if (this.cells[currentRow][currentColumn + 1].getColor().equals(currentColorPawn)
 				|| this.cells[currentRow][currentColumn + 1].getColor().equals(Constants.BLANK)) {
 			return this.cells[currentRow][currentColumn + 1];
 		} else {
@@ -108,7 +110,8 @@ public class GameBoard implements Serializable{
 		}
 	}
 
-	/** get the move obtain by a launch of die in according to the current cell
+	/** 
+	 * Get the move obtain by a launch of die in according to the current cell
 	 * @param startCell, the starting cell
 	 * @param die, the number of the die
 	 * @param partecipantColor, the color of the partecipant
@@ -118,7 +121,7 @@ public class GameBoard implements Serializable{
 		Cell newStartCell = startCell;
 		int die = partecipant.getLastLaunch();
 		String partecipantColor = partecipant.getColor();
-		for (int d = 1; d <= die; d++) {
+		for (int d=1; d<=die; d++) {
 			 Cell nextCell = this.getNextCell(newStartCell.getRow(),newStartCell.getColumn(), partecipantColor);
 			if (nextCell != null) {
 				if (d != die) {
@@ -139,7 +142,8 @@ public class GameBoard implements Serializable{
 		return null;
 	}
 
-	/** applies a move by the partecipant
+	/** 
+	 * Applies a move by the partecipant
 	 * @param move, the move that could be applied
 	 * @param partecipant, the partecipant that would apply the move
 	 * @return String, the color of eatean pawn if present
@@ -169,17 +173,17 @@ public class GameBoard implements Serializable{
 		}
 	}
 
-	/** check the victory
+	/** 
+	 * Check the victory
 	 * @param partecipant, the partecipant that checks the victory
 	 * @return boolean, the result of the answer about victory
 	 */
 	public boolean isVictory(Partecipant partecipant) {
-		for (int i = Constants.COLUMNS - Constants.BENCH_DIMENSION; i < Constants.COLUMNS; i++) {
-			if (this.cells
-					[(partecipant.getColorPosition() - 1 + Constants.ROWS) % Constants.ROWS]
-					[i]
-					.getPawns().size() == 0)
+		for (int i=Constants.COLUMNS-Constants.BENCH_DIMENSION; i<Constants.COLUMNS; i++) {
+			if (this.cells[(partecipant.getColorPosition() - 1 + Constants.ROWS) % Constants.ROWS]
+					[i].getPawns().size() == 0) {
 				return false;
+			}
 		}
 		return true;
 	}

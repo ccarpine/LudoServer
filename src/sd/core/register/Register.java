@@ -30,7 +30,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * start the timer for the start of the match
+	 * Start the timer for the start of the match
 	 */
 	private void startTimer() {
 		new Thread(new Runnable() {
@@ -51,7 +51,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * init the variable used for the registration
+	 * Init the variable used for the registration
 	 */
 	private void initVariable() {
 		this.counter = 0;
@@ -61,13 +61,13 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * allows the registred player to start the match
+	 * Allows the registred player to start the match
 	 * @throws RemoteException 
 	 */
 	private void startGame() {
 		List<UserPlayerInterface> UsersPlayer = new ArrayList<UserPlayerInterface>();
 		// loockup with all gamers and send request to all
-		for (int i = 0; i < this.gamersIp.size(); i++) {
+		for (int i=0; i<this.gamersIp.size(); i++) {
 			try {
 				Registry registry = LocateRegistry.getRegistry(this.gamersIp.get(i), 6000);
 				UsersPlayer.add((UserPlayerInterface) registry.lookup("rmi://"
@@ -76,7 +76,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 				System.out.println("The user "+this.gamersIp.get(i)+" is not reacheable");
 			}
 		}
-		for (int i = this.gamersIp.size() - 1; i >= 0; i--) {
+		for (int i=this.gamersIp.size()-1; i >= 0; i--) {
 			try {
 				UsersPlayer.get(i).start(this.gamersIp);
 			} catch (RemoteException e) {
@@ -86,10 +86,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * register a gamer for the match
-	 * 
-	 * @param clientIp
-	 *            , the ip pf the gamer
+	 * Register a gamer for the match
+	 * @param clientIp, the ip pf the gamer
 	 * @return long, the remaining time for the star of the match
 	 */
 	private synchronized long registerSynch(String clientIp) {
@@ -99,17 +97,17 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			}
 			/* add the partecipant ip to the list */
 			this.gamersIp.add(clientIp);
-			System.out.println("SERVER ---- Client Ip:" + clientIp
-					+ " -- Client registrati per la partita:"
-					+ this.gamersIp.size());
+			System.out.println("SERVER ---- Client Ip: "+clientIp
+					+" -- Client registred for the match: "
+					+this.gamersIp.size());
 			System.out.println("------------------------");
 			/* partecipant limit reached, start the game */
 			if (this.gamersIp.size() == Constants.MAX_PLAYER) {
 				this.readyToPlay = true;
 			}
 		}
-		System.out.println("Time to start"
-				+ (Constants.MAX_WAIT_FOR_MATCH - this.counter));
+		System.out.println("Time to start: "
+				+(Constants.MAX_WAIT_FOR_MATCH - this.counter));
 		return (Constants.MAX_WAIT_FOR_MATCH - this.counter);
 	}
 
@@ -122,7 +120,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	 * @return boolean, the result of that control
 	 */
 	private boolean getPresenceIp(String ip) {
-		for (int i = 0; i < this.gamersIp.size(); i++) {
+		for (int i=0; i<this.gamersIp.size(); i++) {
 			if (ip.equals(this.gamersIp.get(i))) {
 				return true;
 			}
@@ -132,28 +130,26 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 
 	@Override
 	public void deletePartecipant(String ip) throws RemoteException {
-		for (int i = 0; i < this.gamersIp.size(); i++) {
+		for (int i=0; i<this.gamersIp.size(); i++) {
 			if (this.gamersIp.get(i).equals(ip)) {
 				this.gamersIp.remove(i);
 				break;
 			}
 		}
-		/*
-		 * if the only client register for the match leave, the timer have to be
+		/**
+		 * If the only client register for the match leave, the timer have to be
 		 * restarted
 		 */
 		if (this.gamersIp.size() == 0) {
 			this.resetTimer = true;
 			this.startTimer();
 		}
-
-		System.out.println(ip + " exited");
+		System.out.println("The user "+ip+" exited");
 
 	}
 
 	/**
-	 * the main that allow the server to reacheable for a client
-	 * 
+	 * The main that allow the server to reacheable for a client
 	 * @param args
 	 * @throws IOException
 	 */
@@ -163,7 +159,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			Registry registry = LocateRegistry.createRegistry(6000);
 			registry.rebind("rmi://"+Inet4Address.getLocalHost().getHostAddress()+"/RMILudoServer", server);
 		} catch (IOException e) {
-			System.out.println("Registry not called");
+			System.out.println("RMI Registry not called");
 		}
 	}
 
