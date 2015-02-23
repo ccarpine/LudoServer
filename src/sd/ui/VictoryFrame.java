@@ -23,7 +23,7 @@ public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public VictoryFrame(UserPlayer userPlayer, CoreGame coreGame) {
+	public VictoryFrame(final UserPlayer userPlayer, CoreGame coreGame) {
 		super();
 		String colorWinner = coreGame.getCurrentPartecipant().getColor();
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("sd/ui/images/icon.png")));
