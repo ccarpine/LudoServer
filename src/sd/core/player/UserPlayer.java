@@ -90,7 +90,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 		}
 	}
 
-	/* it handles the lack of message buildGUI from the previous player ONLY */
+	/***
+	 * sets and starts an appropriate timer for the partecipant who calls the method considering a specific moment. 
+	 * The timer represents the maximum time that the partecipant waits before a new method is invoked upon him.
+	 * @param phase, int it can be PHASE_BUILD_GUI, PHASE_FIRST_CYCLE or PHASE_CYCLE. Represent a specific phase in the game, its value helps to estimate the time for the timer.
+	 * @param type, int it can be UPDATE_NEXT, PLAY_NEXT or -1. The first two values are the only significant, the last one is used only if the phase is different from PHASE_CYCLE. 
+	 * Its value tells if the participant is waiting after sending an updateStatus() an initTurn ()
+	 * @param isDubleTurn, its value helps to estimate the time for the timer
+	 * @param currentTurn, its value helps to stop the timer in case we are waiting for an old message
+	 */
 	private void waitFor(final int phase, final int type, final boolean isDubleTurn, final int currentTurn) {
 		if (phase == Constants.PHASE_BUILD_GUI) {
 			System.out.println("Build GUI phase.");
