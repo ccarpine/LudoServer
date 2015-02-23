@@ -22,7 +22,7 @@ public class CoreGame implements Serializable {
 	/**
 	 * It initializes the logical core of the game by inserting the list of the players, setting
 	 * the current player and the number of turn and it allocates the representation in memory of the game board
-	 * @param ipGamers, IP list of all players
+	 * @param ipGamers String with the ip addresses of all players
 	 */
 	public CoreGame(List<String> ipGamers) {
 		this.partecipants = new ArrayList<Partecipant>();
@@ -84,7 +84,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @return partecipant of the invoking process
+	 * @return Partecipant of the invoking process
 	 */
 	public Partecipant getMyPartecipant() {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -97,7 +97,7 @@ public class CoreGame implements Serializable {
 
 	/**
 	 * Get the current partecipant
-	 * @return the current partecipant in according to the current ip
+	 * @return the current Partecipant in according to the current ip
 	 */
 	public Partecipant getCurrentPartecipant() {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -109,8 +109,8 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param String ip, the ip address of a specific partecipant
-	 * @return partecipant, the next player following the one of given ip address
+	 * @param ip String with the ip address of a specific partecipant
+	 * @return Partecipant, the next player following the one of given ip address
 	 */
 	public Partecipant getNextActivePartecipant(String ip) {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -129,7 +129,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param color of the partecipant
+	 * @param color String of the color partecipant
 	 * @return int, index/position partecipant color in list
 	 */
 	public int getIDPartecipantByColor(String color) {
@@ -158,9 +158,9 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * it applies the chosen mvoe and checks if the partecipant wins
-	 * @param chosenMove, Move choosen by partecipant
-	 * @return String, the color of an eatean pawn, if present
+	 * It applies the chosen mvoe and checks if the partecipant wins
+	 * @param chosenMove Move choosen by partecipant
+	 * @return String the color of an eatean pawn, if present
 	 */
 	public String handleTurn(Move chosenMove) {
 		String result = this.gameBoard.makeMove(chosenMove,
@@ -173,10 +173,10 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param partecipants, list of all partecipants
-	 * @param gameBoard, current game board of the match with pawns in correct
-	 *            positions
-	 * @param ipCurrentPartecipant, IP of the new current partecipant
+	 * @param partecipants list of all partecipants, List<Partecipant>
+	 * @param gameBoard current game board of the match with pawns in correct
+	 *            positions, GameBoard
+	 * @param ipCurrentPartecipant String with the IP of the new current partecipant
 	 * @return int, the result of the updateStatus (it establishes if the player has to
 	 *         play again and sends the update to next partecipant...)
 	 */
@@ -229,7 +229,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/***
-	 * @param int, position of the invoking player (if the parameter is equal to partecipants size then
+	 * @param positon integer related to the position of the invoking player (if the parameter is equal to partecipants size then
 	 * 		 it returns the number of all active partecipants)
 	 * @return the number of the active partecipant before a specific position
 	 */
@@ -244,7 +244,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/***
-	 * @param int, position of the invoking player
+	 * @param position an integer related to of the invoking player position in the list
 	 * @return the number of the active partecipants after a specific position
 	 */
 	public int getNrActivePartecipantAfter(int position) {
@@ -293,10 +293,10 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param int, it can be UPDATE_NEXT or PLAY_NEXT: in the first case you send
+	 * @param type an integer can be UPDATE_NEXT or PLAY_NEXT: in the first case you send
 	 *            the update to the next partecipant, otherwise you send the
 	 *            play permission
-	 * @param boolean, isDubleTurn which it establishes if the current partecipant is also the next partecipant
+	 * @param isDubleTurn a boolean which it establishes if the current partecipant is also the next partecipant
 	 * @return long, max number of millisecond the partecipant have to wait before ask
 	 *         the partecipant before IsAlive you have to wait for different
 	 *         time - if you are the current or the next of the current you
@@ -338,7 +338,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param String, the color from which to find the first active partecipant
+	 * @param color String with the color from which to find the first active partecipant
 	 *            before it
 	 * @return Partecipant, it returns the first previous active partecipant before the given
 	 *          color
@@ -362,7 +362,7 @@ public class CoreGame implements Serializable {
 	 * It sets the player of the given color as not active and if he was
 	 * the current partecipant then a new current partecipant is set, the first
 	 * active after him.
-	 * @param String, the color of the player that has crashed
+	 * @param color String with the color of the player that has crashed
 	 */
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
@@ -387,7 +387,7 @@ public class CoreGame implements Serializable {
 
 	/**
 	 * 
-	 * @param Partecipant, the player whose to check the victory
+	 * @param partecioant the Partecipant player whose to check the victory
 	 * @return boolean, true if the given partecipant has won the game
 	 */
 	public boolean isVictory(Partecipant partecipant) {

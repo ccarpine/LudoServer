@@ -19,9 +19,9 @@ public class Partecipant implements Serializable {
 	/** 
 	 * It creates a user game player taking part into the game and setting his
 	 * bench as full
-	 * @param ip, the ip address of that game player
-	 * @param color, the color of the pawns assigned to that game player
-	 * @param colorPosition, the position of the color in the relative array
+	 * @param ip String with the ip address of that game player
+	 * @param color String with the color of the pawns assigned to that game player
+	 * @param colorPosition Integer representing the position of the color in the relative array
 	 */
 	public Partecipant(String ip, String color, int colorPosition) {
 		this.ip = ip;
@@ -95,7 +95,7 @@ public class Partecipant implements Serializable {
 	}
 
 	/**
-	 * @param boolean, it sets the status of the player: true if he is still playing/active; 
+	 * @param status boolean which sets the status of the player: true if he is still playing/active; 
 	 * otherwise false if it has crashed
 	 */
 	public void setStatusActive(boolean status) {
