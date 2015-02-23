@@ -9,10 +9,3 @@ all:
 
 clean:
 	rm -rf ./bin/sd
-	
-	
-player:
-	cd bin/;java -cp ../libs/tablelayout.jar:. sd.core.player.UserPlayer
-
-register:
-	cd bin/;java sd.core.register.Register
