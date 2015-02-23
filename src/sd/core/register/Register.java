@@ -25,12 +25,18 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 		this.initVariable();
 	}
 
+	/** 
+	 * It allows a player to register in order to take part into a match
+	 * @param String, the ip address of the invoking player
+	 * @return long, the remaining time for the beginning of the match
+	 * @throws RemoteException
+	 */
 	public long register(String clientIp) throws RemoteException {
 		return this.registerSynch(clientIp);
 	}
 
 	/**
-	 * Start the timer for the start of the match
+	 * It starts the timer to wait to accept further registrations before the match begins
 	 */
 	private void startTimer() {
 		new Thread(new Runnable() {
@@ -51,7 +57,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * Init the variable used for the registration
+	 * It initialized the variables used for the registration
 	 */
 	private void initVariable() {
 		this.counter = 0;
@@ -61,7 +67,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * Allows the registred player to start the match
+	 * Allows the registered player to start the match
 	 * @throws RemoteException 
 	 */
 	private void startGame() {
@@ -86,8 +92,9 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * Register a gamer for the match
-	 * @param clientIp, the ip pf the gamer
+	 * Register a gamer for the match. This method needs to be synchronized to prevnts race conditions
+	 * in accessing the list of the player waiting for the match to start
+	 * @param clientIp, the ip address of the gamer
 	 * @return long, the remaining time for the star of the match
 	 */
 	private synchronized long registerSynch(String clientIp) {
@@ -112,11 +119,10 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * check the present of a player to avoid the registration of the same one
+	 * It checks the presence of a player to avoid the registration of the same one
 	 * twice
 	 * 
-	 * @param ip
-	 *            , the ip of the gamer
+	 * @param String, the ip address of the gamer
 	 * @return boolean, the result of that control
 	 */
 	private boolean getPresenceIp(String ip) {
@@ -137,7 +143,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 			}
 		}
 		/**
-		 * If the only client register for the match leave, the timer have to be
+		 * If the one and only client registered for the match leaves then the timer has to be
 		 * restarted
 		 */
 		if (this.gamersIp.size() == 0) {
@@ -149,8 +155,7 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 	}
 
 	/**
-	 * The main that allow the server to reacheable for a client
-	 * @param args
+	 * The main function that allows the server to be attainable from clients
 	 * @throws IOException
 	 */
 	public static void main(String[] args) {
