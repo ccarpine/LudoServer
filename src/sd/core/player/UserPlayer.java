@@ -52,8 +52,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	/** 
-	 * @param gamersIp, the list of all gamers that have been registered by the
-	 *        server for a match
+	 * It creates the CoreGame and prepares the game
+	 * @param String, the ip address of the user player that wants to start the game
+	 * @throws RemoteException
 	 */
 	public void start(List<String> gamersIp) {
 		if (!this.isPlaying) {
@@ -73,10 +74,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	@Override
-	/**
+	/** 
+	 * Allows a player to initialize his GUI
 	 * If the player invoking this method is not the first that will play then he can build his GUI 
 	 * and forward this permission to the next; On the contrary case, it means that all the other players
-	 * have finished buildind their GUI. The first player can start the game
+	 * have finished buildind their GUI. The first player can start the game.
+	 * @param List<Partecipant>, all the registered partecipants
+	 * @throws RemoteException
 	 */
 	public void buildGUI(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
@@ -260,9 +264,14 @@ public class UserPlayer extends UnicastRemoteObject implements
 
 	@Override
 	/** 
-	 * @param partecipants, the list of all the partecipants still taking part into the match (in case of crash) that need to have their game board updated
-	 * @param gameBoard, the game board and the status of the partecipant that has just played
-	 * @param ipCurrentPartecipant, the ip address of the player that has just played
+	 * It updates the game status of the player in which this method is invokated
+	 * @param List<Partecipant>, the users game players still taking part into the match. This list can change 
+	 * 		  in case of crash of a user player
+	 * @param GameBoard, the game board visibile by the current player
+	 * @param String, the ip address of the current partecipants
+	 * @param boolean, it establishes if the current partecipant can parform a double turn
+	 * @param int, the value of the current turn
+	 * @throws RemoteException
 	 */
 	public void updateStatus(final List<Partecipant> partecipants,
 			final GameBoard gameBoard, final String ipCurrentPartecipant,
@@ -341,7 +350,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 		}
 	}
 
-	/**
+	/** 
+	 * It update the first next active client after me
 	 * @param partecipants, partecipants still taking part into a
 	 * 		  match (in case of crash)
 	 * @param gameBoard, the current state of the game board in
@@ -383,8 +393,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 	}
 
 	@Override
-	/**
-	 * It allows the user player, in which this method is invoked, to start his turn by enabling his die launch
+	/** 
+	 * It allows partcipant to start a turn after having updated the list of the status of all partecipants
+	 * @param List<Partecipant>, the users game players still taking part into the match. This list can change 
+	 * 		  in case of crash of a user player
+	 * @throws RemoteException
 	 */
 	public void initTurn(List<Partecipant> partecipants) throws RemoteException {
 		this.coreGame.setPartecipants(partecipants);
@@ -423,6 +436,9 @@ public class UserPlayer extends UnicastRemoteObject implements
 	/**
 	 * This method, if correctly invoked tells the invoker if the player is alive; moreover 
 	 * the invoker tells the invoked that all the partecipants between them have crashed. 
+	 * @param int, the phase into which the game is 
+	 * @param String, the color of the pinger
+	 * @param int, the number of the current turn
 	 */
 	public void isAlive(int phase, String color, int currentTurn)
 			throws RemoteException {
@@ -483,12 +499,20 @@ public class UserPlayer extends UnicastRemoteObject implements
 		}
 	}
 
+	/**
+	 * It disposes the main frame of the game and creates and shows a window showing the winner player
+	 */
 	private void showVictory() {
 		this.isPlaying = false;
 		new VictoryFrame(this, coreGame);
 		this.mainFrame.dispose();
 	}
 	
+	/**
+	 * It causes the user player to register for a match by connecting to a dedicated server
+	 * @param String, the ip address of the register server
+	 * @return long, the time to wait before the game starts
+	 */
 	public long startConnection(String serverIP) {
 		try {
 			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);
@@ -500,6 +524,10 @@ public class UserPlayer extends UnicastRemoteObject implements
 		}
 	}
 	
+	/**
+	 * This method is called when a waiting player does not want to take part into a match anymore
+	 * @param String, the ip address of the register server
+	 */
 	public void exit(String serverIP) {
 		try {
 			Registry registry = LocateRegistry.getRegistry(serverIP, 6000);

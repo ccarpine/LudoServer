@@ -17,7 +17,7 @@ public class Partecipant implements Serializable {
 	private boolean statusActive;
 
 	/** 
-	 * Creates a user game player taking part into the game and setting his
+	 * It creates a user game player taking part into the game and setting his
 	 * bench as full
 	 * @param ip, the ip address of that game player
 	 * @param color, the color of the pawns assigned to that game player
@@ -32,12 +32,16 @@ public class Partecipant implements Serializable {
 		this.statusActive = true;
 	}
 
+	/**
+	 * 
+	 * @return the number of remained pawns in bench for a player
+	 */
 	public int getPawnsInBench() {
 		return pawnsInBench;
 	}
 
 	/**
-	 * increments of 1 the number of the partecipant's pawns in his bench
+	 * It increments of 1 the number of the partecipant's pawns in his bench
 	 */
 	public void addPawnsInBench() {
 		if (this.pawnsInBench < Constants.BENCH_DIMENSION) {
@@ -46,7 +50,7 @@ public class Partecipant implements Serializable {
 	}
 
 	/**
-	 * decrements of 1 the number of the partecipant's pawns in his bench
+	 * It decrements of 1 the number of the partecipant's pawns in his bench
 	 */
 	public void removePawnsInBench() {
 		if (this.pawnsInBench > 0) {
@@ -66,24 +70,41 @@ public class Partecipant implements Serializable {
 		return colorPosition;
 	}
 	
+	/**
+	 * 
+	 * @return the value of the last die launch for the Partecipant
+	 */
 	public int getLastLaunch() {
 		return lastLaunch;
 	}
 
+	/**
+	 * 
+	 * @param int, it sets the value of the last die launch for the partecipant
+	 */
 	public void setLastLaunch(int lastLaunch) {
 		this.lastLaunch = lastLaunch;
 	}
 
+	/**
+	 * 
+	 * @return boolean, it checks if the Partecipant is still playing or has crashed
+	 */
 	public boolean isStatusActive() {
 		return statusActive;
 	}
 
+	/**
+	 * @param boolean, it sets the status of the player: true if he is still playing/active; 
+	 * otherwise false if it has crashed
+	 */
 	public void setStatusActive(boolean status) {
 		this.statusActive = status;
 	}
 
 	/**
-	 * verifies if the partecipant ip is equal to the one of the machine this method is invokated in
+	 * @return boolean, it verifies if the partecipant ip is equal to the one of the machine 
+	 * this method is invokated in
 	 */
 	public boolean isMine() {
 		try {

@@ -12,7 +12,7 @@ public class GameBoard implements Serializable{
 	private Cell[][] cells;
 
 	/** 
-	 * Create an empty game board
+	 * Create an empty game board consisting in the benches cells, the vistory cells and the blank cells
 	 */
 	public GameBoard() {
 		int victory = Constants.COLUMNS - Constants.BENCH_DIMENSION;
@@ -35,10 +35,9 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Suggest the possible moves for a given partecipant and a given die
-	 * @param partecipant, the partecipant the require the possible moves
-	 * @param die, the number of the die
-	 * @return the list of possible moves
+	 * It suggests the possible moves for a given partecipant and a given die launch
+	 * @param Partecipant, the partecipant that requires the possible moves
+	 * @return List<Move>, the list of possible moves
 	 */
 	public List<Move> suggestMoves(Partecipant partecipant) {
 		List<Move> moves = new ArrayList<Move>();
@@ -72,8 +71,8 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Get the cells of the pawns of that color
-	 * @param color, the color of pawn
+	 * It gets the cells of the pawns of that color
+	 * @param String, the color of a pawn
 	 * @return List<Cell>, the list of the pawns of that color
 	 */
 	private List<Cell> getPawnsPositionByColor(String color) {
@@ -91,10 +90,10 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Get the next cell
-	 * @param currentRow, the row of the current cell
-	 * @param currentColumn, the column of current cell
-	 * @param currentColorPawn, the color the current
+	 * It gets the next cell
+	 * @param int, the row of the current cell
+	 * @param int, the column of current cell
+	 * @param String, the color of the current player
 	 * @return Cell, the next cell in gameboard
 	 */
 	private Cell getNextCell(int currentRow, int currentColumn, String currentColorPawn) {
@@ -111,10 +110,9 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Get the move obtain by a launch of die in according to the current cell
-	 * @param startCell, the starting cell
-	 * @param die, the number of the die
-	 * @param partecipantColor, the color of the partecipant
+	 * It gets the move obtained by a launch of die in according to the current cell
+	 * @param Cell, the starting cell
+	 * @èaram Partecipant, the interested partecipant
 	 * @return Move, return the Move obtained by a launch of die in according to the current cell
 	 */
 	private Move getMoveByDie(Cell startCell, Partecipant partecipant) {
@@ -143,9 +141,9 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Applies a move by the partecipant
-	 * @param move, the move that could be applied
-	 * @param partecipant, the partecipant that would apply the move
+	 * It applies a move chosen by the partecipant
+	 * @param Move, the move that is going to be applied
+	 * @param Partecipant, the partecipant that will apply the move
 	 * @return String, the color of eatean pawn if present
 	 */
 	public String makeMove(Move move, Partecipant partecipant) {
@@ -174,8 +172,8 @@ public class GameBoard implements Serializable{
 	}
 
 	/** 
-	 * Check the victory
-	 * @param partecipant, the partecipant that checks the victory
+	 * It checks the victory for a given partecipant
+	 * @param Partecipant, the partecipant whose to check the victory
 	 * @return boolean, the result of the answer about victory
 	 */
 	public boolean isVictory(Partecipant partecipant) {

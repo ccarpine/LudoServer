@@ -44,7 +44,7 @@ public class Cell implements Serializable{
 	}
 
 	/** 
-	 * Insert a pawn into a cell if is possible
+	 * Inserts a pawn into a cell if it is possible
 	 * @param colorPawn, the color of the pawn over the cell
 	 * @return int, the consequence of inserting a pawn in this cell
 	 */
@@ -100,7 +100,7 @@ public class Cell implements Serializable{
 	}
 
 	/** 
-	 * Rules if is possible to walk ahead
+	 * Rules if it is possible to walk ahead
 	 * @param colorPawn, the color of the pawn that could pass this cell
 	 * @return int, the simulated consequence of passing this cell
 	 */

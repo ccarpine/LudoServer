@@ -20,8 +20,9 @@ public class CoreGame implements Serializable {
 	private boolean turnActive;
 
 	/**
-	 * Create a new empty cell
-	 * @param ipGamers, IP list of all player
+	 * It initializes the logical core of the game by inserting the list of the players, setting
+	 * the current player and the number of turn and it allocates the representation in memory of the game board
+	 * @param ipGamers, IP list of all players
 	 */
 	public CoreGame(List<String> ipGamers) {
 		this.partecipants = new ArrayList<Partecipant>();
@@ -64,7 +65,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @return boolean, TRUE if how invoke is the current partecipant
+	 * @return boolean, TRUE if the invoker process is the current partecipant
 	 */
 	public boolean amItheCurrentPartecipant() {
 		try {
@@ -83,7 +84,7 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @return partecipant of client that invoke
+	 * @return partecipant of the invoking process
 	 */
 	public Partecipant getMyPartecipant() {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -108,8 +109,8 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param ip, String ip of a specific partecipant
-	 * @return partecipant, the next player
+	 * @param String ip, the ip address of a specific partecipant
+	 * @return partecipant, the next player following the one of given ip address
 	 */
 	public Partecipant getNextActivePartecipant(String ip) {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -129,7 +130,7 @@ public class CoreGame implements Serializable {
 
 	/**
 	 * @param color of the partecipant
-	 * @return int, index in partecipant list
+	 * @return int, index/position partecipant color in list
 	 */
 	public int getIDPartecipantByColor(String color) {
 		for (int i=0; i<this.partecipants.size(); i++) {
@@ -141,11 +142,10 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * Prepares the turn by setting the current player and returning his list of
-	 * possible moves, setting isDoubleTurn to true if the launch die result is
+	 * It prepares the turn by setting the current player and returning his list of
+	 * possible moves and it sets isDoubleTurn to true if the launch die result is
 	 * equal to 6
-	 * @param resultDie, int the result of launch die
-	 * @return List<Move>, all the possibile for partecipant
+	 * @return List<Move>, all the possibile moves for partecipant according to his die launch
 	 */
 	public List<Move> initTurn() {
 		Partecipant tempPartecipant = this.getMyPartecipant();
@@ -158,9 +158,9 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * Make move choosen and check if the partecipant win
+	 * it applies the chosen mvoe and checks if the partecipant wins
 	 * @param chosenMove, Move choosen by partecipant
-	 * @return String, the color of eatean pawn if present
+	 * @return String, the color of an eatean pawn, if present
 	 */
 	public String handleTurn(Move chosenMove) {
 		String result = this.gameBoard.makeMove(chosenMove,
@@ -173,12 +173,12 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param partecipant, list of all partecipant
-	 * @param gameBoard, current game board of the match with pawn in correct
-	 *            position
+	 * @param partecipants, list of all partecipants
+	 * @param gameBoard, current game board of the match with pawns in correct
+	 *            positions
 	 * @param ipCurrentPartecipant, IP of the new current partecipant
-	 * @return int the result of the updateStatus (tell if the player have to
-	 *         play again, send update to next partecipant...)
+	 * @return int, the result of the updateStatus (it establishes if the player has to
+	 *         play again and sends the update to next partecipant...)
 	 */
 	public int updateStatus(List<Partecipant> partecipant, GameBoard gameBoard,
 			String ipCurrentPartecipant) {
@@ -186,7 +186,7 @@ public class CoreGame implements Serializable {
 		this.partecipants = partecipant;
 		this.gameBoard = gameBoard;
 		/*
-		 * check if my ip is equals to the last that has just played, means that
+		 * check if my ip is equals to the last that has just played: if so it means that
 		 * you received the message that you have send
 		 */
 		if (this.gameBoard.isVictory(this.getCurrentPartecipant())) {
@@ -210,13 +210,16 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * Set the possibility to play
+	 * It sets the possibility to play
 	 * @param turnActive, the possibility to play
 	 */
 	public void setTurnActive(boolean turnActive) {
 		this.turnActive = turnActive;
 	}
 
+	/**
+	 * It checks if the double turn for the current partecipant is enabled
+	 */
 	public boolean isDoubleTurn() {
 		return this.isDoubleTurn;
 	}
@@ -226,8 +229,8 @@ public class CoreGame implements Serializable {
 	}
 
 	/***
-	 * @param position of the invoking player (if the param is equal to size
-	 * 		  return the number of all active partecipants)
+	 * @param int, position of the invoking player (if the parameter is equal to partecipants size then
+	 * 		 it returns the number of all active partecipants)
 	 * @return the number of the active partecipant before a specific position
 	 */
 	public int getNrActivePartecipantBefore(int position) {
@@ -241,9 +244,8 @@ public class CoreGame implements Serializable {
 	}
 
 	/***
-	 * @param position of the invoking player (if the param is equal to
-	 * 		  return the number of all active partecipants)
-	 * @return the number of the active partecipant after a specific position
+	 * @param int, position of the invoking player
+	 * @return the number of the active partecipants after a specific position
 	 */
 	public int getNrActivePartecipantAfter(int position) {
 		int nrActivePartecipant = 0;
@@ -256,9 +258,9 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @return, the maximum time that the invoking partecipant MUST wait to
-	 *          receive a message for buildGUI; if 0 is returned it means that
-	 *          it must not wait for a message but it must build the gui and
+	 * @return long, the maximum time that the invoking partecipant MUST wait to
+	 *          receive a message for buildGUI; if 0 is returned then it means that
+	 *          the player must not wait for a message but it must build the gui at once and
 	 *          forward it
 	 */
 	public long getTimeForBuildGUI() {
@@ -269,10 +271,10 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @return, the maximun time that the invoking partecipant have to wait to
-	 *          recevice a messagge for the first update after the first turn
-	 *          exept for the fist player that wait for init turn (he has to
-	 *          receive the last buil gui message)
+	 * @return long, the maximun time that the invoking partecipant MUST to wait to
+	 *          recevice a message for the first update after the first turn
+	 *          except for the fist player that will wait for initTurn() (he has to
+	 *          receive the last builGui() message)
 	 */
 	public long getTimeForTheFirstCycle() {
 		int activePartecipantBeforeMe = this.getNrActivePartecipantBefore(this
@@ -291,12 +293,11 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param type, can be UPDATE_NEXT or PLAY_NEXT, in the first case you send
+	 * @param int, it can be UPDATE_NEXT or PLAY_NEXT: in the first case you send
 	 *            the update to the next partecipant, otherwise you send the
-	 *            play
-	 * @param isDubleTurn
-	 *            tell if the current partecipant is also the next partecipant
-	 * @return max number of millisecond the partecipant have to wait before ask
+	 *            play permission
+	 * @param boolean, isDubleTurn which it establishes if the current partecipant is also the next partecipant
+	 * @return long, max number of millisecond the partecipant have to wait before ask
 	 *         the partecipant before IsAlive you have to wait for different
 	 *         time - if you are the current or the next of the current you
 	 *         don't have to wait for turn time (you have to wait only for the
@@ -337,9 +338,9 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * @param color, the color from which to find the first active partecipant
+	 * @param String, the color from which to find the first active partecipant
 	 *            before it
-	 * @return, it returns the first previous active partecipant from the given
+	 * @return Partecipant, it returns the first previous active partecipant before the given
 	 *          color
 	 */
 	public Partecipant getPreviousActive(String color) {
@@ -358,10 +359,10 @@ public class CoreGame implements Serializable {
 	}
 
 	/**
-	 * Set the player of the given color as not active and if he was
+	 * It sets the player of the given color as not active and if he was
 	 * the current partecipant then a new current partecipant is set, the first
 	 * active after him.
-	 * @param color, the color of the player that has crashed
+	 * @param String, the color of the player that has crashed
 	 */
 	public void setUnactivePartecipant(String color) {
 		int position = this.getIDPartecipantByColor(color);
@@ -384,6 +385,11 @@ public class CoreGame implements Serializable {
 		return -1;
 	}
 
+	/**
+	 * 
+	 * @param Partecipant, the player whose to check the victory
+	 * @return boolean, true if the given partecipant has won the game
+	 */
 	public boolean isVictory(Partecipant partecipant) {
 		if (this.getNrActivePartecipantAfter(0) == 1) {
 			return true;
