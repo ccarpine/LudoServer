@@ -47,6 +47,10 @@ public class GamePanel extends BGPanel {
 		this.setLayout(new TableLayout(size));
 	}
 	
+	/***
+	 * fill the structure for game panel: 
+	 * all bench, path and pawn are are positioned in the right place
+	 */
 	public void drawGUI() {
 		this.removeAll();
 		this.updateUI();
@@ -130,6 +134,11 @@ public class GamePanel extends BGPanel {
 		this.updateUI();
 	}
 	
+	/***
+	 * 
+	 * @param cell, specificic cell of gamebord
+	 * @return the path of the picture that represent the state of a specific cell 
+	 */
 	private String getPathIcon(Cell cell) {
 		int sizeCell = cell.getPawns().size();
 		switch (sizeCell) {

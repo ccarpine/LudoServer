@@ -136,6 +136,11 @@ public class IntroPanel extends BGPanel {
 		}).start();
 	}
 
+	/***
+	 * Close game, if the participant had already registered, 
+	 * eliminates its registration at the server
+	 * @param serverIP, the ip of the server
+	 */
 	private void exit(String serverIP) {
 		this.userPlayer.exit(serverIP);
 	}

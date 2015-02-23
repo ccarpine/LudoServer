@@ -19,10 +19,18 @@ import sd.core.player.UserPlayer;
 import sd.util.Constants;
 import sd.util.MyFont;
 
+/**
+ * VictoryFrame, window to show when a partecipant win
+ */
 public class VictoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
+	/***
+	 * create panel show the victory
+	 * @param userPlayer, the partecipant who invoce the method
+	 * @param coreGame, from which we can deduce who is the winner
+	 */
 	public VictoryFrame(final UserPlayer userPlayer, CoreGame coreGame) {
 		super();
 		String colorWinner = coreGame.getCurrentPartecipant().getColor();
@@ -86,6 +94,10 @@ public class VictoryFrame extends JFrame {
 		panel.updateUI();
 	}
 
+	/***
+	 * action for the button play again on the victory window
+	 * @param userPlayer, take the player has instantiated the object
+	 */
 	private void newGame(UserPlayer userPlayer) {
 		this.setVisible(false);
 		MainFrame mainFrame = new MainFrame();

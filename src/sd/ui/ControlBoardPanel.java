@@ -51,6 +51,11 @@ public class ControlBoardPanel extends BGPanel {
 		this.initExactDieFaces();
 	}
 
+	/***
+	 * draw the right part of the windows, 
+	 * enable or disable the correct button and show how is the current player
+	 * @param isDoubleTurn, boolean help to choose the current partecipant 
+	 */
 	public void drawControlBoardGUI(boolean isDoubleTurn) {
 		this.removeAll();
 		this.updateUI();
