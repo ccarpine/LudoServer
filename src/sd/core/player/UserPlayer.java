@@ -414,6 +414,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 		String pingerColor = color;
 		while (!end) {
 			Partecipant partecipant = this.coreGame.getPreviousActive(pingerColor);
+			System.out.println("Sto controllare questo: "+partecipant.getColor()+" e il current è: "+this.coreGame.getCurrentPartecipant().getColor());
 			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor())) {
 				end = true;
 			} else {
