@@ -80,6 +80,8 @@ public class Register extends UnicastRemoteObject implements RegisterInterface {
 						+ this.gamersIp.get(i) + "/RMIGameClient"));
 			} catch (RemoteException | NotBoundException e) {
 				System.out.println("The user "+this.gamersIp.get(i)+" is not reacheable");
+				this.gamersIp.remove(i);
+				i--;
 			}
 		}
 		for (int i=this.gamersIp.size()-1; i >= 0; i--) {
