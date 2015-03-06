@@ -459,7 +459,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 				}
 			} else {
 				System.out.println("Non è crashato il current!!!");
-				if (currentTurn <= this.coreGame.getTurn()) {
+				if (currentTurn < this.coreGame.getTurn()) {
 					System.out.println("Reply to isAlive. I send Update Next to "+color);
 					this.updateNext(this.coreGame.getPartecipants(),
 						this.coreGame.getGameBoard(), this.coreGame.getCurrentPartecipant().getIp(),
