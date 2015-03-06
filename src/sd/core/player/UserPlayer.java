@@ -418,8 +418,8 @@ public class UserPlayer extends UnicastRemoteObject implements
 			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor())) {
 				end = true;
 			} else {
-				if (partecipant.getIp().equals(
-						this.coreGame.getCurrentPartecipant().getIp())) {
+				if (partecipant.getIp().equals(this.coreGame.getNextActivePartecipant(
+						this.coreGame.getCurrentPartecipant().getIp()))) {
 					currentCrashed = true;
 				}
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
