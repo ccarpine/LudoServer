@@ -409,19 +409,13 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param int, the number of the current turn
 	 */
 	public void isAlive(int phase, String color, int currentTurn) throws RemoteException {
-		//boolean currentCrashed = false;
 		boolean end = false;
 		String pingerColor = color;
 		while (!end) {
 			Partecipant partecipant = this.coreGame.getPreviousActive(pingerColor);
-			System.out.println("Sto controllare questo: "+partecipant.getColor()+" e il current è: "+this.coreGame.getCurrentPartecipant().getColor());
 			if (partecipant.getColor().equals(this.coreGame.getMyPartecipant().getColor())) {
 				end = true;
 			} else {
-//				if (partecipant.getIp().equals(this.coreGame.getNextActivePartecipant(
-//						this.coreGame.getCurrentPartecipant().getIp()))) {
-//					currentCrashed = true;
-//				}
 				this.coreGame.setUnactivePartecipant(partecipant.getColor());
 				pingerColor = partecipant.getColor();
 			}
@@ -452,13 +446,11 @@ public class UserPlayer extends UnicastRemoteObject implements
 				|| (phase == Constants.PHASE_CYCLE)) {
 			System.out.println("isAlive: phase_cycle");
 			if (this.coreGame.getCurrentPartecipant().getIp().equals(this.coreGame.getMyPartecipant().getIp())) {
-				System.out.println("isAlive: è crashato il current!!! ---MUST BE EQUAL currentTurn: " +currentTurn + " currentTurn coreGame: " +this.coreGame.getTurn());
 				if (currentTurn == this.coreGame.getTurn()) {
 					System.out.println("Reply to isAlive. The current crashed, i send Play Next to: "+color);
 					this.playNext(false);
 				}
 			} else {
-				System.out.println("Non è crashato il current!!!");
 				if (currentTurn < this.coreGame.getTurn()) {
 					System.out.println("Reply to isAlive. I send Update Next to "+color);
 					this.updateNext(this.coreGame.getPartecipants(),
