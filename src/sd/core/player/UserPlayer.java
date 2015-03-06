@@ -408,8 +408,7 @@ public class UserPlayer extends UnicastRemoteObject implements
 	 * @param String, the color of the pinger
 	 * @param int, the number of the current turn
 	 */
-	public void isAlive(int phase, String color, int currentTurn)
-			throws RemoteException {
+	public void isAlive(int phase, String color, int currentTurn) throws RemoteException {
 		boolean currentCrashed = false;
 		boolean end = false;
 		String pingerColor = color;
@@ -450,13 +449,15 @@ public class UserPlayer extends UnicastRemoteObject implements
 		 */
 		} else if ((phase == Constants.PHASE_FIRST_CYCLE && firstCycleDone)
 				|| (phase == Constants.PHASE_CYCLE)) {
+			System.out.println("isAlive: phase_cycle");
 			if (currentCrashed) {
+				System.out.println("isAlive: è crashato il current!!! ---MUST BE EQUAL currentTurn: " +currentTurn + " currentTurn coreGame: " +this.coreGame.getTurn());
 				if (currentTurn == this.coreGame.getTurn()) {
-					System.out.println("Reply to isAlive. The current crashed, i send Play Next to: "
-						+color);
+					System.out.println("Reply to isAlive. The current crashed, i send Play Next to: "+color);
 					this.playNext(false);
 				}
 			} else {
+				System.out.println("Non è crashato il current!!!");
 				if (currentTurn < this.coreGame.getTurn()) {
 					System.out.println("Reply to isAlive. I send Update Next to "+color);
 					this.updateNext(this.coreGame.getPartecipants(),
